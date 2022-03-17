@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'course',
+    'classroom',
 ]
 
 MIDDLEWARE = [
@@ -79,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'aula_virtual',
-        'USER': 'root',
-        'PASSWORD': 'oxipusio',
+        'USER': 'luiggi',
+        'PASSWORD': 'Luiggi_123@*',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
