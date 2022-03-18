@@ -20,8 +20,8 @@ from student_portal.view import *;
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('saludar/', saludo),
-    path('despedir/', despedida),
+    # path('saludar/', saludo),
+    # path('despedir/', despedida),
     path('courses/', showCourse),
     
 ]
