@@ -1,0 +1,220 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap");
+
+.home {
+    margin: 0;
+    padding: 0;
+    color: #555555;
+    font-size: 16px;
+    overflow-x: hidden;
+    line-height: 1.625;
+    font-family: "Roboto";
+    -moz-osx-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;
+}
+
+.breadcrumb-section {
+    padding: 195px 0px 110px;
+}
+
+[data-background] {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+section {
+    overflow: hidden;
+}
+
+.breadcrumb-section .breadcrumb-overlay {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    background-color: #030014;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.breadcrumb-content {
+    z-index: 1;
+    position: relative;
+}
+
+.headline h1, .headline h2, .headline h3, .headline h4, .headline h5, .headline h6 {
+    margin: 0;
+    font-family: "Fira Sans";
+}
+
+.breadcrumb-content h2 {
+    color: #fff;
+    font-size: 60px;
+    font-weight: 700;
+    padding-bottom: 10px;
+}
+
+.blog-feed-section, .blog-feed-list-section {
+    padding: 100px 0px;
+    background-color: #f2f2f4;
+}
+
+.blog-img-text-2 {
+    margin: 0 auto;
+    max-width: 370px;
+    margin-bottom: 40px;
+    background-color: #fff;
+    transition: 0.3s all ease-in-out;
+}
+
+.blog-img-text-2 .blog-img-2 .blog-img-warap-2 {
+    overflow: hidden;
+}
+
+.blog-img-text-2 .blog-img-2 .blog-img-warap-2 img {
+    transition: 0.4s all ease-in-out;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.blog-img-text-2 .blog-img-2 .blog-img-warap-2:after {
+    top: 0;
+    left: 0;
+    width: 100%;
+    content: "";
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.blog-img-text-2 .blog-text-2 {
+    padding: 45px 25px;
+    box-shadow: 0px 12px 35px 0px rgb(12 12 12 / 6%);
+}
+
+a {
+    color: inherit ; 
+    text-decoration: none ;
+}
+
+a:hover, a:focus {
+    text-decoration: none ;
+    color:#ff5520;
+    transition: 0.3s all ease-in-out;
+}
+
+.blog-meta-2 a {
+    font-size: 13px;
+    font-weight: 700;
+    margin-right: 25px;
+    position: relative;
+    color: #0000fe ;
+    font-family: "Fira Sans";
+}
+
+.blog-meta-2 a:after {
+    top: -3px;
+    width: 2px;
+    content: "";
+    right: -15px;
+    height: 20px;
+    position: absolute;
+    background-color: #0000fe;
+}
+
+.blog-img-text-2 .blog-title-text-2 h3 {
+    color: #000;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    position: relative;
+    padding: 10px 0px 15px;
+    border-bottom: 2px solid #eaeaea;
+    transition: 0.3s all ease-in-out;
+}
+
+.blog-img-text-2 .blog-title-text-2 h3:before {
+    left: 0;
+    bottom: -1px;
+    height: 3px;
+    content: "";
+    width: 37px;
+    position: absolute;
+    background-color: #ff5520;
+}
+
+.blog-img-text-2 .blog-title-text-2 p {
+    padding-bottom: 14px;
+}
+
+.pera-content p {
+    margin-bottom: 0;
+}
+
+.blog-img-text-2 .blog-title-text-2 .blog-more {
+    color: #000 ;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.3s all ease-in-out;
+    position: relative;
+}
+
+.blog-img-text-2 .blog-title-text-2 .blog-more:after {
+    left: 0;
+    bottom: 0;
+    content: "";
+    width: 0;
+    height: 1px;
+    position: absolute;
+    transition: 0.3s all ease-in-out;
+    background-color: #0000fe;
+}
+
+.blog-img-text-2 .blog-title-text-2 .blog-more:hover {
+    color: #0000fe;
+  }
+  .blog-img-text-2 .blog-title-text-2 .blog-more:hover:after {
+    width: 100%;
+  }
+  .blog-img-text-2:hover {
+    box-shadow: 0px 43px 35px 0px rgba(12, 12, 12, 0.1);
+  }
+  .blog-img-text-2:hover .blog-img-warap-2 img {
+    transform: scale(1.2) rotate(5deg);
+  }
+
+.blog-img-text-2 .blog-img-2 .blog-date-2 a span {
+    display: block;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: "Roboto";
+}
+
+.blog-img-text-2 .blog-img-2 .blog-date-2 a {
+    color: #fff ;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+    display: inline-block;
+    font-family: "Fira Sans";
+}
+
+.blog-img-text-2 .blog-img-2 .blog-date-2 {
+    left: 25px;
+    width: 80px;
+    height: 80px;
+    bottom: -30px;
+    padding-top: 13px;
+    border-radius: 3px;
+    position: absolute;
+    background-color: #000;
+}
+
+
+
