@@ -19,6 +19,7 @@ from django.urls import path, include
 from student_portal.view import despedida, saludo
 
 urlpatterns = [
+    path('', saludo, name='index'),
     path('auth/', include('authapp.urls')),
     path('saludar/', saludo),
     path('despedir/', despedida),
