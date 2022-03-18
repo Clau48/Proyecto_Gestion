@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block banner %}
+
+<div class="section no-pad-bot" id="index-banner">
+	<div class="container">
+		<br><br>
+		<h2 class="header orange-text center">Impulsa tu aprendizaje</h2>
+		<h5 class="header col s12 light center">En todo lugar. En todo momento</h5>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block content %}
+<div class="section">
+	<h4>Cursos activos</h4>
+	<div class="divider"></div>
+</div>
+
+<div class="row">
+{% for course in courses %}
+<div class="col s12 m4">
+  <div class="card" style="width: 12rem;">
+    <div class="card-image waves-effect waves-block waves-light">
+      <img class="activator" src="{{ course.picture.url }}" alt="Imagen no cargada">
+    </div>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4">{{ course.title }}<em class="material-icons right">more_vert</em></span>
+      <p>Categoría: {{ course.category }}</p>
+      <a href="{% url 'course' course.id %}" class="btn">Abrir</a>
+      <a href="{% url 'delete-student' course.id user.id %}" class="btn red darken-1"><em class="material-icons">exit_to_app</em></a>
+    </div>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">Acerca del curso<em class="material-icons right">close</em></span>
+      <p>{{ course.description }}</p>
+    </div>
+  </div>
+</div>
+{% endfor %}
+</div>
+
+{% endblock %}
