@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>FISI-Room</title>
+
+  {% load static %}
+  
+  {% block css %}{% endblock %}
+  <!-- CSS  -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  {% comment %} <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/> {% endcomment %}
+  {% comment %} <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/> {% endcomment %}
+</head>
+<body>
+
+
+  <nav class="light-blue" role="navigation" style="display:none;">
+    <div class="nav-wrapper container">
+      {% comment %} <a href="{% url 'index' %}" class="brand-logo"><em class="material-icons">cloud</em>FISI-Room</a> {% endcomment %}
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left">person</em>Perfil</a></li>
+      </ul>
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left">person</em>Perfil</a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+
+  <ul id="slide-out" class="sidenav" style="display:none;">
+    <li><div class="user-view">
+      <div class="background">
+        {% if nav_profile.banner %}
+          <img src="{{ nav_profile.banner.url }}" alt="Imagen no cargada">
+        {% else %}
+          <img src="{% static 'img/nobanner.jpg' %}" alt="Imagen no cargada">
+        {% endif %}
+      </div>
+      <a href="#user">
+      {% if nav_profile.picture %}
+        <img src="{{ nav_profile.picture.url }}" class="circle responsive-img" alt="Imagen no cargada">
+      {% else %}
+        <img src="{% static 'img/no_avatar.jpg' %}" class="circle responsive-img" alt="Imagen no cargada">
+      {% endif %} 
+      </a>
+      <a href="#name"><span class="white-text name">{{ nav_profile.user.first_name }} {{ nav_profile.user.last_name }}</span></a>
+      <a href="#email"><span class="white-text email">{{ nav_profile.user.email }}</span></a>
+    </div>
+    </li>
+    {% comment %} <!--{% url 'profile' nav_profile.user.username %}--> {% endcomment %}
+    <li><a href="#"><em class="material-icons">person</em>Mi perfil</a></li>
+    {% comment %} <li><a href="{% url 'index' %}"><em class="material-icons">dashboard</em>Tabloide</a></li> {% endcomment %}
+    {% comment %} <li><a href="{% url 'schedule' %}"><em class="material-icons">schedule</em>Horario</a></li> {% endcomment %}
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Aprendizaje</a></li>
+    {% comment %} <li><a href="{% url 'categories' %}"><em class="material-icons">menu_book</em>Enlistarse</a></li> {% endcomment %}
+    <li><div class="divider"></div></li>
+    <li><a class="subheader">Enseñanza</a></li>
+    {% comment %} <li><a href="{% url 'my-courses' %}"><em class="material-icons">menu_book</em>Tus cursos</a></li> {% endcomment %}
+    <li><div class="divider"></div></li>
+    {% comment %} <li><a href="{% url 'logout' %}"><em class="material-icons">power_off</em>Desconectarse</a></li> {% endcomment %}
+  </ul>
+
+
+    {% block banner %}
+    {% endblock %}
+
+
+
+<div class="container">
+  <div class="section">
+
+    {% block content %}
+    {% endblock %}
+  </div>
+  </div>
+  <br>
+  <br>
+
+
+
+  <footer class="page-footer orange">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text"><strong>STUDENTROOM</strong></h5>
+          <p>Es un proyecto que tiene como objetivo
+            impulsar la educación virtual mediante una plataforma sencilla, confiable y accesible.
+          </p>
+        </div>
+
+        <div class="col l6 s12">
+          <h5 class="white-text"><strong>Sobre nosotros</strong> </h5>
+          <p>Somos un grupo de estudiantes de la Facultad de Ingeniería de Sistemas e Informática-FISI 
+            con la misión de ayudar a transformar al mundo a través de la tecnología.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Hecho con <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+ 
+  {% comment %} <script src="{% static 'js/materialize.js' %}"></script> {% endcomment %}
+  {% comment %} <script src="{% static 'js/init.js' %}"></script> {% endcomment %}
+  {% comment %} <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script> {% endcomment %}
+  {% comment %} <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script> {% endcomment %}
+
+
+  
+  <script>
+    $(document).ready(function(){
+     $('.modal').modal();
+     }); 
+   </script>
+   <script>
+      
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.timepicker');
+      var options = {twelveHour: false}
+      var instances = M.Timepicker.init(elems, options);
+    });
+
+    // Or with jQuery
+
+    $(document).ready(function(){
+      $('.timepicker').timepicker();
+    });
+   </script>
+  {% block javascript %}
+ 
+  {% endblock %}
+
+  </body>
+  </html>
