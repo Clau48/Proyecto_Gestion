@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from student_portal.view import despedida, saludo
+from student_portal.view import *;
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('saludar/', saludo),
     path('despedir/', despedida),
+    path('courses/', showCourse),
+    
 ]
