@@ -11,3 +11,4 @@
 | Prado Cunto | Rodrigo |
 | Huaman Huaman | Angel |
 | Porras Quispe | Marco Aurelio |
+| Pasache Lopera | Luiggi Steep |
