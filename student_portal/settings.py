@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'course',
-    'authapp',
+    'authy',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'aula_virtual',
-        'USER': 'luiggi',
-        'PASSWORD': 'Luiggi_123@*',
+        'USER': 'root',
+        'PASSWORD': 'oxipusio',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }
@@ -126,6 +126,15 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'templates/static')
 ]
+
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+#Login
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = '/user/login'
+
 
 # STATIC_ROOT = os.path.join(BASE_DIR, "templates/static")
 # Default primary key field type

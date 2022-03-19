@@ -23,10 +23,7 @@ from student_portal.view import *;
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('courses/', showCourse),
-    # path('auth/', include('authapp.urls')),
-    path('', saludo, name='index'),
-    path('saludar/', saludo),
-    path('despedir/', despedida),
+    path('', index, name='index'),
     path('<username>', user_profile, name='profile'),
     path('user/', include('authy.urls'))
 ]

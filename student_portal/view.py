@@ -7,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from course.models import Course
 
 @login_required
-def saludo(request):
-    return HttpResponse("Hola alumnos esta es nuestra primera pagina con Django")
+def index(request):
+    return render(request,'courses/categories.html',{})
 
 
 def despedida(request):
