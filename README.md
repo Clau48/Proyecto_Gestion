@@ -1,10 +1,14 @@
-# ProyectoGestion
+## PROYECTO DE GESTION DE PROYECTOS DE SOFTWARE
+- Curso: Gestion de Proyectos de Software
+- Docente: ---
+- Grupo: 1
+- Ciclo: 2022-0
 
-Curso: GESTION DE PROCESOS DE SOFTWARE
-Proyecto: FISI-ROOM
-Docente:
-Integrantes:
-  | Arias Quispe, Alexis |
-  | Prado Cunto, Rodrigo |
-  | Huaman Huaman, Angel |
-  | Porras Quispe, Marco |
+## Integrantes
+| Apellidos | Nombres |
+| --------- | ------- |
+| Arias Quispe | Alexis Enrique |
+| Prado Cunto | Rodrigo |
+| Huaman Huaman | Angel |
+| Porras Quispe | Marco Aurelio |
+| Pasache Lopera | Luiggi Steep |
