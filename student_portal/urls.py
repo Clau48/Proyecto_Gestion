@@ -22,8 +22,8 @@ from student_portal.view import *;
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('courses/', showCourse),
-    path('', index, name='index'),
+    path('courses/', showCourse, name='show_courses'),
+    path('', showCourse, name='index'),
     path('<username>', user_profile, name='profile'),
     path('user/', include('authy.urls'))
 ]
