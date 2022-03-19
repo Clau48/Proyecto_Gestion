@@ -16,14 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from authy.views import user_profile
-
 from student_portal.view import *;
+from authy.views import user_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('courses/', showCourse, name='show_courses'),
     path('', showCourse, name='index'),
     path('<username>', user_profile, name='profile'),
-    path('user/', include('authy.urls'))
+    path('user/', include('authy.urls')),
+    path('course/', include('course.urls')), 
 ]
