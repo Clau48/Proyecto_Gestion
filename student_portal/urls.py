@@ -16,10 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from authy.views import user_profile
+
 from student_portal.view import *;
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('courses/', showCourse),
-    path('auth/', include('authapp.urls')),
+    # path('auth/', include('authapp.urls')),
+    path('', saludo, name='index'),
+    path('saludar/', saludo),
+    path('despedir/', despedida),
+    path('<username>', user_profile, name='profile'),
+    path('user/', include('authy.urls'))
 ]
