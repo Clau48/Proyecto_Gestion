@@ -7,10 +7,6 @@ from django.db.models import Q
 from course.models import Course
 from course.forms import NewCourseForm
 
-# CONSTANTES
-
-MIS_CURSOS_URL = 'course/mycourses.html'
-
 # Create your views here.
 
 @login_required
@@ -50,20 +46,21 @@ def new_course(request):
     if request.method == 'POST':
         form = NewCourseForm(request.POST, request.FILES)
         if form.is_valid():
+            time_start = form.cleaned_data.get('time_start')
+            time_end = form.cleaned_data.get('time_end')
+
+            if not ValidateTime(request, time_start, time_end):
+                context = {'form': form}
+                return render(request, 'courses/newcourse.html', context)
+
             picture = form.cleaned_data.get('picture')
             title = form.cleaned_data.get('title')
             description = form.cleaned_data.get('description')
-            time_start = form.cleaned_data.get('time_start')
-            time_end = form.cleaned_data.get('time_end')
-            category = form.cleaned_data.get('category')
             syllabus = form.cleaned_data.get('syllabus')
             Course.objects.create(picture=picture, title=title, description=description, 
-            time_start=time_start, time_end=time_end, category=category,
+            time_start=time_start, time_end=time_end,
             syllabus=syllabus, user=user)
-            
-            courses = Course.objects.filter(user=user)
-            messages.success(request, '¡El curso ha sido creado con éxito!')
-            return render(request, MIS_CURSOS_URL, {'courses': courses})
+            return redirect('newcourse')
     else:
         form = NewCourseForm()
 
@@ -71,6 +68,21 @@ def new_course(request):
         'form': form,
     }
 
-    return render(request, 'course/newcourse.html', context)
+    return render(request, 'courses/newcourse.html', context)
+
+def ValidateTime(request, time_start, time_end):
+    ts = str(time_start).split(":")
+    te = str(time_end).split(":")
+    confirmation = True
+
+    if ts[1] != "00" or te[1] != "00":
+        messages.warning(request, 'La hora de inicio y cierre deben de darse en horas en punto. ' + 
+            'Ejm: "Inicio - 8:00 y Fin - 9:00"')
+        confirmation = False
+    if int(ts[0]) > int(te[0]):
+        messages.warning(request, 'La hora de inicio no puede pasar de la hora de cierre.')
+        confirmation = False
+
+    return confirmation
 
 
