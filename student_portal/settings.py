@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'course',
-    'authapp',
+    'authy',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +133,7 @@ STATICFILES_DIRS = [
 #Login
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'login'
-LOGIN_URL = '/auth/login'
+LOGIN_URL = '/user/login'
 
 
 # STATIC_ROOT = os.path.join(BASE_DIR, "templates/static")
