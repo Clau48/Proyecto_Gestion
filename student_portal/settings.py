@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'aula_virtual',
         'USER': 'root',
-        'PASSWORD': 'oxipusio',
+        'PASSWORD': '1111',
         'HOST': '127.0.0.1',
         'PORT': '3306',
     }

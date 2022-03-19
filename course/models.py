@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 import uuid
 
-
 from ckeditor.fields import RichTextField
 
 def user_directory_path(instance, filename):
