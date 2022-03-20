@@ -3,7 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
-  <title>FISI-Room</title>
+  <title>FISIversity</title>
 
   {% load static %}
   
@@ -11,17 +11,19 @@
   <!-- CSS  -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  {% comment %} <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/> {% endcomment %}
-  {% comment %} <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/> {% endcomment %}
+  <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
+  
 </head>
 <body>
 
 
-  <nav class="light-blue" role="navigation" style="display:none;">
+  <nav class="light-blue" role="navigation" >
     <div class="nav-wrapper container">
-      {% comment %} <a href="{% url 'index' %}" class="brand-logo"><em class="material-icons">cloud</em>FISI-Room</a> {% endcomment %}
+      <a href="{% url 'index' %}" class="brand-logo"><em class="material-icons">cloud</em>FISIversity</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left">person</em>Perfil</a></li>
+        <li><a href="{% url 'show_courses' %} " data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">book</em>CURSOS</a></li>
+        <li><a href="{% url 'signup' %}" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">person</em>REGISTRO</a></li>
+        <li><a href="{% url 'login' %}" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">login</em>login</a></li>
       </ul>
       <ul id="nav-mobile" class="sidenav">
         <li><a href="#" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left">person</em>Perfil</a></li>
@@ -71,7 +73,7 @@
 
 
 
-<div class="container">
+<div class="">
   <div class="section">
 
     {% block content %}
@@ -87,7 +89,7 @@
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
-          <h5 class="white-text"><strong>STUDENTROOM</strong></h5>
+          <h5 class="white-text"><strong>FISIversity</strong></h5>
           <p>Es un proyecto que tiene como objetivo
             impulsar la educación virtual mediante una plataforma sencilla, confiable y accesible.
           </p>

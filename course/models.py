@@ -3,7 +3,6 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 import uuid
 
-
 from ckeditor.fields import RichTextField
 
 def user_directory_path(instance, filename):
@@ -48,7 +47,7 @@ class Course(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner')
     enrolled = models.ManyToManyField(User)
     # modules = models.ManyToManyField(Module)
-    questions = models.ManyToManyField(Question)
+    # questions = models.ManyToManyField(Question)
 
     def __str__(self):
         return self.title    

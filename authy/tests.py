@@ -13,7 +13,6 @@ from django.test.client import RequestFactory
 
 # Create your tests here.
 
-
 class ProfileTestCase(TestCase):
 
 	def setUp(self):

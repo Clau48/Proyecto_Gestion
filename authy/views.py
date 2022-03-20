@@ -47,13 +47,7 @@ def signup(request):
 			email = form.cleaned_data.get('email')
 			password = form.cleaned_data.get('password')
 			User.objects.create_user(username=username, email=email, password=password)
-			new_user = authenticate(username=username, password=password)
-
-			login(request, new_user)
-			profile = Profile.objects.get(user=request.user)
-			edit_form = EditProfileForm(instance=profile)
-			messages.success(request, '¡La cuenta ha sido creada con éxito!')
-			return render(request, 'registration/edit_profile.html', {'form': edit_form})
+			return redirect('edit-profile')
 	else:
 		form = SignupForm()
 	

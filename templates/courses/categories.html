@@ -25,6 +25,7 @@
         <div class="container">
             <div class="blog-feed-content-wrap">
                 <div class="row justify-content-center">
+                    {% for course in courses %}
                     <!-- COMIENZA CURSO -->
                     <div class="col-lg-4 col-md-6">
                         <div class="blog-img-text-2 headline pera-content">
@@ -42,140 +43,18 @@
                                     <!-- <a href="#">0 comentarios</a> -->
                                 </div>
                                 <div class="blog-title-text-2">
-                                    <h3><a href="#">Nombre del curso</a>
+                                    <h3><a href="#"> {{ course.title }} </a>
                                     </h3>
-                                    <p>Breve descripción o resumen del curso como vista previa
+                                    <p>{{ course.description }}
                                     </p>
                                     <a class="blog-more text-uppercase" href="#">Conocer más <span>+</span></a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="blog-img-text-2 headline pera-content">
-                            <div class="blog-img-2 position-relative">
-                                <div class="blog-img-warap-2 position-relative">
-                                    <img src="https://www.educaciontrespuntocero.com/wp-content/uploads/2020/03/fondo-matematicas_23-2148146270.jpg" alt="">
-                                </div>
-                                <!--<div class="blog-date-2 text-center">
-                                    <a href="#">(dia)<span>(mes/año)</span></a>
-                                </div>-->
-                            </div>
-                            <div class="blog-text-2">
-                                <div class="blog-meta-2 text-uppercase">
-                                    <!-- <a href="#">(Profesor cordero)</a> -->
-                                    <!-- <a href="#">0 comentarios</a> -->
-                                </div>
-                                <div class="blog-title-text-2">
-                                    <h3><a href="#">Nombre del curso</a>
-                                    </h3>
-                                    <p>Breve descripción o resumen del curso como vista previa
-                                    </p>
-                                    <a class="blog-more text-uppercase" href="#">Conocer más <span>+</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="blog-img-text-2 headline pera-content">
-                            <div class="blog-img-2 position-relative">
-                                <div class="blog-img-warap-2 position-relative">
-                                    <img src="https://www.educaciontrespuntocero.com/wp-content/uploads/2020/03/fondo-matematicas_23-2148146270.jpg" alt="">
-                                </div>
-                                <!--<div class="blog-date-2 text-center">
-                                    <a href="#">(dia)<span>(mes/año)</span></a>
-                                </div>-->
-                            </div>
-                            <div class="blog-text-2">
-                                <div class="blog-meta-2 text-uppercase">
-                                    <!-- <a href="#">(Profesor cordero)</a> -->
-                                    <!-- <a href="#">0 comentarios</a> -->
-                                </div>
-                                <div class="blog-title-text-2">
-                                    <h3><a href="#">Nombre del curso</a>
-                                    </h3>
-                                    <p>Breve descripción o resumen del curso como vista previa
-                                    </p>
-                                    <a class="blog-more text-uppercase" href="#">Conocer más <span>+</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="blog-img-text-2 headline pera-content">
-                            <div class="blog-img-2 position-relative">
-                                <div class="blog-img-warap-2 position-relative">
-                                    <img src="https://www.educaciontrespuntocero.com/wp-content/uploads/2020/03/fondo-matematicas_23-2148146270.jpg" alt="">
-                                </div>
-                                <!--<div class="blog-date-2 text-center">
-                                    <a href="#">(dia)<span>(mes/año)</span></a>
-                                </div>-->
-                            </div>
-                            <div class="blog-text-2">
-                                <div class="blog-meta-2 text-uppercase">
-                                    <!-- <a href="#">(Profesor cordero)</a> -->
-                                    <!-- <a href="#">0 comentarios</a> -->
-                                </div>
-                                <div class="blog-title-text-2">
-                                    <h3><a href="#">Nombre del curso</a>
-                                    </h3>
-                                    <p>Breve descripción o resumen del curso como vista previa
-                                    </p>
-                                    <a class="blog-more text-uppercase" href="#">Conocer más <span>+</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="blog-img-text-2 headline pera-content">
-                            <div class="blog-img-2 position-relative">
-                                <div class="blog-img-warap-2 position-relative">
-                                    <img src="https://www.educaciontrespuntocero.com/wp-content/uploads/2020/03/fondo-matematicas_23-2148146270.jpg" alt="">
-                                </div>
-                                <!--<div class="blog-date-2 text-center">
-                                    <a href="#">(dia)<span>(mes/año)</span></a>
-                                </div>-->
-                            </div>
-                            <div class="blog-text-2">
-                                <div class="blog-meta-2 text-uppercase">
-                                    <!-- <a href="#">(Profesor cordero)</a> -->
-                                    <!-- <a href="#">0 comentarios</a> -->
-                                </div>
-                                <div class="blog-title-text-2">
-                                    <h3><a href="#">Nombre del curso</a>
-                                    </h3>
-                                    <p>Breve descripción o resumen del curso como vista previa
-                                    </p>
-                                    <a class="blog-more text-uppercase" href="#">Conocer más <span>+</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="blog-img-text-2 headline pera-content">
-                            <div class="blog-img-2 position-relative">
-                                <div class="blog-img-warap-2 position-relative">
-                                    <img src="https://www.educaciontrespuntocero.com/wp-content/uploads/2020/03/fondo-matematicas_23-2148146270.jpg" alt="">
-                                </div>
-                                <!--<div class="blog-date-2 text-center">
-                                    <a href="#">(dia)<span>(mes/año)</span></a>
-                                </div>-->
-                            </div>
-                            <div class="blog-text-2">
-                                <div class="blog-meta-2 text-uppercase">
-                                    <!-- <a href="#">(Profesor cordero)</a> -->
-                                    <!-- <a href="#">0 comentarios</a> -->
-                                </div>
-                                <div class="blog-title-text-2">
-                                    <h3><a href="#">Nombre del curso</a>
-                                    </h3>
-                                    <p>Breve descripción o resumen del curso como vista previa
-                                    </p>
-                                    <a class="blog-more text-uppercase" href="#">Conocer más <span>+</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
+                    {% endfor %}             
+
+                 
                     <!-- TERMINA CURSO --> <!-- copiar y pegar desde 'comienza' hasta 'termina' para previsualizar, está responsive-->
                 </div>
             </div>
