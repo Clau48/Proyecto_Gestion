@@ -20,10 +20,13 @@ from student_portal.view import *;
 from authy.views import user_profile
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('courses/', showCourse, name='show_courses'),
     path('', showCourse, name='index'),
-    path('<username>', user_profile, name='profile'),
+
     path('user/', include('authy.urls')),
-    path('course/', include('course.urls'))
+    path('<username>', user_profile, name='profile'),
+
+    path('courses/', showCourse, name='show_courses'),
+    path('course/', include('course.urls')),
+
+    path('admin/', admin.site.urls),
 ]

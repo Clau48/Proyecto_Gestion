@@ -8,7 +8,6 @@ from django.contrib.auth import authenticate, login
 
 from authy.models import Profile
 
-
 from django.template import loader
 from django.http import HttpResponse
 
@@ -84,3 +83,4 @@ def edit_profile(request):
 	}
 
 	return render(request, 'registration/edit_profile.html', context)
+
