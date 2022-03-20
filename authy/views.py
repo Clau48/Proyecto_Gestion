@@ -24,6 +24,7 @@ def side_nav_info(request):
 	
 	return {'nav_profile': nav_profile}
 
+@login_required
 def user_profile(request, username):
 	user = get_object_or_404(User, username=username)
 	profile = Profile.objects.get(user=user)
