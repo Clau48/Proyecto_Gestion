@@ -9,8 +9,17 @@ from django.contrib.auth import authenticate, login
 from authy.models import Profile
 
 from django.template import loader
-from django.http import HttpResponse
-
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth import get_user_model
+UserModel = get_user_model()
+from django.core.mail import send_mail
+from .forms import RegisterUserForm
 
 # Create your views here.
 
@@ -28,12 +37,10 @@ def user_profile(request, username):
 	user = get_object_or_404(User, username=username)
 	profile = Profile.objects.get(user=user)
 
-
 	template = loader.get_template('profile.html')
 
 	context = {
 		'profile':profile,
-
 	}
 
 	return HttpResponse(template.render(context, request))
@@ -84,3 +91,69 @@ def edit_profile(request):
 
 	return render(request, 'registration/edit_profile.html', context)
 
+def register(request):
+    if request.user.is_authenticated:
+        print('Already authenticated')
+        return redirect('index')
+    else:
+        if request.method == 'POST':
+            form = RegisterUserForm(request.POST)
+            if form.is_valid():
+                print('Valid form')
+
+                user = form.save(commit=False)
+                user.is_active = False
+                user.save()
+
+                current_site = get_current_site(request)
+                subject = 'Activate Your ' + current_site.domain + ' Account'
+                message = render_to_string('registration/email_confirmation.html',
+                    {
+                        "domain": current_site.domain,
+                        "user": user,
+                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                        "token": default_token_generator.make_token(user),
+                    },
+                )
+                to_email = form.cleaned_data.get('email')
+                send_mail(subject, message, 'luiggi.pasache.lopera@gmail.com', [to_email])
+
+                messages.success(request, 'Please Confirm your email to complete registration before Login.')
+                return redirect('login')
+            else:
+                if form.errors:
+                    for key, values in form.errors.as_data().items():
+                        if key == 'username':
+                            messages.info(request, 'Error input fields')
+                            break
+                        else:
+                            for error_value in values:
+                                print(error_value)
+                                #print(type(error_value))
+                                messages.info(request, '%s' % (error_value.message))
+
+                return redirect('register')
+        else:
+            form = RegisterUserForm()
+
+            context = {
+                'form': form
+            }
+            return render(request, 'registration/signup.html', context)
+
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = UserModel._default_manager.get(pk=uid)
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.success(request, 'Successful email confirmation, you can proceed to login.')
+
+        return redirect('edit-profile')
+    else:
+        return HttpResponse('Activation link is invalid!')

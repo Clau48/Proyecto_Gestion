@@ -141,3 +141,17 @@ LOGIN_URL = '/user/login'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Email configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+email_auth_path = str(Path(__file__).resolve().parent) + '/email_auth.txt'
+f = open(email_auth_path, "r")
+lines = f.readlines()
+f.close()
+
+EMAIL_HOST = lines[0].strip().split(' ')[0]
+EMAIL_USE_TLS = lines[1].strip().split(' ')[0]
+EMAIL_PORT = lines[2].strip().split(' ')[0]
+EMAIL_HOST_USER = lines[3].strip().split(' ')[0]
+EMAIL_HOST_PASSWORD = lines[4].strip().split(' ')[0]

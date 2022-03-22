@@ -135,3 +135,7 @@ GitHub.sublime-settings
 !.vscode/launch.json 
 !.vscode/extensions.json 
 .history
+
+# Archivos de configuracion (deben ser creados)
+database.txt
+email_auth.txt
