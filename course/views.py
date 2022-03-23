@@ -60,7 +60,7 @@ def new_course(request):
             Course.objects.create(picture=picture, title=title, description=description, 
             time_start=time_start, time_end=time_end,
             syllabus=syllabus, user=user)
-            return redirect('newcourse')
+            return redirect('../../courses/')
     else:
         form = NewCourseForm()
 
@@ -84,5 +84,4 @@ def ValidateTime(request, time_start, time_end):
         confirmation = False
 
     return confirmation
-
 
