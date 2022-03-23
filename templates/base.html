@@ -21,6 +21,7 @@
     <div class="nav-wrapper container">
       <a href="{% url 'index' %}" class="brand-logo"><em class="material-icons">cloud</em>FISIversity</a>
       <ul class="right hide-on-med-and-down">
+        <li><a href="{% url 'newcourse' %} " data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">book</em>CREAR</a></li>
         <li><a href="{% url 'show_courses' %} " data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">book</em>CURSOS</a></li>
         <li><a href="{% url 'signup' %}" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">person</em>REGISTRO</a></li>
         <li><a href="{% url 'login' %}" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">login</em>login</a></li>
@@ -121,24 +122,24 @@
 
 
   
-  <script>
+  {% comment %} <script>
     $(document).ready(function(){
      $('.modal').modal();
      }); 
-   </script>
+   </script> {% endcomment %}
    <script>
-      
+       // Or with jQuery
+
+       {% comment %} $(document).ready(function(){
+        $('.timepicker').timepicker();
+      });    {% endcomment %}
     document.addEventListener('DOMContentLoaded', function() {
       var elems = document.querySelectorAll('.timepicker');
       var options = {twelveHour: false}
       var instances = M.Timepicker.init(elems, options);
     });
 
-    // Or with jQuery
 
-    $(document).ready(function(){
-      $('.timepicker').timepicker();
-    });
    </script>
   {% block javascript %}
  
