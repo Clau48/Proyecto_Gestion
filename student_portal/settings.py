@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&+8bom=6n5@=ec43ykmv-^on97bq8#t%i8h!w93!hxj4fnxv-b'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,14 +82,13 @@ WSGI_APPLICATION = 'student_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aula_virtual',
-        'USER': 'root',
-        'PASSWORD': '1111',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': os.getenv("DJANGO_DATABASE_NAME") ,
+        'USER': os.getenv("DJANGO_DATABASE_USER"),
+        'PASSWORD': os.getenv("DJANGO_DATABASE_PASSWORD"),
+        'HOST': os.getenv("DJANGO_DATABASE_HOST"),
+        'PORT': os.getenv("DJANGO_DATABASE_PORT"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -110,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-PE'
 
 TIME_ZONE = 'UTC'
 
