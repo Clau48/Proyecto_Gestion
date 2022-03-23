@@ -4,8 +4,8 @@ from course.models import Course
 
 class NewCourseForm(forms.ModelForm):
 	picture = forms.ImageField(required=False)
-	title = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate'}), required=True)
-	description = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate'}), required=True)
+	title = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Titulo'}), required=True)
+	description = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Descripcion'}), required=True)
 	day = forms.ChoiceField(choices=Course.DAY_CHOICES, required=True)
 	time_start = forms.TimeField(widget=forms.TimeInput(format='%H:%M'), required=True)
 	time_end = forms.TimeField(widget=forms.TimeInput(format='%H:%M'), required=True)
