@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&+8bom=6n5@=ec43ykmv-^on97bq8#t%i8h!w93!hxj4fnxv-b'
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -79,14 +82,13 @@ WSGI_APPLICATION = 'student_portal.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'aula_virtual',
-        'USER': 'luiggi',
-        'PASSWORD': 'Luiggi_123@*',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'NAME': os.getenv("DJANGO_DATABASE_NAME") ,
+        'USER': os.getenv("DJANGO_DATABASE_USER"),
+        'PASSWORD': os.getenv("DJANGO_DATABASE_PASSWORD"),
+        'HOST': os.getenv("DJANGO_DATABASE_HOST"),
+        'PORT': os.getenv("DJANGO_DATABASE_PORT"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -145,13 +147,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Email configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-email_auth_path = str(Path(__file__).resolve().parent) + '/email_auth.txt'
-f = open(email_auth_path, "r")
-lines = f.readlines()
-f.close()
-
-EMAIL_HOST = lines[0].strip().split(' ')[0]
-EMAIL_USE_TLS = lines[1].strip().split(' ')[0]
-EMAIL_PORT = lines[2].strip().split(' ')[0]
-EMAIL_HOST_USER = lines[3].strip().split(' ')[0]
-EMAIL_HOST_PASSWORD = lines[4].strip().split(' ')[0]
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")

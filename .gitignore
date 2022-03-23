@@ -137,5 +137,4 @@ GitHub.sublime-settings
 .history
 
 # Archivos de configuracion (deben ser creados)
-database.txt
-email_auth.txt
+.env
