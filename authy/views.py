@@ -10,18 +10,13 @@ from authy.models import Profile
 
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 UserModel = get_user_model()
-from django.core.mail import send_mail
 from .forms import RegisterUserForm
 
-# Create your views here.
+from .utils import send_email_confirmation
 
 def side_nav_info(request):
 	user = request.user
@@ -103,20 +98,9 @@ def register(request):
 
                 user = form.save(commit=False)
                 user.is_active = False
-                user.save()
+                # user.save()
 
-                current_site = get_current_site(request)
-                subject = 'Activate Your ' + current_site.domain + ' Account'
-                message = render_to_string('registration/email_confirmation.html',
-                    {
-                        "domain": current_site.domain,
-                        "user": user,
-                        "uid": urlsafe_base64_encode(force_bytes(user.pk)),
-                        "token": default_token_generator.make_token(user),
-                    },
-                )
-                to_email = form.cleaned_data.get('email')
-                send_mail(subject, message, 'luiggi.pasache.lopera@gmail.com', [to_email])
+                send_email_confirmation(request, user)
 
                 messages.success(request, 'Please Confirm your email to complete registration before Login.')
                 return redirect('login')
@@ -129,7 +113,6 @@ def register(request):
                         else:
                             for error_value in values:
                                 print(error_value)
-                                #print(type(error_value))
                                 messages.info(request, '%s' % (error_value.message))
 
                 return redirect('register')
