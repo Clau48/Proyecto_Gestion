@@ -10,6 +10,7 @@ from django.http.request import QueryDict
 from django.middleware.csrf import get_token
 from .views import side_nav_info, signup, edit_profile  
 from django.test.client import RequestFactory
+from .utils import send_email_confirmation
 
 # Create your tests here.
 
@@ -17,35 +18,35 @@ class ProfileTestCase(TestCase):
 
 	def setUp(self):
 		self.factory = RequestFactory()
-		self.user = User.objects.create_user(username='xocrona',
-											 email='xocrona@xocrona.com',
-											 password='xocrona',
+		self.user = User.objects.create_user(username='luiggi',
+											 email='luiggi.pasache.lopera@gmail.com',
+											 password='luiggi',
 											 )
 
-	# def test_register(self):
-    #     req = self.factory.post('user/signup')
+	def test_register(self):
+		req = self.factory.post('user/signup')
 
-    #     info = {'csrfmiddlewaretoken': get_token(req),
-    #             'username': 'test_user',
-    #             'email': 'test_user@gmail.com',
-    #             'password': 'test_user',
-    #             'confirm_password': 'test_user',
-    #             'action': '',
-    #             }
+		info = {'csrfmiddlewaretoken': get_token(req),
+				'username': 'test_user',
+				'email': 'test_user@gmail.com',
+				'password1': 'test_user',
+				'password2': 'test_user',
+				'action': '',
+				}
 
-    #     user = User.objects.create_user('test_user', 'test_user@gmail.com', 'test_user')
+		user = User.objects.create_user('test_user', 'test_user@gmail.com', 'test_user')
 
-    #     middleware = SessionMiddleware()
-    #     middleware.process_request(req)
-    #     req.session.save()
+		middleware = SessionMiddleware(get_response='')
+		middleware.process_request(req)
+		req.session.save()
 
-    #     q = QueryDict('', mutable=True)
-    #     q.update(info)
-    #     req.POST = q
-    #     req.user = user
-    #     signup(req)
-    #     user = User.objects.get(username='test_user')
-    #     assert user
+		q = QueryDict('', mutable=True)
+		q.update(info)
+		req.POST = q
+		req.user = user
+		signup(req)
+		user = User.objects.get(username='test_user')
+		assert user
 
 	def test_edit_profile(self):
 		req = self.factory.post('user/profile/edit')
@@ -75,6 +76,12 @@ class ProfileTestCase(TestCase):
 		user = User.objects.get(username=self.user)
 		assert user
 
-	def test_authenticate(self):
-		user = authenticate(username='xocrona', password='xocrona')
+	def test_login(self):
+		user = authenticate(username='luiggi', password='luiggi')
 		self.assertNotEqual(user, None)
+	
+	def test_send_email(self):
+		req = self.factory.post('user/signup')
+		user = authenticate(username='luiggi', password='luiggi')
+		send_email = send_email_confirmation(req, user)
+		self.assertEqual(send_email, 1)
