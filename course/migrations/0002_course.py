@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ('time_end', models.TimeField()),
                 ('syllabus', ckeditor.fields.RichTextField()),
                 ('enrolled', models.ManyToManyField(to=settings.AUTH_USER_MODEL)),
-                ('questions', models.ManyToManyField(to='course.question')),
+                #('questions', models.ManyToManyField(to='course.question')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='course_owner', to=settings.AUTH_USER_MODEL)),
             ],
         ),
