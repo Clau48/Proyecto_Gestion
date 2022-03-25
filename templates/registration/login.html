@@ -48,8 +48,26 @@
 					<div class="d-flex justify-content-center">
 						<a href="#" style="color: #FFC312 !important;">¿Olvidaste tu contraseña?</a>
 					</div>
+					<br>
 					<div class="d-flex justify-content-center">
-						<span style="color: red; font-weight: bold;">{{ form.non_field_errors }}</span>
+						{% if form.errors %}
+							{% for field in form %}
+							<ul class="non-field-errors">
+								{% for error in field.errors %}
+									<li style="color: red; font-weight: bold;">{{error}}</li>
+								{% endfor %}
+							</ul>
+							{% endfor %}
+						{% endif %}
+					</div>
+					<div class="d-flex justify-content-center">
+						{% if form.non_field_errors %}
+							<ul class="non-field-errors">
+								{% for err in form.non_field_errors %}
+									<li style="color: red; font-weight: bold;">{{err}}</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
 					</div>
 				</div>
 			</div>

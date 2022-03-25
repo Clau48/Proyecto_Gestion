@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from authy.forms import SignupForm, EditProfileForm
 from django.contrib.auth.models import User
 
 from django.contrib import messages
@@ -70,32 +69,25 @@ def edit_profile(request):
 
 def register(request):
     if request.user.is_authenticated:
-        print('Already authenticated')
         return redirect('index')
     else:
         if request.method == 'POST':
             form = RegisterUserForm(request.POST)
             if form.is_valid():
-                print('Valid form')
-
                 user = form.save(commit=False)
                 user.is_active = False
                 user.save()
 
                 send_email_confirmation(request, user)
 
-                messages.success(request, 'Please Confirm your email to complete registration before Login.')
+                messages.success(request, 'Por favor, confirma tu email para completar el registro antes de iniciar sesión')
                 return redirect('register')
             else:
                 if form.errors:
                     for key, values in form.errors.as_data().items():
-                        if key == 'username':
-                            messages.info(request, 'Error input fields')
-                            break
-                        else:
                             for error_value in values:
-                                print(error_value)
-                                messages.info(request, '%s' % (error_value.message))
+                                message = str(error_value).replace('[\'','').replace('\']','')
+                                messages.info(request, message)
 
                 return redirect('register')
         else:
@@ -117,8 +109,8 @@ def activate(request, uidb64, token):
         user.is_active = True
         user.save()
 
-        messages.success(request, 'Successful email confirmation, you can proceed to login.')
+        messages.success(request, 'Confirmación de email exitosa, puedes iniciar sesión')
 
         return redirect('login')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('Link de activación inválido')

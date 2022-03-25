@@ -22,33 +22,6 @@ def unique_user(value):
     if User.objects.filter(username__iexact=value).exists():
         raise ValidationError('User with this username already exists.')
 
-class SignupForm(forms.ModelForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Username'}), max_length=30, required=True,)
-    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder':'Email'}) , max_length=100, required=True,)
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Password'}),max_length=100)
-    confirm_password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm password'}), required=True, label="Confirm your password.")
-
-    class Meta:
-
-        model = User
-        fields = ('username', 'email', 'password')
-
-    def __init__(self, *args, **kwargs):
-        super(SignupForm, self).__init__(*args, **kwargs)
-        self.fields['username'].validators.append(forbidden_users)
-        self.fields['username'].validators.append(invalid_user)
-        self.fields['username'].validators.append(unique_user)
-        self.fields['email'].validators.append(unique_email)
-
-    def clean(self):
-        super(SignupForm, self).clean()
-        password = self.cleaned_data.get('password')
-        confirm_password = self.cleaned_data.get('confirm_password')
-
-        if password != confirm_password:
-            self._errors['password'] = self.error_class(['Passwords do not match. Try again'])
-        return self.cleaned_data
-
 class EditProfileForm(forms.ModelForm):
     first_name = forms.CharField(widget=forms.TextInput(), max_length=50, required=False)
     last_name = forms.CharField(widget=forms.TextInput(), max_length=50, required=False)
@@ -64,25 +37,26 @@ class EditProfileForm(forms.ModelForm):
 
 # Registro con autentificacion de usuarios
 class RegisterUserForm(UserCreationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Username'}), max_length=30, required=True,)
+    email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder':'Email'}) , max_length=100, required=True,)
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Password'}),max_length=100)
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm password'}), required=True, label="Confirm your password.")
+
     class Meta:
         model = User
         fields =  ['username', 'email', 'password1', 'password2']
 
-    # Check unique email
-    # Email exists && account active -> email_already_registered
-    # Email exists && account not active -> delete previous account and register new one
     def clean_email(self):
         email_passed = self.cleaned_data.get("email")
         email_already_registered = User.objects.filter(email = email_passed).exists()
         user_is_active = User.objects.filter(email = email_passed, is_active = 1)
         if email_already_registered and user_is_active:
-            #print('email_already_registered and user_is_active')
-            raise forms.ValidationError("Email already registered.")
+            raise forms.ValidationError("Email ya se encuentra registrado")
         elif email_already_registered:
-            #print('email_already_registered')
             User.objects.filter(email = email_passed).delete()
 
         return email_passed
+
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'username'}), max_length=30, required=True)
@@ -90,3 +64,14 @@ class LoginUserForm(AuthenticationForm):
 
     class Meta:
         fields = ('username', 'password')
+
+    def clean_username(self):
+        username_passed = self.cleaned_data.get("username")
+        user_exists = User.objects.filter(username = username_passed).exists()
+        email_is_authenticate = User.objects.filter(username = username_passed, is_active = 1).all()
+        print(username_passed, user_exists, email_is_authenticate)
+        if not user_exists:
+            raise forms.ValidationError("Usuario no existe")
+        if not email_is_authenticate:
+            raise forms.ValidationError("Por favor, confirma tu email para completar el registro antes de iniciar sesión")
+        return username_passed

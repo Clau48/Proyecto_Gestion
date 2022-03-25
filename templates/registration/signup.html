@@ -38,7 +38,6 @@
           <div class="input-field col s12">
             {{ form.password1 }}
             {% comment %} <input type="password" name="password" id="claveActual" required {{ form.password.value }}> {% endcomment %}
-            <label for="claveActual">Password</label>
           </div>
 
 {% comment %} 
@@ -56,15 +55,13 @@
 
           <div class="input-field col s12">
             {{ form.password2 }}
-            <label for="confirm_password">Confirm password</label>
           </div>
 
           <div class="row">
             <div class="col s12">
-              <span style="color: red; font-weight: bold;">{{ form.errors }}</span>
               {% for message in messages %}
-              <span style="color: red; font-weight: bold;">{{ message }}</span>
-						{% endfor%}
+                <div style="color: red; font-weight: bold;">{{ message}}</div>
+              {% endfor %}
             </div>
           </div>
 
