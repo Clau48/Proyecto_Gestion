@@ -1,0 +1,226 @@
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap");
+
+.course-details-tab-area {
+    background-color: #fff;
+}
+
+.course-details-tab-wrapper {
+    padding: 40px 40px;
+}
+
+@media screen and (max-width: 1180px){
+.course-details-tab-wrapper {
+    padding: 40px 15px;
+}}
+
+.course-details-tab-btn {
+    margin-bottom: 20px;
+    background-color: #f2f2f4;
+}
+
+.ul-li ul {
+    margin: 0;
+    padding: 0;
+}
+
+.course-details-tab-btn .nav-tabs .nav-item.show .nav-link, .course-details-tab-btn .nav-tabs .nav-link.active, .course-details-tab-btn .nav-tabs, .course-details-tab-btn .nav-tabs .nav-link {
+    border: none;
+    border-radius: 0;
+}
+
+.ul-li ul li {
+    list-style: none;
+    display: inline-block;
+}
+
+.course-details-tab-btn .nav-tabs .nav-link {
+    padding: 22px 38px;
+}
+
+@media screen and (max-width: 1180px){
+.course-details-tab-btn .nav-tabs .nav-link {
+    padding: 22px 25px;
+    line-height: 1.625;
+    font-family: "Roboto";
+}}
+
+.yl-headline h1, .yl-headline h2, .yl-headline h3, .yl-headline h4, .yl-headline h5, .yl-headline h6 {
+    margin: 0;
+    font-family: "Fira Sans";
+}
+
+.c-overview-title {
+    color: #000;
+    font-size: 24px;
+    font-weight: 700;
+    padding-bottom: 10px;
+}
+
+.cd-course-instructor-img-text {
+    margin-top: 20px;
+}
+
+.cd-course-instructor-img-text .cd-course-instructor-img {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    margin-right: 25px;
+    border-radius: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.cd-course-instructor-img-text .cd-course-instructor-text {
+    padding-top: 15px;
+}
+
+.cd-course-instructor-img-text .cd-course-instructor-text h3 {
+    color: #000;
+    font-weight: 600;
+    font-size: 20px;
+    padding-bottom: 10px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.cd-ins-details {
+    margin-top: 25px;
+}
+
+.pera-content p {
+    margin-bottom: 0;
+}
+
+.cd-ins-details p {
+    margin-bottom: 30px;
+}
+
+.course-details-tab-btn .nav-tabs .nav-link.active {
+    background-color: #f2f2f4;
+    color: #000000;
+}
+
+.course-details-tab-btn .nav-tabs .nav-link.active:hover {
+    background-color: #ff5520;
+    color: white;
+}
+
+.form-control:focus, button:visited, button.active, button:hover, button:focus, input:visited, input.active, input:hover, input:focus, textarea:hover, textarea:focus, a:hover, a:focus, a:visited, a.active, select, select:hover, select:focus, select:visited {
+    outline: none;
+    box-shadow: none;
+    text-decoration: none;
+    color: inherit;
+}
+
+.course-details-tab-btn ul li a {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.yl-cd-cur-accordion {
+    margin-bottom: 10px;
+}
+
+.yl-cd-cur-accordion .yl-cd-cur-accordion-header button {
+    width: 100%;
+    border: none;
+    position: relative;
+    padding: 20px 20px 20px 50px;
+    background-color: #f2f2f4;
+}
+
+button {
+    cursor: pointer;
+}
+
+.yl-cd-cur-accordion .yl-cd-cur-accordion-header button h3 {
+    color: #000;
+    float: left;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.yl-cd-cur-accordion .yl-cd-cur-accordion-header button:after {
+    top: -10px;
+    left: 15px;
+    color: #000;
+    font-size: 50px;
+    content: "-";
+    position: absolute;
+}
+
+.yl-cd-cur-accordion .yl-cd-cur-accordion-header button.collapsed:after {
+    top: 0;
+    content: "+";
+    font-size: 40px;
+}
+
+.yl-cd-cur-accordion .yl-cd-cur-accordion-body {
+    padding: 20px 30px;
+    border: 1px solid #f2f2f4;
+}
+
+.yl-cd-cur-accordion .yl-cd-cur-accordion-body li {
+    width: 100%;
+    border-bottom: 1px solid #dadada;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+}
+
+.course-details-overview-feature {
+    margin-top: 40px;
+}
+
+.overview-feature-list {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.overview-feature-icon-text {
+    width: 50%;
+    float: left;
+    margin-bottom: 50px;
+}
+
+.overview-feature-icon-text .overview-feature-icon-title {
+    margin-bottom: 10px;
+}
+
+.overview-feature-icon-text .overview-feature-icon-title img, .overview-feature-icon-text .overview-feature-icon-title i {
+    margin-right: 10px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.overview-feature-icon-text .overview-feature-icon-title h3 {
+    color: #000000;
+    font-size: 20px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.overview-feature-icon-text .overview-feature-text {
+    overflow: hidden;
+}
+
+.overview-feature-icon-text .overview-feature-text p {
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 330px;
+}
+
+.course-details-tab-area {
+    background-color: #fff;
+}
+
