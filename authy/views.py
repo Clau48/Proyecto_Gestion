@@ -40,24 +40,6 @@ def user_profile(request, username):
 
 	return HttpResponse(template.render(context, request))
 
-def signup(request):
-	if request.method == 'POST':
-		form = SignupForm(request.POST)
-		if form.is_valid():
-			username = form.cleaned_data.get('username')
-			email = form.cleaned_data.get('email')
-			password = form.cleaned_data.get('password')
-			User.objects.create_user(username=username, email=email, password=password)
-			return redirect('edit-profile')
-	else:
-		form = SignupForm()
-	
-	context = {
-		'form':form,
-	}
-
-	return render(request, 'registration/signup.html', context)
-
 @login_required
 def edit_profile(request):
 	user = request.user.id
@@ -76,7 +58,7 @@ def edit_profile(request):
 			profile.profile_info = form.cleaned_data.get('profile_info')
 			profile.save()
 			user_basic_info.save()
-			return redirect('index')
+			return redirect('login')
 	else:
 		form = EditProfileForm(instance=profile)
 
@@ -98,12 +80,12 @@ def register(request):
 
                 user = form.save(commit=False)
                 user.is_active = False
-                # user.save()
+                user.save()
 
                 send_email_confirmation(request, user)
 
                 messages.success(request, 'Please Confirm your email to complete registration before Login.')
-                return redirect('login')
+                return redirect('register')
             else:
                 if form.errors:
                     for key, values in form.errors.as_data().items():
@@ -137,6 +119,6 @@ def activate(request, uidb64, token):
 
         messages.success(request, 'Successful email confirmation, you can proceed to login.')
 
-        return redirect('edit-profile')
+        return redirect('login')
     else:
         return HttpResponse('Activation link is invalid!')
