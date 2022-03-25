@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cha.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="section">
+	<h4>Nombre del curso: {{ course.title }}</h4>
+	<div class="divider"></div>
+</div>
+
+<div class="course-details-tab-area">
+  <div class="course-details-tab-wrapper">
+      <div class="course-details-tab-btn clearfix ul-li">
+          <ul id="tabs" class="nav text-uppercase nav-tabs">
+              <li class="nav-item"><a href="{% url 'course' course.id %}"   class="nav-link text-capitalize active show">Descripción </a></li>
+              <li class="nav-item"><a href="{% url 'modules' course.id %}"  class="nav-link text-capitalize active show">Contenido  </a></li>
+              <li class="nav-item"><a href="#"    class="nav-link text-capitalize active show">Tareas</a></li>
+          </ul>
+      </div>
+      <div class="course-details-tab-content-wrap">
+        <div id="tabsContent" class="tab-content">
+        {% block contenido %}
+        {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+{% endblock %}
