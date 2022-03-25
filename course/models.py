@@ -1,3 +1,4 @@
+from pickle import NONE
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -45,9 +46,14 @@ class Course(models.Model):
     # category = models.ForeignKey(Category, on_delete=models.CASCADE)
     syllabus = RichTextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner')
+    codeInvitation = models.CharField(max_length=10, default=NONE, blank=True, null=True)
     enrolled = models.ManyToManyField(User)
     # modules = models.ManyToManyField(Module)
     # questions = models.ManyToManyField(Question)
 
     def __str__(self):
         return self.title    
+    
+class Course_User(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE )
+    course = models.ForeignKey(Course, on_delete=models.CASCADE )

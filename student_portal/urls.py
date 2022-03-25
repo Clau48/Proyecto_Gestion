@@ -25,5 +25,6 @@ urlpatterns = [
     path('', showCourse, name='index'),
     path('<username>', user_profile, name='profile'),
     path('user/', include('authy.urls')),
-    path('course/', include('course.urls'))
+    path('course/', include('course.urls')),
+    path('vaca/', perate, name='vaca')
 ]

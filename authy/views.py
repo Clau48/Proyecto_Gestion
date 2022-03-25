@@ -1,5 +1,7 @@
+from calendar import c
 from django.shortcuts import render, redirect, get_object_or_404
 from authy.forms import SignupForm, EditProfileForm
+from course.forms import InscriptionForm
 from django.contrib.auth.models import User
 
 from django.contrib import messages
@@ -7,7 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 
 from authy.models import Profile
-
+from course.models import Course,Course_User
+from pprint import pprint
+from inspect import getmembers
 
 from django.template import loader
 from django.http import HttpResponse
@@ -83,3 +87,50 @@ def edit_profile(request):
 	}
 
 	return render(request, 'registration/edit_profile.html', context)
+
+@login_required
+def inscription(request):
+	# courses = Course.objects.filter()
+	# foo = 'vaca';
+	# pprint(request.code)
+	# pprint(foo)
+	# data = {
+	# 	'form' : InscriptionForm() 
+	# }
+	# form = Inscription()
+	# mensaje = ''
+	# if request.GET['code']:
+	# 	mensaje = 'Buscaodr: %r' %request.GET['code']
+	# 	courseForm = request.GET['code']
+	# 	# course = Course.objects.get(title='Santuron')
+	# 	course = Course.objects.filter(title__icontrains=courseForm)
+	# 	return render(request,'courses/allCourses.html',{'course':course, 'mensaje':mensaje})
+	# else:
+	# 	mensaje = 'No hay nada'
+	# mensaje = 'Buscaodr: %r' %request.GET['code']
+	# courseForm = request.GET['code']
+	# coursa= Course.objects.get(title='Santuron')
+	# course = Course.objects.filter(title='Santuron')
+	# course_1 = course.Course_User.all()
+	# coursa=Course_User.objects.filter(user=request.user.id)
+	# course = coursa.course_set.all()
+	course = Course.objects.filter(course_user__user=request.user.id)
+	# course = coursa.course_user_set.all()
+	# vaca = 
+	return render(request,'courses/allCourses.html',{'course_inscription':course})
+ 
+	course = request.user.id; 
+	return render(request,'courses/allCourses.html',{})
+@login_required
+def inscriptionProcess(request):
+	mensaje = ''
+	if request.GET['code']:
+		mensaje = 'Buscaodr: %r' %request.GET['code']
+		courseForm = request.GET['code']
+		# course = Course.objects.get(title='Santuron')
+		course = Course.objects.filter(title__icontrains=courseForm)
+		return render(request,'courses/allCourses.html',{'course':course, 'mensaje':mensaje})
+	else:
+		mensaje = 'No hay nada'
+	course = request.user.id;
+	return HttpResponse(course)

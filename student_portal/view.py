@@ -28,3 +28,8 @@ def showCourse(request):
         'courses': courses,
     }
     return render(request,'courses/categories.html',context)
+
+
+def perate(request):
+    return render(request,'courses/allCourses.html',{})
+    

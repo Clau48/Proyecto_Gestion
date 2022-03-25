@@ -1,5 +1,5 @@
 from django.urls import path
-from authy.views import signup, edit_profile
+from authy.views import *
 
 from django.contrib.auth.views import (LoginView, LogoutView)
 
@@ -9,4 +9,6 @@ urlpatterns = [
    	path('signup/', signup, name='signup'),
 	path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
    	path('logout/', LogoutView.as_view(), {'next_page' : 'index'}, name='logout'),
+    path('inscription/', inscription, name='inscription'),
+    path('inscription/process/', inscriptionProcess, name='inscription_process'),
 ]
