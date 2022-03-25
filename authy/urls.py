@@ -1,10 +1,11 @@
 from django.urls import path
 from authy import views
+from .forms import LoginUserForm
 
 from django.contrib.auth.views import (LoginView, LogoutView)
 
 urlpatterns = [
-	path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
+	path('login/', LoginView.as_view(template_name='registration/login.html', authentication_form=LoginUserForm), name='login'),
    	path('logout/', LogoutView.as_view(), {'next_page' : 'index'}, name='logout'),
 
     path('signup/', views.register, name='register'),
