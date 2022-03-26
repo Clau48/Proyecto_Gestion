@@ -16,8 +16,8 @@ class NewCourseForm(forms.ModelForm):
 		fields = ('picture', 'title', 'description', 'day', 'time_start', 'time_end', 'syllabus')
 
 class NewPostForm(forms.ModelForm):
-	title = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Titulo'}), required=True)
-	content = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Contenido'}), required=False)
+	title = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate'}), required=True)
+	content = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate'}), required=False)
 	file = forms.FileField(required=False)
 	class Meta:
 		model = Post

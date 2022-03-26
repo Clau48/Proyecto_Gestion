@@ -16,18 +16,18 @@
     </div>
     <div class="col s3">
       {% if teacher_mode == True %}
-    <a href="{% url 'new-post' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><em class="material-icons">add</em></a>
+    <a href="{% url 'new-post' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><em class="material-icons" style="padding-top: 15px;">add</em></a>
     {% endif %}
     </div></div>
       <div class="accordion" id="accordionExample">
         {% for post in course.posts.all %}
           <div class="yl-cd-cur-accordion yl-headline pera-content ul-li">
-              <div class="yl-cd-cur-accordion-header" id="headingOne">
-                  <button data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" class="collapsed" aria-expanded="false">
+              <div class="yl-cd-cur-accordion-header" id="headingOne-{{ forloop.counter }}">
+                  <button data-toggle="collapse" data-target="#collapseOne-{{ forloop.counter }}" aria-controls="collapseOne-{{ forloop.counter }}" class="collapsed" aria-expanded="false">
                       <h3>{{ post.title }}</h3>
                   </button>
               </div>
-              <div id="collapseOne" class="collapse" data-parent="#accordionExample">
+              <div id="collapseOne-{{ forloop.counter }}" class="collapse" data-parent="#accordionExample">
                   <div class="yl-cd-cur-accordion-body">
                       <ul>
                           <li>
