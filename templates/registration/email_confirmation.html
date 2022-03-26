@@ -1,0 +1,11 @@
+{% autoescape off %}
+
+Bienvenido, {{ user.username }}
+
+¡Estamos muy felices de anunciar que hemos recibido su registro!
+
+Para finalizar su registro, por favor confirme su dirección de correo electrónico haciendo click en el enlace más abajo.
+
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+{% endautoescape %}

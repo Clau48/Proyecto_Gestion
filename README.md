@@ -1,6 +1,6 @@
 ## PROYECTO DE GESTION DE PROYECTOS DE SOFTWARE
 - Curso: Gestion de Proyectos de Software
-- Docente: WIlder, Inga
+- Docente: Wilder, Inga
 - Grupo: 1
 - Ciclo: 2022-0
 

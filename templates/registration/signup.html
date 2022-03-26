@@ -1,29 +1,27 @@
+{% extends 'base.html' %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
-  <title>Starter Template - Materialize</title>
-
-  <!-- CSS  -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% block css %}
   <link href="{% static 'css/materialize.css' %}" type="text/css" rel="stylesheet" media="screen,projection" />
   <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection" />
-</head>
+  <style>
+    .input-field{
+      padding-left: 50px !important;  
+      padding-right: 50px !important;  
+    }
+  </style>
+{% endblock %}
 
-<body>
+{% block content %}
 
-  <div class="row center-align">
-    <div class="col s6 offset-s3">
-      <h4>Fans</h4>
+  <div style="margin:10px !important" class="row text-center d-flex justify-content-center pt-4">
+    <div class="col-6 ">
       <div class="card">
 
         <form method="post" action="" role="form">
           {% csrf_token %}
-          <h3 class="title is-3">Create an account</h3>
+          <h3 class="title is-3">Crear una cuenta</h3>
 
           <div class="input-field col s12">
             {{ form.username }}
@@ -36,8 +34,8 @@
           </div>
 
           <div class="input-field col s12">
-            <input type="password" name="password" id="claveActual" required {{ form.password.value }}>
-            <label for="claveActual">Password</label>
+            {{ form.password1 }}
+            {% comment %} <input type="password" name="password" id="claveActual" required {{ form.password.value }}> {% endcomment %}
           </div>
 
 {% comment %} 
@@ -54,16 +52,14 @@
 
 
           <div class="input-field col s12">
-            {{ form.confirm_password }}
-            {% comment %} <label for="confirm_password">Confirm password</label> {% endcomment %}
+            {{ form.password2 }}
           </div>
 
-          <div class="row">
-            <div class="col s12">
-              <span style="color: red; font-weight: bold;">{{ form.errors }}</span>
-            </div>
+          <div class="col s12">
+            {% for message in messages %}
+              <div style="color: red; font-weight: bold;">{{ message}}</div>
+            {% endfor %}
           </div>
-
           <div class="field">
             <p class="control">
               <button type="submit" name="action" class="btn waves-effect waves-light">
@@ -90,7 +86,4 @@
   <script src="{% static 'js/script.js' %}"></script>
   <script src="{% static 'js/materialize.js' %}"></script>
   <script src="{% static 'js/init.js' %}"></script>
-
-</body>
-
-</html>
+  {% endblock %}

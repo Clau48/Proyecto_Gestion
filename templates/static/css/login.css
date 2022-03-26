@@ -10,16 +10,17 @@ font-family: 'Numans', sans-serif;
 }
 
 .container{
-height: 100%;
-align-content: center;
+    height: 100%;
+    align-content: center;
 }
 
 .card{
-height: 370px;
-margin-top: auto;
-margin-bottom: auto;
-width: 400px;
-background-color: rgba(0,0,0,0.5) !important;
+    height: 370px;
+    height: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 400px;
+    background-color: rgba(0,0,0,0.5) !important;
 }
 
 .social_icon span{
@@ -44,7 +45,8 @@ top: -45px;
 }
 
 .input-group-prepend span{
-width: 50px;
+width: auto;
+font-weight: bold;
 background-color: #FFC312;
 color: black;
 border:0 !important;
@@ -86,4 +88,18 @@ color: white;
 .links a{
 margin-left: 4px;
 color: #FFC312 !important;
+}
+
+
+input{
+    width: 100%;
+    margin-bottom: 20px;
+    height: 40px;
+    color: white !important; 
+    font-size: 16px;
+}
+
+::placeholder { 
+    color: white !important;
+    opacity: 0.5 !important; 
 }
