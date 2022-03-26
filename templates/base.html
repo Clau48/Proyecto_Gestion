@@ -30,10 +30,10 @@
         <li>
         </li>
         <li>
-          <a class="dropdown-trigger" href="#!" data-target="dropdown1">
+          <a class="dropdown-trigger" href="{% url 'inscription' %}" data-target="dropdown1">
             <em class="material-icons left" style="padding-top: 20px;">account_circle</em>
             <span class="hide-on-small-only">{{ user }}</span>
-            <i class="material-icons right">arrow_drop_down</i>
+            {% comment %} <i class="material-icons right">arrow_drop_down</i> {% endcomment %}
           </a>
         </li>
 

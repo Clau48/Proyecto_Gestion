@@ -91,6 +91,13 @@ function ocultar(n) {
   <div id="principal" class="row d-flex justify-content-center" >
     
     <h2>Curso Inscritos</h2>
+    {% if messages %}
+      <div class="alert alert-danger" role="alert">
+        {% for message in messages %}
+          {{ message.message }}      
+        {% endfor %}
+      </div>
+    {% endif %}
     {% for course in course_inscription %}
     <div id='{{ course.id }}' class='col-lg-6 col-sm-8 d-flex justify-content-center p-4'>
         <div>
@@ -102,37 +109,40 @@ function ocultar(n) {
             <img src="https://www.educaciontrespuntocero.com/wp-content/uploads/2020/03/fondo-matematicas_23-2148146270.jpg" alt="">
         </div>
     </div>
-    {% endfor %}             
+    {% endfor %}     
     <p>Consulte los cursos que desee, revise la informacion de los mismos y gestione mejor su tiempo con FISIversity</p>
   </div>
 
 
   <div class="modal fade" id="modal-inscription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
+    <form method='POST' action="{% url 'inscription_process' %}" >
+      {% csrf_token %}
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Completa uno de los campos solicitados</h5>
+          {% comment %} <h5 class="modal-title" id="exampleModalLabel">Completa uno de los campos solicitados</h5> {% endcomment %}
+          <h5 class="modal-title" id="exampleModalLabel">Completa el campo solicitado</h5>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <form>
             <div class="form-group">
               <label for="recipient-name" class="col-form-label">Inserte Codigo:</label>
-              <input type="text" class="form-control" id="recipient-name">
+              <input type="text" name='code_inscription' required maxlength='400' class="form-control" id="recipient-name">
             </div>
-            <div class="form-group">
+            {% comment %} <div class="form-group">
               <label for="message-text" class="col-form-label">Inserte Link:</label>
               <textarea class="form-control" id="message-text"></textarea>
-            </div>
-          </form>
+            </div> {% endcomment %}
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary">Inscribirse</button>
+          <button type="button" style="background-color:red" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Inscribirse</button>
         </div>
       </div>
+    </form>
+
     </div>
   </div>
 {% endblock %}
