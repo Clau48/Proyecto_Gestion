@@ -73,68 +73,27 @@ def edit_profile(request):
 
 @login_required
 def inscription(request):
-	# courses = Course.objects.filter()
-	# foo = 'vaca';
-	# pprint(request.code)
-	# pprint(foo)
-	# data = {
-	# 	'form' : InscriptionForm() 
-	# }
-	# form = Inscription()
-	# mensaje = ''
-	# if request.GET['code']:
-	# 	mensaje = 'Buscaodr: %r' %request.GET['code']
-	# 	courseForm = request.GET['code']
-	# 	# course = Course.objects.get(title='Santuron')
-	# 	course = Course.objects.filter(title__icontrains=courseForm)
-	# 	return render(request,'courses/allCourses.html',{'course':course, 'mensaje':mensaje})
-	# else:
-	# 	mensaje = 'No hay nada'
-	# mensaje = 'Buscaodr: %r' %request.GET['code']
-	# courseForm = request.GET['code']
-	# coursa= Course.objects.get(title='Santuron')
-	# course = Course.objects.filter(title='Santuron')
-	# course_1 = course.Course_User.all()
-	# coursa=Course_User.objects.filter(user=request.user.id)
-	# course = coursa.course_set.all()
 	course = Course.objects.filter(course_user__user=request.user.id)
-	# course = coursa.course_user_set.all()
-	# vaca = 
 	return render(request,'courses/allCourses.html',{'course_inscription':course})
- 
-	course = request.user.id; 
-	return render(request,'courses/allCourses.html',{})
-@login_required
-def inscriptionProcess(request):
-    # if request.method == 'POST':
-    # 		form = InscriptionForm(request.POST)
-	# 	if form.is_valid():
-	# 		course = form.cleaned_data.get('course')
-	# 		course_user = Course_User.objects.create(user=request.user, course=course)
-	# 		return redirect('index')
-	# else:
-     
-	if request.method == 'POST':
-		already_inscription = Course_User.objects.filter(user=request.user.id, course=request.POST['code_inscription'])
-		if already_inscription:
-			messages.error(request, 'Ya estas inscripto en este curso')
-			return redirect('/user/inscription/')
-		else:
-			idCourse = request.POST.get('code_inscription')
-			course = Course.objects.get(id=idCourse)
-			course_user = Course_User.objects.create(user=request.user, course=course)
-			return redirect('/user/inscription/')
 
-	# mensaje = ''
-	# if request.GET['code']:
-	# 	mensaje = 'Buscaodr: %r' %request.GET['code']
-	# 	courseForm = request.GET['code']
-	# 	# course = Course.objects.get(title='Santuron')
-	# 	course = Course.objects.filter(title__icontrains=courseForm)
-	# 	return render(request,'courses/allCourses.html',{'course':course, 'mensaje':mensaje})
-	# else:
-	# 	mensaje = 'No hay nada'
-	# course = request.user.id;
+
+@login_required
+def inscriptionProcess(request):     
+	if request.method == 'POST':
+
+		idInvitationRequest = request.POST.get('code_inscription')
+		try:
+			course = Course.objects.get(codeinvitation=idInvitationRequest)
+			already_inscription = Course_User.objects.filter(user=request.user.id, course=course.id)     
+			if already_inscription:
+				messages.error(request, 'Ya estas inscripto en este curso')
+				return redirect('/user/inscription/')
+			else:  
+				course_user = Course_User.objects.create(user=request.user, course=course)
+				return redirect('/user/inscription/')
+		except :
+			messages.error(request, 'Codigo de invitacion no valido')
+			return redirect('/user/inscription/')
 	
 	return HttpResponse(request.POST['code_inscription'])
 

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cha.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div id="contentd" class="tab-pane fade active show"> 
+    <div class="row" style="margin-bottom: 0px;">
+    <div class="col s9">
+      <div class="cd-curriculam-top clearfix">
+          <h3 class="c-overview-title float-left">Publicaciones </h3>
+      </div>
+    </div>
+    <div class="col s3">
+      {% if teacher_mode == True %}
+    <a href="{% url 'new-post' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><em class="material-icons">add</em></a>
+    {% endif %}
+    </div></div>
+      <div class="accordion" id="accordionExample">
+        {% for post in course.posts.all %}
+          <div class="yl-cd-cur-accordion yl-headline pera-content ul-li">
+              <div class="yl-cd-cur-accordion-header" id="headingOne">
+                  <button data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" class="collapsed" aria-expanded="false">
+                      <h3>{{ post.title }}</h3>
+                  </button>
+              </div>
+              <div id="collapseOne" class="collapse" data-parent="#accordionExample">
+                  <div class="yl-cd-cur-accordion-body">
+                      <ul>
+                          <li>
+                              Titulo del post: {{ post.title }}
+                          </li>
+                          <li>
+                              contenido: {{ post.content}}
+                          </li>
+                          <li>
+                              archivo: <a href="{{ post.file }}" title="file">{{ post.file }}</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+    </div>   
+    </div>
+  </div>
+  
+
+
+
+
+
+{% endblock %}

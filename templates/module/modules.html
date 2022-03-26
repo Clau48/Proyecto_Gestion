@@ -1,0 +1,81 @@
+{% extends 'courses/menucourse.html' %}
+{% load static %}
+
+{% block css %}
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cha.css' %}">
+{% endblock %}
+
+{% block contenido %}
+
+  
+
+  <div id="contentd" class="tab-pane fade active show"> 
+    <div class="row" style="margin-bottom: 0px;">
+    <div class="col s9">
+      <div class="cd-curriculam-top clearfix">
+          <h3 class="c-overview-title float-left">Clases </h3>
+      </div>
+    </div>
+    <div class="col s3">
+      {% if teacher_mode == True %}
+    <a href="{% url 'new-module' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><em class="material-icons">add</em></a>
+    {% endif %}
+    </div></div>
+      <div class="accordion" id="accordionExample">
+        {% for module in course.modules.all %}
+          <div class="yl-cd-cur-accordion yl-headline pera-content ul-li">
+              <div class="yl-cd-cur-accordion-header" id="headingOne">
+                  <button data-toggle="collapse" data-target="#collapseOne" aria-controls="collapseOne" class="collapsed" aria-expanded="false">
+                      <h3>{{ module.title }}</h3>
+                  </button>
+              </div>
+              <div id="collapseOne" class="collapse" data-parent="#accordionExample">
+                  <div class="yl-cd-cur-accordion-body">
+                    {% if teacher_mode == True %}
+                      <a href="{% url 'new-page' course.id module.id %}" class="btn-small"><em class="material-icons">add</em>Agregar nuevo tema</a>
+                      <!--<a href="{% url 'new-assignment' course.id module.id %}" class="btn-small"><em class="material-icons">add</em>Add new assignment</a>-->
+                      <a class="btn red darken-1" href="{% url 'delete-module' course.id module.id %}"><em class="material-icons">delete</em></a>
+                      {% endif %}
+                      <ul>
+                        {% for page in module.pages.all %}
+                          <li>
+                              <a href="{% url 'page-detail' course.id module.id page.id %}"><em class="material-icons">segment</em>{{ page.title }} </a>
+                          </li>
+                        {% endfor %}
+                        {% for quiz in module.quizzes.all %}
+                          <li>
+                              <a href="{% url 'quiz-detail' course.id module.id quiz.id %}"><em class="material-icons">fact_check</em>{{ quiz.title }}
+                                <div class="secondary-content">
+                                  Completed: 
+                                  <em class="material-icons secondary-content">{% if quiz.id in quiz_completions %}check_circle{% else %}panorama_fish_eye{% endif %}</em>                   
+                                </div>
+                              </a>
+                          </li>
+                        {% endfor %}   
+                        {% for assignment in module.assignments.all %}
+                          <li>
+                            <a href="{% url 'assignment-detail' course.id module.id assignment.id %}" class="collection-item"><em class="material-icons">fact_check</em> {{ assignment.title }}
+                              <div class="secondary-content">
+                              Completed: 
+                              <em class="material-icons secondary-content">{% if assignment.id in assignment_completions %}check_circle{% else %}panorama_fish_eye{% endif %}</em>                   
+                              </div>
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+    </div>   
+    </div>
+  </div>
+  
+
+
+
+
+
+{% endblock %}

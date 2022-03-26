@@ -1,0 +1,25 @@
+{% extends 'menucourse.html' %}
+{% load static %}
+
+{% block css %}
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'css/cha.css' %}">
+{% endblock %}
+
+{% block contenido %}
+
+
+  <div id="overview" class="tab-pane fade active show">
+    <div class="course-details-overview yl-headline pera-content">
+        <div class="course-overview-text">
+            <h3 class="c-overview-title">Detalles del curso</h3>
+            <p>{{ course.syllabus | safe }}</p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}

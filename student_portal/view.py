@@ -32,4 +32,3 @@ def showCourse(request):
 
 def perate(request):
     return render(request,'courses/allCourses.html',{})
-    

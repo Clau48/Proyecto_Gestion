@@ -1,7 +1,8 @@
 from pyexpat import model
 from django import forms
-from course.models import Course,Course_User
+from course.models import *
 
+# from ckeditor.widgets import CKEditorWidget
 
 class NewCourseForm(forms.ModelForm):
 	picture = forms.ImageField(required=False)
@@ -25,3 +26,10 @@ class InscriptionForm(forms.ModelForm):
 	class Meta:
 		model = Course
 		fields = ('picture', 'title', 'description', 'day', 'time_start', 'time_end', 'syllabus')
+class NewPostForm(forms.ModelForm):
+	title = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Titulo'}), required=True)
+	content = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Contenido'}), required=False)
+	file = forms.FileField(required=False)
+	class Meta:
+		model = Post
+		fields = ('title', 'content','file')

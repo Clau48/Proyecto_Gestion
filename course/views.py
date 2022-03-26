@@ -4,8 +4,8 @@ from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from course.models import Course
-from course.forms import NewCourseForm
+from course.models import Course, Post
+from course.forms import NewCourseForm, NewPostForm
 
 # Create your views here.
 
@@ -91,3 +91,52 @@ def show_mycourses(request):
         'courses': courses,
     }    
     return render(request, 'courses/mycourses.html', context)
+def showCourse(request):
+    courses = Course.objects.filter()    
+    context = {
+        'courses': courses,
+    }
+    return render(request,'courses/categories.html',context)
+
+
+def NewPost(request, course_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+
+    if user != course.user:
+        return HttpResponseForbidden()
+    else:
+        if request.method == 'POST':
+            form = NewPostForm(request.POST, request.FILES)
+            if form.is_valid():
+                title = form.cleaned_data.get('title')
+                content = form.cleaned_data.get('content')
+                file = form.cleaned_data.get('file')
+                post = Post.objects.create(title=title, content=content, file=file, course_id=course_id)
+                course.posts.add(post)
+                course.save()
+                return redirect('show_posts', course_id=course_id)
+        else:
+            form = NewPostForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'post/newpost.html', context)
+
+def show_posts(request, course_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+    posts = Post.objects.filter(course_id=course_id)
+    teacher_mode = False
+    if user == course.user:
+        teacher_mode = True
+
+    context = {
+        'teacher_mode': teacher_mode,
+        'course': course,
+        'posts': posts
+    }
+
+    return render(request, 'post/posts.html', context)
+

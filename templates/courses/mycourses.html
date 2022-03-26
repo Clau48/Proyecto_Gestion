@@ -45,10 +45,18 @@
                                 </div>-->
                             </div>
                             <div class="blog-text-2">
-                                <div class="blog-meta-2 text-uppercase">
+                                <div class=" text-uppercase">
                                     <!-- <a href="#">(Profesor cordero)</a> -->
                                     <!-- <a href="#">0 comentarios</a> -->
-                                    <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code='{{ course.id }}' style='background-color:#87CEEB'> INVITAR </button>
+                                    <div class="row d-flex">
+                                        <div class='col-6 d-flex justify-content-start'>
+                                            <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code='{{ course.codeinvitation }}' style='background-color:#87CEEB'> INVITAR </button>
+                                        </div>
+                                        <div class='col-6 d-flex justify-content-end'>
+                                            <a href="{% url 'show_posts' course.id  %}" class="btn btn-success" style='background-color:green;color:white'><i class="material-icons">note_add</i></a> 
+                                        </div>
+
+                                    </div>
                                 </div>
                                 <div class="blog-title-text-2">
                                     <h3><a href="#"> {{ course.title }} </a>
