@@ -21,9 +21,8 @@ from authy.views import user_profile
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('courses/', showCourse, name='show_courses'),
-    path('', showCourse, name='index'),
     path('<username>', user_profile, name='profile'),
+    path('', index,name='index'),
     path('user/', include('authy.urls')),
-    path('course/', include('course.urls'))
+    path('courses/', include('course.urls'))
 ]

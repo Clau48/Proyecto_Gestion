@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
         
 {% block content %}
 
@@ -15,19 +14,16 @@
 
           <div class="input-field col s12">
             {{ form.title }}
-            <label for="title">Título</label>
           </div>
 
           <div class="input-field col s12">
-            {{ form.content }}
-            <l>
-            <label for="content">Descripción</label>            
+            {{ form.content }}         
           </div>
 
           <div class="file-field input-field col s12">
             <div class="btn">
               <span>Archivos</span>
-              {{ form.files }}
+              {{ form.file }}
             </div>
             <div class="file-path-wrapper">
               <input class="file-path validate" type="text" placeholder="Upload one or more files">

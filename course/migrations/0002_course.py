@@ -5,7 +5,6 @@ import course.models
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import uuid
 
 
 class Migration(migrations.Migration):
@@ -19,8 +18,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Course',
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('picture', models.ImageField(upload_to=course.models.user_directory_path)),
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('picture', models.ImageField(upload_to=course.models.course_storage_path)),
                 ('title', models.CharField(max_length=200)),
                 ('description', models.CharField(max_length=300)),
                 ('day', models.CharField(choices=[('LU', 'Lunes'), ('MA', 'Martes'), ('MI', 'Miércoles'), ('JU', 'Jueves'), ('VI', 'Viernes'), ('SA', 'Sábado'), ('DO', 'Domingo')], default='LU', max_length=2)),

@@ -13,9 +13,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
 
 load_dotenv()
 
@@ -44,8 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
-    'cloudinary',
     'course',
     'authy',
 ]
@@ -135,20 +130,8 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# CLOUDINARY_STORAGE = {
-#   'CLOUD_NAME': 'dtu4ilnow', 
-#   'API_KEY' : '994557733581529', 
-#   'API_SECRET' :'QFp0RHxg3vVCgF7yd6y9MFhEQzY' 
-# }
-
-cloudinary.config( 
-  cloud_name = "dtu4ilnow", 
-  api_key = "994557733581529", 
-  api_secret = "QFp0RHxg3vVCgF7yd6y9MFhEQzY" 
-)
 
 #Login
 LOGIN_REDIRECT_URL = 'index'

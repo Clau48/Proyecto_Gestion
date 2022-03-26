@@ -1,8 +1,6 @@
 from django import forms
-from course.models import Course, Post
-from cloudinary.forms import CloudinaryFileField
 from ckeditor.widgets import CKEditorWidget
-
+from course.models import Course, Post
 
 class NewCourseForm(forms.ModelForm):
 	picture = forms.ImageField(required=False)
@@ -19,8 +17,8 @@ class NewCourseForm(forms.ModelForm):
 
 class NewPostForm(forms.ModelForm):
 	title = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Titulo'}), required=True)
-	description = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Descripcion'}), required=True)
-	file = CloudinaryFileField(options={'folder' : 'media/courses/posts/'})
+	content = forms.CharField(widget=forms.TextInput(attrs={'class': 'validate','placeholder':'Contenido'}), required=False)
+	file = forms.FileField(required=False)
 	class Meta:
 		model = Post
-		fields = ('title', 'description','file')
+		fields = ('title', 'content','file')

@@ -21,10 +21,3 @@ def despedida(request):
     
     # # doc_externo = open("/home/jose/Documentos/hola.txt", "r")
     return render(request,'courses/allCourses.html',{})
-
-def showCourse(request):
-    courses = Course.objects.filter()    
-    context = {
-        'courses': courses,
-    }
-    return render(request,'courses/categories.html',context)
