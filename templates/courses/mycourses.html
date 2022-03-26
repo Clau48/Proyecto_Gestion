@@ -3,8 +3,14 @@
 {% load static %}    
 
 {% block css %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> {% endcomment %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/categories.css' %}">
+    <style>
+        .modal{
+            background-color:transparent !important;
+            box-shadow:none !important;
+        }
+        </style>
 {% endblock %}
 
 
@@ -42,6 +48,7 @@
                                 <div class="blog-meta-2 text-uppercase">
                                     <!-- <a href="#">(Profesor cordero)</a> -->
                                     <!-- <a href="#">0 comentarios</a> -->
+                                    <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code='{{ course.id }}' style='background-color:#87CEEB'> INVITAR </button>
                                 </div>
                                 <div class="blog-title-text-2">
                                     <h3><a href="#"> {{ course.title }} </a>
@@ -63,11 +70,48 @@
     </section>
 </main>
 
+{% comment %} popup {% endcomment %}
+
+
+<div class="modal fade" id="modal-inscription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          {% comment %} <h5 class="modal-title" id="exampleModalLabel">Completa uno de los campos solicitados</h5> {% endcomment %}
+          <h5 class="modal-title" id="exampleModalLabel">Codigo de invitación</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Código:</label>
+              <input placeholder='Sin codigo de invitacion' type="text" id='input-code' disabled name='code_inscription' required maxlength='400' class="form-control input-copy-code" id="recipient-name">
+              {% comment %} <button class='btn-copiador'><i class="material-icons">content_copy</i></button>  {% endcomment %}
+            </div>
+            {% comment %} <div class="form-group">
+              <label for="message-text" class="col-form-label">Inserte Link:</label>
+              <textarea class="form-control" id="message-text"></textarea>
+            </div> {% endcomment %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color:green" class="btn btn-success" data-bs-dismiss="modal">De acuerdo</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 {% endblock %}
 
+{% block javascript %}
 
-
-
-
-
-
+<script>
+    $('.btn-send-code').click(function(){
+        let code = $(this).data('code');
+        $('#input-code').val(code);
+    });    
+    
+</script>      
+ 
+{% endblock %}
