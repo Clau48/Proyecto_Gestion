@@ -106,7 +106,11 @@ function ocultar(n) {
                     {{ course.title }}
                   </div>                
             </li>
-            <img src="https://www.educaciontrespuntocero.com/wp-content/uploads/2020/03/fondo-matematicas_23-2148146270.jpg" alt="">
+            {% if course.picture is not null %}
+            <img src="{{course.picture.url}}" alt="blog-img-2" class="img-fluid">
+            {% else %}
+            <img src="https://wallpaperboat.com/wp-content/uploads/2020/09/14/54601/books-01.jpg" alt="blog-img-2" class="img-fluid">
+            {% endif %}            
         </div>
     </div>
     {% endfor %}     
