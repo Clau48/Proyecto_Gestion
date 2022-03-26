@@ -12,6 +12,8 @@ from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
 from .utils import send_email_confirmation
 
+from course.models import Course
+
 # Create your tests here.
 
 class ProfileTestCase(TestCase):
@@ -85,3 +87,28 @@ class ProfileTestCase(TestCase):
 		user = authenticate(username='luiggi', password='luiggi')
 		send_email = send_email_confirmation(req, user)
 		self.assertEqual(send_email, 1)
+
+class CourseTestCase(TestCase):      
+
+	def setUp(self):
+		self.factory = RequestFactory()
+		self.user = User.objects.create_user(username='luiggi',
+											 email='luiggi.pasache.lopera@gmail.com',
+											 password='luiggi',
+											 )
+
+	def test_course_create(self):
+		user = authenticate(username='luiggi', password='luiggi')
+		course = Course.objects.create(title='test_course',time_start='08:00:00',time_end='09:00:00',syllabus='Sin silabo',user=user)
+		course.save()
+		assert course
+  
+	def test_course_get(self):
+		user = authenticate(username='luiggi', password='luiggi')
+		Course.objects.create(title='test_course1',time_start='08:00:00',time_end='09:00:00',syllabus='Sin silabo',user=user)
+		Course.objects.create(title='test_course2',time_start='08:00:00',time_end='09:00:00',syllabus='Sin silabo',user=user)
+		Course.objects.create(title='test_course3',time_start='08:00:00',time_end='09:00:00',syllabus='Sin silabo',user=user)
+		course = Course.objects.all()
+		assert course
+		
+  		
