@@ -8,7 +8,7 @@ from django.core.handlers.wsgi import WSGIRequest
 from io import BytesIO
 from django.http.request import QueryDict
 from django.middleware.csrf import get_token
-from .views import side_nav_info, signup, edit_profile  
+from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
 from .utils import send_email_confirmation
 
@@ -44,7 +44,7 @@ class ProfileTestCase(TestCase):
 		q.update(info)
 		req.POST = q
 		req.user = user
-		signup(req)
+		register(req)
 		user = User.objects.get(username='test_user')
 		assert user
 
