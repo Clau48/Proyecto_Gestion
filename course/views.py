@@ -85,3 +85,9 @@ def ValidateTime(request, time_start, time_end):
 
     return confirmation
 
+def show_mycourses(request):
+    courses = Course.objects.filter(user=request.user)    
+    context = {
+        'courses': courses,
+    }    
+    return render(request, 'courses/mycourses.html', context)
