@@ -1,1 +1,1 @@
-web: gunicorn miSitio.wsgi
+web: gunicorn student_portal.wsgi
