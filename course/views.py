@@ -1,10 +1,11 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from course.models import Course, Post
+from course.models import Course, Post, Course_User
 from course.forms import NewCourseForm, NewPostForm
 
 # Create your views here.
@@ -141,3 +142,15 @@ def show_posts(request, course_id):
 
     return render(request, 'post/posts.html', context)
 
+def show_course_description(request, course_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+    is_registered = Course_User.objects.filter(course=course_id, user=user.id).all()
+
+    context = {
+        'course': course,
+        'user': user,
+        'is_registered': is_registered
+    }
+
+    return render(request, 'courses/course.html', context)

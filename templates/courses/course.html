@@ -15,9 +15,17 @@
         <div class="course-details-tab-wrapper">
             <div class="course-details-tab-btn clearfix ul-li">
                 <ul id="tabs" class="nav text-uppercase nav-tabs">
-                    <!--descripcion para todos--><li class="nav-item"><a href="#" data-target="#overview" data-toggle="tab" class="nav-link text-capitalize show active">Descripción </a></li>
-                    <!--redirecciona a interfaz "posts" si está matriculado en el curso--><li class="nav-item"><a href="#" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize">Contenido  </a></li>
-                    <!--redirecciona a interfaz "tareas" si está matriculado en el curso--><li class="nav-item"><a href="#" data-target="#instructor" data-toggle="tab" class="nav-link text-capitalize">Tareas</a></li>
+                    <!--descripcion para todos-->
+                    <li class="nav-item"><a href="{% url 'show_description' course.id %}" data-target="#overview" data-toggle="tab" class="nav-link text-capitalize show active">Descripción </a></li>
+                    {% if is_registered %}
+                    <!--redirecciona a interfaz "posts" si está matriculado en el curso-->
+                    <li class="nav-item"><a href="{% url 'show_posts' course.id %}" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize">Contenido  </a></li>
+                    <!--redirecciona a interfaz "tareas" si está matriculado en el curso-->
+                    <li class="nav-item"><a href="#" data-target="#instructor" data-toggle="tab" class="nav-link text-capitalize">Tareas</a></li>
+                    {% else %}
+                    <li class="nav-item"><a href="#" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize disabled">Contenido  </a></li>
+                    <li class="nav-item"><a href="#" data-target="#instructor" data-toggle="tab" class="nav-link text-capitalize disabled">Tareas</a></li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="course-details-tab-content-wrap">
@@ -28,18 +36,19 @@
                                 <div class="col-lg-9">
                                     <div class="descripcion">
                                         <div class="descripcion-texto yl-headline pera-content">
+                                            <h1>{{course.title}}</h1>
+                                            <br>
                                             <h3>Descripción del curso</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                            </p>
+                                            <p>{{course.description}}</p>
                                             <h3 class="cuadro-titulo">Docente</h3>
                                             <div class="cuadro-item">
                                                 <div class="item-interior">
                                                     <div class="titulo-interior"><i class="material-icons">person</i> Nombre:</div>
-                                                    <span>Nombre Apellido1 Apellido2</span>
+                                                    <span>{{course.user.name}}</span>
                                                 </div>
                                                 <div class="item-interior">
                                                     <div class="titulo-interior"><i class="material-icons">email</i> Email:</div>
-                                                    <span>nombre@dominio.com</span>
+                                                    <span>{{course.user.email}}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -57,11 +66,13 @@
                                             </div>
                                             <div class="item-interior">
                                                 <div class="titulo-interior"><i class="material-icons">access_time</i> Horario:</div>
-                                                <span>08:00am - 12:00pm</span>
+                                                {% comment %} <span>08:00am - 12:00pm</span> {% endcomment %}
+                                                <span>{{course.time_start}} - {{course.time_end}}</span>
                                             </div>
                                             <div class="item-interior">
                                                 <div class="titulo-interior"><i class="material-icons">date_range</i> Dia:</div>
-                                                <span>Lunes y Miercoles</span>
+                                                {% comment %} <span>Lunes y Miercoles</span> {% endcomment %}
+                                                <span>{{course.day}}</span>
                                             </div>
                                         </div>
                                         <a class="ed-book-btn text-center" href="#">Inscríbete</a>
