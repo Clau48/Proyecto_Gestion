@@ -1,5 +1,126 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap");
 
+body{
+    background-color: #f2f2f4;
+}
+
+.container {
+    max-width: 1200px;
+}
+
+.descripcion {
+    background-color: #fff;
+    margin-bottom: 30px;
+    border-radius: 5px;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+}
+
+.yl-event-sidebar{
+    border-radius: 5px;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) !important;
+}
+
+.descripcion .descripcion-texto {
+    padding: 40px 40px 10px 40px;
+}
+
+.yl-headline h1, .yl-headline h2, .yl-headline h3, .yl-headline h4, .yl-headline h5, .yl-headline h6 {
+    margin: 0;
+    font-family: "Fira Sans";
+}
+
+.descripcion .descripcion-texto h3 {
+    color: #000;
+    font-size: 24px;
+    font-weight: 700;
+    padding-bottom: 15px;
+}
+
+.pera-content p {
+    margin-bottom: 0;
+}
+
+.descripcion .descripcion-texto p {
+    padding-bottom: 30px;
+}
+
+.cuadro {
+    padding: 35px;
+    border-radius: 5px;
+    margin-bottom: 40px;
+    background-color: #fff;
+}
+
+.cuadro .cuadro-titulo {
+    color: #000000;
+    font-size: 20px;
+    font-weight: 700;
+    padding-bottom: 20px;
+}
+
+.cuadro .item-interior, .descripcion-texto .item-interior  {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eef1fe;
+}
+
+.cuadro .item-interior .titulo-interior, .descripcion-texto .item-interior .titulo-interior {
+    color: #000;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.cuadro .item-interior .titulo-interior i, .descripcion-texto .item-interior .titulo-interior i {
+    color: #ff5520;
+    margin-right: 8px;
+}
+
+.date_range:before {
+    content: "\f073";
+}
+
+.fa, .fas, .far, .fal, .fab {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+}
+
+.fa, .fas {
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+}
+
+.fa-clock:before {
+    content: "\f017";
+}
+
+.fa-envelope:before {
+    content: "\f0e0";
+}
+
+.cuadro .ed-book-btn {
+    width: 100%;
+    color: #fff;
+    height: 45px;
+    margin-top: 20px;
+    font-weight: 700;
+    line-height: 45px;
+    border-radius: 4px;
+    display: inline-block;
+    background-color: #0000fe;
+}
+
+.cuadro .ed-book-btn:hover {
+    text-decoration: none;
+    background-color: #0000feeb;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700;800;900&family=Roboto:wght@400;500;700;900&display=swap");
+
 .course-details-tab-area {
     background-color: #fff;
 }
@@ -14,7 +135,7 @@
 }}
 
 .course-details-tab-btn {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     background-color: #f2f2f4;
 }
 
@@ -103,11 +224,7 @@ a {
 
 .course-details-tab-btn .nav-tabs .nav-link.active {
     background-color: #ff5520;
-    color: #fff !important;
-}
-
-.nav-link:focus, .nav-link:hover{
-    color:black !important;
+    color: #fff;
 }
 
 .form-control:focus, button:visited, button.active, button:hover, button:focus, input:visited, input.active, input:hover, input:focus, textarea:hover, textarea:focus, a:hover, a:focus, a:visited, a.active, select, select:hover, select:focus, select:visited {

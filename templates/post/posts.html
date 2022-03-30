@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block content %}
+<!-- VERIFICAR QUE FUNCIONA EL CODIGO DE ABAJO Y SI FUNCIONA ENTONCES ELIMINAR ESTE CODIGO COMENTADO
   <div id="contentd" class="tab-pane fade active show"> 
     <div class="row" style="margin-bottom: 0px;">
     <div class="col s9">
@@ -48,10 +49,70 @@
     </div>   
     </div>
   </div>
-  
+  -->
 
-
+  <div class="course-details-tab-area">
+    <div class="course-details-tab-wrapper">
+      <div class="course-details-tab-btn clearfix ul-li">
+        <ul id="tabs" class="nav text-uppercase nav-tabs">
+            <!--descripcion para todos--><li class="nav-item"><a href="#" data-target="#overview"  class="nav-link text-capitalize">Descripción </a></li>
+            <!--redirecciona a interfaz "posts" si está matriculado en el curso--><li class="nav-item"><a href="#" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize  show active">Contenido  </a></li>
+            <!--redirecciona a interfaz "tareas" si está matriculado en el curso--><li class="nav-item"><a href="#" data-target="#instructor"  class="nav-link text-capitalize">Tareas</a></li>
+        </ul>
+      </div>
+      <div class="course-details-tab-content-wrap">
+        <div id="tabsContent" class="tab-content">
+          <div id="contentd" class="tab-pane fade active show"> 
+            <div class="row" style="margin-bottom: 0px;">
+              <div class="col s9">
+                <div class="cd-curriculam-top clearfix">
+                    <h3 class="c-overview-title float-left">Publicaciones </h3>
+                </div>
+              </div>
+              <div class="col s3">
+                  {% if teacher_mode == True %}
+                <a href="{% url 'new-post' course.id %}" class="btn-small right"><em class="material-icons">add</em>Agregar publicación</a>
+                {% endif %}
+                </div></div>
+                <div class="accordion" id="accordionExample">
+                  {% for post in course.posts.all %}
+                    <div class="yl-cd-cur-accordion yl-headline pera-content ul-li">
+                      <div class="yl-cd-cur-accordion-header" id="headingOne-{{ forloop.counter }}">
+                          <button data-toggle="collapse" data-target="#collapseOne-{{ forloop.counter }}" aria-controls="collapseOne-{{ forloop.counter }}" class="collapsed" aria-expanded="false">
+                              <h3>{{ post.title }}</h3>
+                          </button>
+                      </div>
+                      <div id="collapseOne-{{ forloop.counter }}" class="collapse" data-parent="#accordionExample">
+                        <div class="yl-cd-cur-accordion-body">
+                          <ul>
+                            <li>
+                                Titulo del post: {{ post.title }}
+                            </li>
+                            <li>
+                                Contenido: {{ post.content}}
+                            </li>
+                            <li>
+                                Archivo: <a target='_blank' href="{{ post.file.url }}" title="file">  <i class="material-icons">file_download</i>Descargar</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>   
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
 {% endblock %}
+
+
+
+
+
