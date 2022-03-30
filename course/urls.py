@@ -9,4 +9,5 @@ urlpatterns = [
 	path('mycourses/', show_mycourses, name='mycourses'),
 	path('<course_id>/posts', show_posts, name='show_posts'),
 	path('<course_id>/posts/newpost', NewPost, name='new-post'),
+	path('<course_id>/', show_course_description, name='show_description')
 ]
