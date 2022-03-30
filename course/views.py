@@ -91,6 +91,7 @@ def show_mycourses(request):
         'courses': courses,
     }    
     return render(request, 'courses/mycourses.html', context)
+
 def showCourse(request):
     courses = Course.objects.filter()    
     context = {
