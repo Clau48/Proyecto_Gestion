@@ -78,3 +78,27 @@ class Post(models.Model):
     file = models.FileField(upload_to=post_storage_path, null=True, blank=True)
     def get_storage_path(self):
         return f'{self.course.get_storage_path()}/posts/{self.pk}'
+		
+class Assignment(Post):
+    due_datetime = models.DateTimeField()
+
+def homework_storage_path(instance, filename):
+    id = len(Homework.objects.filter(assignment=instance.assignment)) + 1
+    return f'{instance.assignment.get_storage_path()}/homeworks/{id}/{filename}'
+
+class Homework(models.Model):
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='homeworks')
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='homeworks')
+    turn_in_timestamp = models.DateTimeField(auto_now=True)
+    grade = models.IntegerField(
+        validators=[
+            validators.MaxValueValidator(20),
+            validators.MinValueValidator(0)
+        ],
+        default = 0
+    )
+    file = models.FileField(upload_to=homework_storage_path, null=True, blank=True)
+    # weight
+
+    def get_storage_path(self):
+        return f'{self.assignment.get_storage_path()}/homeworks/{self.pk}'
