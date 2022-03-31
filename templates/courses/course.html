@@ -17,7 +17,7 @@
                 <ul id="tabs" class="nav text-uppercase nav-tabs">
                     <!--descripcion para todos-->
                     <li class="nav-item"><a href="{% url 'show_description' course.id %}" data-target="#overview" data-toggle="tab" class="nav-link text-capitalize show active">Descripción </a></li>
-                    {% if is_registered %}
+                    {% if is_registered or is_owner %}
                         <!--redirecciona a interfaz "posts" si está matriculado en el curso-->
                         <li class="nav-item"><a href="{% url 'show_posts' course.id %}" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize">Contenido  </a></li>
                         <!--redirecciona a interfaz "tareas" si está matriculado en el curso-->
@@ -75,7 +75,13 @@
                                                 <span>{{course.day}}</span>
                                             </div>
                                         </div>
-                                        <a class="ed-book-btn text-center" href="#">Inscríbete</a>
+                                        {% if is_owner or is_registered %}
+                                        {% comment %} agregar boton para desuscribirse {% endcomment %}
+                                        {% else %}
+                                            <a class="ed-book-btn text-center" href="#">
+                                            Inscríbete
+                                            </a>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 </div>

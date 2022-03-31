@@ -94,7 +94,8 @@ def ValidateTime(request, time_start, time_end):
 
 def show_mycourses(request):
 	courses = Course.objects.filter(user=request.user)    
-	# users_in_courses = Course_User.objects.filter() TODO: ver si esto sirve para mostrar alumnos de curso
+	# users_in_courses = Course_User.objects.filter()
+	# TODO: ver si esto sirve para mostrar alumnos de curso
 	context = {
 		'courses': courses,
 	}    
@@ -153,11 +154,15 @@ def show_course_description(request, course_id):
 	user = request.user
 	course = get_object_or_404(Course, id=course_id)
 	is_registered = Course_User.objects.filter(course=course_id, user=user.id).all()
+	is_owner = (user == course.user)
+	
+	print(is_owner)
 
 	context = {
 		'course': course,
 		'user': user,
-		'is_registered': is_registered
+		'is_registered': is_registered,
+		'is_owner': is_owner
 	}
 
 	return render(request, 'courses/course.html', context)
@@ -203,6 +208,7 @@ def usersInCourse(request, course_id):
 		data.append(user_dict)
 	return JsonResponse({'users': data})
 
+@login_required
 def inscriptionLink(request, codeInvitation):
 	try:
 		course = Course.objects.get(codeinvitation=codeInvitation)
