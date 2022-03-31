@@ -18,13 +18,13 @@
                     <!--descripcion para todos-->
                     <li class="nav-item"><a href="{% url 'show_description' course.id %}" data-target="#overview" data-toggle="tab" class="nav-link text-capitalize show active">Descripción </a></li>
                     {% if is_registered %}
-                    <!--redirecciona a interfaz "posts" si está matriculado en el curso-->
-                    <li class="nav-item"><a href="{% url 'show_posts' course.id %}" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize">Contenido  </a></li>
-                    <!--redirecciona a interfaz "tareas" si está matriculado en el curso-->
-                    <li class="nav-item"><a href="#" data-target="#instructor" data-toggle="tab" class="nav-link text-capitalize">Tareas</a></li>
+                        <!--redirecciona a interfaz "posts" si está matriculado en el curso-->
+                        <li class="nav-item"><a href="{% url 'show_posts' course.id %}" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize">Contenido  </a></li>
+                        <!--redirecciona a interfaz "tareas" si está matriculado en el curso-->
+                        <li class="nav-item"><a href="#" data-target="#instructor" data-toggle="tab" class="nav-link text-capitalize">Tareas</a></li>
                     {% else %}
-                    <li class="nav-item"><a href="#" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize disabled">Contenido  </a></li>
-                    <li class="nav-item"><a href="#" data-target="#instructor" data-toggle="tab" class="nav-link text-capitalize disabled">Tareas</a></li>
+                        <li class="nav-item"><a href="#" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize disabled">Contenido  </a></li>
+                        <li class="nav-item"><a href="#" data-target="#instructor" data-toggle="tab" class="nav-link text-capitalize disabled">Tareas</a></li>
                     {% endif %}
                 </ul>
             </div>

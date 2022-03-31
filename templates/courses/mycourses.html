@@ -54,7 +54,7 @@
                                     <!-- <a href="#">0 comentarios</a> -->
                                     <div class="row d-flex">
                                         <div class='col-6 d-flex justify-content-start'>
-                                            <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code='{{ course.codeinvitation }}' style='background-color:#87CEEB'> INVITAR </button>
+                                            <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code='{{ course.codeinvitation }}' data-courseid='{{ course.id }}' style='background-color:#87CEEB'> INVITAR </button>
                                         </div>
                                         <div class='col-6 d-flex justify-content-end'>
                                             <a href="{% url 'show_posts' course.id  %}" class="btn btn-success" style='background-color:green;color:white'><i class="material-icons">note_add</i></a> 
@@ -101,6 +101,15 @@
               <input placeholder='Sin codigo de invitacion' type="text" id='input-code' disabled name='code_inscription' required maxlength='400' class="form-control input-copy-code" id="recipient-name">
               {% comment %} <button class='btn-copiador'><i class="material-icons">content_copy</i></button>  {% endcomment %}
             </div>
+             
+            <form id='form-email' method="POST" action="{% url 'send_inscription' 1 %}">
+                {% csrf_token %}
+                <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Enviar correo:</label>
+                <input placeholder='ejemplo@ejemplo.com' type="text" id='input-email' name='to_email' required maxlength='400' class="d-inline form-control input-copy-code" id="recipient-name">
+                <button class="d-inline">Enviar correo</button>
+                </div>
+            </form>
             {% comment %} <div class="form-group">
               <label for="message-text" class="col-form-label">Inserte Link:</label>
               <textarea class="form-control" id="message-text"></textarea>
@@ -110,6 +119,7 @@
           <button type="button" style="background-color:green" class="btn btn-success" data-bs-dismiss="modal">De acuerdo</button>
         </div>
       </div>
+
 
     </div>
   </div>
@@ -122,8 +132,29 @@
     $('.btn-send-code').click(function(){
         let code = $(this).data('code');
         $('#input-code').val(code);
-    });    
-    
+
+        $('#form-email').attr('action', document.location.origin + '/course/' + $(this).data('courseid') + '/send_invitation')
+
+        $("#form-email").submit(function(e) {
+
+            e.preventDefault();
+
+            var form = $(this);
+            var actionUrl = form.attr('action');
+            
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(),
+                success: function(data) {
+                    alert(data);
+                }
+            });
+
+        });
+        
+
+    });
 </script>      
  
 {% endblock %}
