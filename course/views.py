@@ -167,6 +167,18 @@ def show_course_description(request, course_id):
 
 	return render(request, 'courses/course.html', context)
 
+def send_link_course(user, current_site, course, to_email):
+	subject = 'Invitación a curso'
+	html_message = render_to_string("courses/email_invitation.html", {
+		"domain": current_site.domain,
+		"user": user,
+		"course": course,
+		"codeInvitation": str(course.codeinvitation)
+	},)
+	from_email = user.email
+	plain_message = strip_tags(html_message)
+	send_mail(subject, plain_message, from_email , [to_email], html_message=html_message)
+
 @login_required
 def sendInscriptionLink(request, course_id):
 	if request.method == 'POST':
@@ -174,18 +186,9 @@ def sendInscriptionLink(request, course_id):
 		if to_email:
 			user_owner =  request.user
 			current_site = get_current_site(request)
-			from_email = user_owner.email
 			course = Course.objects.get(id=course_id)
 			
-			subject = 'Correo de prueba'
-			html_message = render_to_string("courses/email_invitation.html", {
-				"domain": current_site.domain,
-				"user": user_owner,
-				"course": course,
-				"codeInvitation": str(course.codeinvitation)
-			},)
-			plain_message = strip_tags(html_message)
-			send_mail(subject, plain_message, from_email , [to_email], html_message=html_message)
+			send_link_course(user_owner, current_site, course, to_email)
 
 			return HttpResponse('Correo enviado a ' + to_email)
 		else:
