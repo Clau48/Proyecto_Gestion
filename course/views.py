@@ -11,11 +11,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 
-# TODO: Agregar permisos necesarios
-
 # Create your views here.
-from django.views.decorators.csrf import csrf_exempt
-
 @login_required
 def index(request):
 	user = request.user
@@ -48,6 +44,7 @@ def fill_array(u_courses, times):
 				u_courses[i].append(None)
 			j += 1
  
+@login_required
 def new_course(request):
 	user = request.user
 	if request.method == 'POST':
@@ -92,10 +89,10 @@ def ValidateTime(request, time_start, time_end):
 
 	return confirmation
 
+@login_required
 def show_mycourses(request):
 	courses = Course.objects.filter(user=request.user)    
-	# users_in_courses = Course_User.objects.filter()
-	# TODO: ver si esto sirve para mostrar alumnos de curso
+
 	context = {
 		'courses': courses,
 	}    
@@ -109,6 +106,7 @@ def showCourse(request):
 	return render(request,'courses/categories.html',context)
 
 
+@login_required
 def NewPost(request, course_id):
 	user = request.user
 	course = get_object_or_404(Course, id=course_id)
@@ -134,6 +132,7 @@ def NewPost(request, course_id):
 	}
 	return render(request, 'post/newpost.html', context)
 
+@login_required
 def show_posts(request, course_id):
 	user = request.user
 	course = get_object_or_404(Course, id=course_id)
@@ -150,6 +149,7 @@ def show_posts(request, course_id):
 
 	return render(request, 'post/posts.html', context)
 
+@login_required
 def show_course_description(request, course_id):
 	user = request.user
 	course = get_object_or_404(Course, id=course_id)
@@ -167,6 +167,7 @@ def show_course_description(request, course_id):
 
 	return render(request, 'courses/course.html', context)
 
+@login_required
 def sendInscriptionLink(request, course_id):
 	if request.method == 'POST':
 		to_email = request.POST.get('to_email')
@@ -190,12 +191,7 @@ def sendInscriptionLink(request, course_id):
 		else:
 			return HTTPError('Email vacio')
 
-# TODO: agregar view get para mostrar todos los usuarios que estan inscritos a un curso
-# Ayuda: Course_User.objects.filter(course=course.id) 
-def getCourseUser2(request, course_id):
-	users = Course_User.objects.filter(course=course_id)
-	return render(request, 'mostrar_personas.html', {'users': users}) # mostrar personas no existe
-
+@login_required
 def usersInCourse(request, course_id):
 	users_query = Course_User.objects.filter(course=course_id).all()
 	data = []
