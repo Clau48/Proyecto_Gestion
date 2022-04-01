@@ -194,7 +194,6 @@ def sendInscriptionLink(request, course_id):
 		else:
 			return HTTPError('Email vacio')
 
-@login_required
 def usersInCourse(request, course_id):
 	users_query = Course_User.objects.filter(course=course_id).all()
 	data = []

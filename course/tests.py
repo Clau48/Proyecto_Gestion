@@ -13,7 +13,7 @@ from django.middleware.csrf import get_token
 from course.models import Course, Post, Course_User
 # from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
-from .views import send_link_course
+from .views import send_link_course, usersInCourse
 import uuid
 
 class CourseTestCase(TestCase):
@@ -33,3 +33,7 @@ class CourseTestCase(TestCase):
         result = send_link_course(user_owner, 'http://localhost:8000/', course, to_email)
 
         self.assertEqual(result, 1)
+
+    def test_usersInCourse(self):
+        request = HttpRequest()
+        assert usersInCourse(request, self.course.id)
