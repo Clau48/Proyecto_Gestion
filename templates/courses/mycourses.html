@@ -109,7 +109,7 @@
                     <label for="recipient-name" class="col-form-label">Enviar correo:</label>
                     <div class="form-group row">
                         <input placeholder='ejemplo@ejemplo.com' type="text" id='input-email' name='to_email' required maxlength='400' class="col form-control" id="recipient-name">
-                        <button type="submit" class="btn btn-primary col">
+                        <button id="send-form-email" type="submit" class="btn btn-primary col">
                             <em class="material-icons" style="padding-top: 10px;">mail</em>
                         </button>
                     </div>
@@ -154,13 +154,24 @@
 {% block javascript %}
 
 <script>
+
+    $("body").on("submit", "form", function() {
+        $(this).submit(function() {
+            return false;
+        });
+        return true;
+    });
+
     $('.btn-send-code').click(function(){
+
+
         let code = $(this).data('code');
         $('#input-code').val(code);
 
         $('#form-email').attr('action', document.location.origin + '/course/' + $(this).data('courseid') + '/send_invitation')
 
         $("#form-email").submit(function(e) {
+            $('#send-form-email').attr('disabled',true);
 
             e.preventDefault();
 
@@ -173,6 +184,7 @@
                 data: form.serialize(),
                 success: function(data) {
                     alert(data);
+                    $("#send-form-email").attr('disabled', false);
                 }
             });
 
@@ -181,12 +193,8 @@
 
     });
 
-{% comment %} <div id="input-user"></div> {% endcomment %}
-{% comment %}
-<input placeholder='usuario1' type="text" disabled name='code_inscription' required maxlength='400' class="form-control input-copy-code" id="recipient-name">
-{% endcomment %}
-
     $('#btn-course-users').click(function(){
+
         let courseCode = $(this).data('courseid');
         let url = document.location.origin + '/course/' + courseCode + '/users/';
 
@@ -201,8 +209,8 @@
 
             $('#input-user').html(inner)
         });
-        
+    
     });
-</script>      
+</script>
  
 {% endblock %}
