@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 import uuid
+from django.core import validators
 
 def user_directory_path(instance, filename):
     # THis file will be uploaded to MEDIA_ROOT /the user_(id)/the file
@@ -90,6 +91,8 @@ class Homework(models.Model):
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='homeworks')
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='homeworks')
     turn_in_timestamp = models.DateTimeField(auto_now=True)
+    description_short = models.CharField(max_length=300,null=True,default=None)    
+    comentary = models.CharField(max_length=1000, null=True,default=None)    
     grade = models.IntegerField(
         validators=[
             validators.MaxValueValidator(20),

@@ -4,8 +4,9 @@ from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from course.models import Course, Post
+from course.models import Course, Homework, Post
 from course.forms import NewCourseForm, NewPostForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -140,3 +141,49 @@ def show_posts(request, course_id):
 
     return render(request, 'post/posts.html', context)
 
+@login_required
+def send_homework(request, course_id,post_id):
+    
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+    post = Post.objects.get(id=post_id)
+    teacher_mode = False
+    if user == course.user:
+        teacher_mode = True
+
+    context = {
+        'teacher_mode': teacher_mode,
+        'course': course,
+        'post': post
+    }    
+    return render(request, 'post/send_homework.html',context);
+
+@login_required
+def send_homework_post(request,course_id,post_id):
+    if request.method == 'POST':
+        try:
+            return redirect('/courses/')            
+            # course = Course.objects.get(codeinvitation=idInvitationRequest)
+            request.POST['code_inscription']            
+            # form = NewPostForm(request.POST, request.FILES)
+            # if form.is_valid():
+                # title = form.cleaned_data.get('title')
+                # content = form.cleaned_data.get('content')
+                # file = form.cleaned_data.get('file')
+                # post = Post.objects.create(title=title, content=content, file=file, course_id=course_id)
+                # course.posts.add(post)
+                # course.save()
+            description = request.POST['description']
+            file = request.POST['file']
+            comentary = request.POST['comentary']
+            idAssigment = post_id
+            # comentary = request.POST['comentary']
+            answerHomework = Homework.objects.create(grade=0,assignment=idAssigment ,student=request.user, description_short=description, comentary=comentary)
+            # return redirect('/course/3/posts', course_id=course_id)            
+            return redirect('/courses/')
+        except :
+            messages.error(request, 'Error al enviar el los datos')
+        
+    else:
+        return redirect('/courses/')
+        

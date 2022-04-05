@@ -1,0 +1,215 @@
+
+{% extends 'base.html' %}
+{% load static %}    
+
+{% block css %}
+
+<style>
+		* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 455px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+body {
+  font-family: Calibri;
+}
+
+.coupon {
+  border: 0px dotted #bbb;
+  width: 100%;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+
+.promo {
+  background: #ccc;
+  padding: 2px;
+}
+
+.expire {
+  color: red;
+}
+
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.0s;
+  animation: fadein 0.5s, fadeout 0.5s 2.0s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+		
+		input[type=text], select, textarea {
+		  width: 100%;
+		  padding: 12px;
+		  border: 1px solid rgb(3, 11, 83);
+		  border-radius: 4px;
+		  resize: vertical;
+		}
+		
+		label {
+		  padding: 12px 12px 12px 0;
+		  display: inline-block;
+		}
+		
+		input[type=submit] {
+		  background-color: #07570a;
+		  color: rgb(255, 255, 255);
+		  padding: 12px 20px;
+		  border: none;
+		  border-radius: 4px;
+		  cursor: pointer;
+		  float: right;
+		}
+		
+		input[type=submit]:hover {
+		  background-color: #d6745e;
+		}
+				
+		.col-25 {
+		  float: left;
+		  width: 25%;
+		  margin-top: 6px;
+		}
+		
+		.col-75 {
+		  float: left;
+		  width: 75%;
+		  margin-top: 6px;
+		}
+		
+		/* Clear floats after the columns */
+		
+		/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+		@media screen and (max-width: 600px) {
+		  .col-25, .col-75, input[type=submit] {
+			width: 100%;
+			margin-top: 0;
+		  }
+		}
+		</style>
+
+		{% endblock %}
+
+{% block content %}
+<blockquote class="blockquote">
+	<p class="m-4 h1">Entregar Tarea</p>
+	<footer class="blockquote-footer">Para entregar tu tarea, completa los campos requeridos</footer>
+</blockquote>
+<div class="row">
+	<div class="col-1">
+	</div>
+	<div class="col-5 shadow-lg p-3 mb-5 bg-white rounded m-2" > 
+		<h3 class="h1">Detalles de la Tarea</h3>
+		<div class="coupon">
+			<div class="container">
+				<p>Titulo de la tarea/Curso</p>
+			</div>
+			<img src="https://www.ieee.es/SimbolosNacionales/img/acierto.png" alt="Avatar" style="width:20%;">
+			<div class="container" style="background-color:white">
+			  <p>Descripcion, dada por el profesor</p>
+			</div>
+			<div class="container">
+			  <p>Puntaje: <span class="promo">20 PUNTOS</span></p>
+			  <p class="expire">Fecha de Entrega: Jan 03, 2021</p>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="col-5 shadow-lg p-3 mb-5 rounded m-2" style="background-color:rgba(13, 202, 240,0.1);">
+		<form action="{% url 'send_homework' post.course.id post.id  %}" method="POST">
+			{% csrf_token %}
+		
+	    <div class="container">
+			  <div class="row">
+			<div class="col-25">
+			  <label for="fname">Añade una descripcion</label>
+			</div>
+			<div class="col-75">
+			  <input type="text" id="fname" name="description" placeholder="Añade tu descripcion...">
+			</div>
+		  </div>
+		  
+		  <p>Selecciona un archivo para enviarlo:</p>
+	  
+		<input type="file" id="myFile" name="file">
+		  <div class="row">
+			<div class="col-25">
+			  <label for="subject">Escribe un comentario privado</label>
+			</div>
+			<div class="col-75">
+			  <textarea id="subject" name="comentary" placeholder="Añade comentario a tu profesor..." style="height:180px"></textarea>
+			</div>
+		  </div>
+		  <div class="row">
+			<input onclick="myFunction()" type="submit" value="ENTREGAR TAREA">
+			<button class="btn btn-danger">Atras</button>
+		  </div>
+	  </div>
+	</form>
+
+</div>
+<div id="snackbar">Tarea entregada correctamente</div>
+
+
+<script>
+	function myFunction() {
+	  var x = document.getElementById("snackbar");
+	  x.className = "show";
+	  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+	}
+	</script>
+</html>
+
+{% endblock %}

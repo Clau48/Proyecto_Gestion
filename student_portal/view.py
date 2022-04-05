@@ -10,25 +10,9 @@ from course.models import Course
 def index(request):
     return render(request,'courses/categories.html',{})
 
-
-def despedida(request):
-    
-    # return render(request,'student_portal')
-    # dateNow = datetime.now()
-    # documento1= """
-    #     <h1> %s </h1>
-    # """ % dateNow
-    
-    # # doc_externo = open("/home/jose/Documentos/hola.txt", "r")
-    return render(request,'courses/allCourses.html',{})
-
 def showCourse(request):
     courses = Course.objects.filter()    
     context = {
         'courses': courses,
     }
     return render(request,'courses/categories.html',context)
-
-
-def perate(request):
-    return render(request,'courses/allCourses.html',{})

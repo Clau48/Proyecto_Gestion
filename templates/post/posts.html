@@ -24,7 +24,12 @@
           <div class="yl-cd-cur-accordion yl-headline pera-content ul-li">
               <div class="yl-cd-cur-accordion-header" id="headingOne-{{ forloop.counter }}">
                   <button data-toggle="collapse" data-target="#collapseOne-{{ forloop.counter }}" aria-controls="collapseOne-{{ forloop.counter }}" class="collapsed" aria-expanded="false">
-                      <h3>{{ post.title }}</h3>
+                      <h3>{{ post.title }} 
+                      {% if post.assignment.due_datetime %}
+                        <span class="badge bg-warning text-white">Fecha de entrega : {{ post.assignment.due_datetime }}</span> 
+                        <span class="badge bg-danger text-white">TAREA</span> 
+                      {% endif %}
+                      </h3>
                   </button>
               </div>
               <div id="collapseOne-{{ forloop.counter }}" class="collapse" data-parent="#accordionExample">
@@ -39,6 +44,17 @@
                           <li>
                               archivo: <a target='_blank' href="{{ post.file.url }}" title="file">  <i class="material-icons">file_download</i>Descargar</a>
                           </li>
+                          {% if post.assignment.due_datetime %}
+                            <li>
+                              <a href="{% url 'send_homework' post.course.id post.id  %}" class="btn btn-success"> 
+                                Entregar tarea
+                              </a>
+                            </li>
+                          {% endif %}
+
+
+  
+                          
                       </ul>
                   </div>
               </div>
