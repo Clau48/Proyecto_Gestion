@@ -149,51 +149,53 @@ body {
 <div class="row">
 	<div class="col-1">
 	</div>
-	<div class="col-5 shadow-lg p-3 mb-5 bg-white rounded m-2" > 
-		<h3 class="h1">Detalles de la Tarea</h3>
+	<div class="col-lg-3 col-sm-12 shadow-lg p-3 mb-5 bg-white rounded m-2" > 
+		<h3 class="h3 text-center" style="font-family:Arial; ">Detalles de la Tarea</h3>
 		<div class="coupon">
 			<div class="container">
 				<p>Titulo de la tarea/Curso</p>
 			</div>
-			<img src="https://www.ieee.es/SimbolosNacionales/img/acierto.png" alt="Avatar" style="width:20%;">
+			{% comment %} <img src="https://www.ieee.es/SimbolosNacionales/img/acierto.png" alt="Avatar" style="width:20%;"> {% endcomment %}
 			<div class="container" style="background-color:white">
 			  <p>Descripcion, dada por el profesor</p>
 			</div>
 			<div class="container">
-			  <p>Puntaje: <span class="promo">20 PUNTOS</span></p>
+			  <p>Puntaje: <span class="badge bg-danger text-white">20 PUNTOS</span></p>
 			  <p class="expire">Fecha de Entrega: Jan 03, 2021</p>
 			</div>
 		</div>
 
 	</div>
 
-	<div class="col-5 shadow-lg p-3 mb-5 rounded m-2" style="background-color:rgba(13, 202, 240,0.1);">
-		<form action="{% url 'send_homework' post.course.id post.id  %}" method="POST">
+	<div class="col-lg-7 col-sm-12 shadow-lg p-3 mb-5 rounded m-2" style="background-color:rgba(13, 202, 240,0.1);">
+		<form action="{% url 'send_homework_post' post.course.id post.id  %}" method="POST">
 			{% csrf_token %}
 		
 	    <div class="container">
 			  <div class="row">
 			<div class="col-25">
-			  <label for="fname">Añade una descripcion</label>
+			  <label for="fname" style="font-weight:bolder; font-size:15px">Añade una descripcion</label>
 			</div>
 			<div class="col-75">
 			  <input type="text" id="fname" name="description" placeholder="Añade tu descripcion...">
 			</div>
 		  </div>
 		  
-		  <p>Selecciona un archivo para enviarlo:</p>
-	  
-		<input type="file" id="myFile" name="file">
+		  <div class="mb-3">
+			<label for="formFile" class="form-label font-weight-bold" style="font-weight:bolder; font-size:15px">Insertar archivo</label>
+			<input class="form-control" name="file" type="file" id="formFile">
+		  </div>	  
 		  <div class="row">
 			<div class="col-25">
-			  <label for="subject">Escribe un comentario privado</label>
+			  <label for="subject" style="font-weight:bolder; font-size:15px">Escribe un comentario privado</label>
 			</div>
 			<div class="col-75">
 			  <textarea id="subject" name="comentary" placeholder="Añade comentario a tu profesor..." style="height:180px"></textarea>
 			</div>
 		  </div>
 		  <div class="row">
-			<input onclick="myFunction()" type="submit" value="ENTREGAR TAREA">
+			{% comment %} <input onclick="myFunction()" type="submit" value="ENTREGAR TAREA"> {% endcomment %}
+			<input type="submit" value="ENTREGAR TAREA">
 			<button class="btn btn-danger">Atras</button>
 		  </div>
 	  </div>
@@ -203,13 +205,13 @@ body {
 <div id="snackbar">Tarea entregada correctamente</div>
 
 
-<script>
+{% comment %} <script>
 	function myFunction() {
 	  var x = document.getElementById("snackbar");
 	  x.className = "show";
 	  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 	}
 	</script>
-</html>
+</html> {% endcomment %}
 
 {% endblock %}

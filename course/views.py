@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import *
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from course.models import Course, Homework, Post
+from course.models import Assignment, Course, Homework, Post
 from course.forms import NewCourseForm, NewPostForm
 from django.contrib import messages
+import datetime
 
 # Create your views here.
 
@@ -129,14 +130,17 @@ def show_posts(request, course_id):
     user = request.user
     course = get_object_or_404(Course, id=course_id)
     posts = Post.objects.filter(course_id=course_id)
+    assignmentValidate = Assignment.objects.filter(post_ptr_id__in=posts)
+    homeworkUser = Homework.objects.filter(assignment__in=assignmentValidate,student_id=request.user.id)
     teacher_mode = False
     if user == course.user:
         teacher_mode = True
-
+        
     context = {
         'teacher_mode': teacher_mode,
         'course': course,
-        'posts': posts
+        'posts': posts,
+        'homeworkUser': homeworkUser,
     }
 
     return render(request, 'post/posts.html', context)
@@ -162,27 +166,27 @@ def send_homework(request, course_id,post_id):
 def send_homework_post(request,course_id,post_id):
     if request.method == 'POST':
         try:
-            return redirect('/courses/')            
-            # course = Course.objects.get(codeinvitation=idInvitationRequest)
-            request.POST['code_inscription']            
-            # form = NewPostForm(request.POST, request.FILES)
-            # if form.is_valid():
-                # title = form.cleaned_data.get('title')
-                # content = form.cleaned_data.get('content')
-                # file = form.cleaned_data.get('file')
-                # post = Post.objects.create(title=title, content=content, file=file, course_id=course_id)
-                # course.posts.add(post)
-                # course.save()
+            postValidate = Post.objects.get(id=post_id)
+            assignmentValidate = Assignment.objects.get(post_ptr_id=postValidate)
+            exists = Homework.objects.filter(assignment_id=assignmentValidate.post_ptr_id,student_id=request.user.id)
+            if exists:
+                messages.warning(request, 'No se pudo enviar, ya has enviado tu material para esta tarea.')
+                return redirect('show_posts', course_id=course_id)
             description = request.POST['description']
             file = request.POST['file']
             comentary = request.POST['comentary']
-            idAssigment = post_id
-            # comentary = request.POST['comentary']
-            answerHomework = Homework.objects.create(grade=0,assignment=idAssigment ,student=request.user, description_short=description, comentary=comentary)
-            # return redirect('/course/3/posts', course_id=course_id)            
-            return redirect('/courses/')
+            idAssigment = post_id   
+            grade = 0
+            idUser = request.user.id
+            date = datetime.datetime.now()
+            assignment = Assignment.objects.get(post_ptr_id=idAssigment)
+            homework = Homework.objects.create(grade=grade,assignment=assignment ,student=request.user, description_short=description, comentary=comentary,turn_in_timestamp=date,file=file)                     
+            messages.success(request, 'Entregado correctamente')
+            return redirect('/course/%s/posts' % course_id)            
         except :
-            messages.error(request, 'Error al enviar el los datos')
+            messages.error(request, 'Todos los campos deben ser rellenados')
+            return redirect('send_homework')
+            
         
     else:
         return redirect('/courses/')
