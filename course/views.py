@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import *
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from course.models import Course, Post
+from course.models import Assignment, Course, Homework, Post
 from course.forms import NewCourseForm, NewPostForm
+from django.contrib import messages
+import datetime
 
 # Create your views here.
 
@@ -128,6 +130,27 @@ def show_posts(request, course_id):
     user = request.user
     course = get_object_or_404(Course, id=course_id)
     posts = Post.objects.filter(course_id=course_id)
+    assignmentValidate = Assignment.objects.filter(post_ptr_id__in=posts)
+    homeworkUser = Homework.objects.filter(assignment__in=assignmentValidate,student_id=request.user.id)
+    teacher_mode = False
+    if user == course.user:
+        teacher_mode = True
+        
+    context = {
+        'teacher_mode': teacher_mode,
+        'course': course,
+        'posts': posts,
+        'homeworkUser': homeworkUser,
+    }
+
+    return render(request, 'post/posts.html', context)
+
+@login_required
+def send_homework(request, course_id,post_id):
+    
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+    post = Post.objects.get(id=post_id)
     teacher_mode = False
     if user == course.user:
         teacher_mode = True
@@ -135,8 +158,36 @@ def show_posts(request, course_id):
     context = {
         'teacher_mode': teacher_mode,
         'course': course,
-        'posts': posts
-    }
+        'post': post
+    }    
+    return render(request, 'post/send_homework.html',context);
 
-    return render(request, 'post/posts.html', context)
-
+@login_required
+def send_homework_post(request,course_id,post_id):
+    if request.method == 'POST':
+        try:
+            postValidate = Post.objects.get(id=post_id)
+            assignmentValidate = Assignment.objects.get(post_ptr_id=postValidate)
+            exists = Homework.objects.filter(assignment_id=assignmentValidate.post_ptr_id,student_id=request.user.id)
+            if exists:
+                messages.warning(request, 'No se pudo enviar, ya has enviado tu material para esta tarea.')
+                return redirect('show_posts', course_id=course_id)
+            description = request.POST['description']
+            file = request.POST['file']
+            comentary = request.POST['comentary']
+            idAssigment = post_id   
+            grade = 0
+            idUser = request.user.id
+            date = datetime.datetime.now()
+            assignment = Assignment.objects.get(post_ptr_id=idAssigment)
+            homework = Homework.objects.create(grade=grade,assignment=assignment ,student=request.user, description_short=description, comentary=comentary,turn_in_timestamp=date,file=file)                     
+            messages.success(request, 'Entregado correctamente')
+            return redirect('/course/%s/posts' % course_id)            
+        except :
+            messages.error(request, 'Todos los campos deben ser rellenados')
+            return redirect('send_homework')
+            
+        
+    else:
+        return redirect('/courses/')
+        

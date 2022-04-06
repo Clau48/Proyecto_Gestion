@@ -10,12 +10,29 @@
 <!-- VERIFICAR QUE FUNCIONA EL CODIGO DE ABAJO Y SI FUNCIONA ENTONCES ELIMINAR ESTE CODIGO COMENTADO
   <div id="contentd" class="tab-pane fade active show"> 
     <div class="row" style="margin-bottom: 0px;">
+      {% if messages %}
+        {% for message in messages %}
+          {% if message.tags == 'success' %}
+            <div class="alert alert-success" role="alert">
+              {{ message.message }}      
+            </div>
+          {% endif %}
+
+          {% if message.tags == 'warning' %}
+            <div class="alert alert-warning" role="alert">
+              {{ message.message }}      
+            </div>
+          {% endif %}
+
+        {% endfor %}
+    {% endif %}
     <div class="col s9">
       <div class="cd-curriculam-top clearfix">
           <h3 class="c-overview-title float-left">Publicaciones </h3>
       </div>
     </div>
     <div class="col s3">
+      {{  teacher_mode  }}
       {% if teacher_mode == True %}
     <a href="{% url 'new-post' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><em class="material-icons" style="padding-top: 15px;">add</em></a>
     {% endif %}
@@ -25,7 +42,23 @@
           <div class="yl-cd-cur-accordion yl-headline pera-content ul-li">
               <div class="yl-cd-cur-accordion-header" id="headingOne-{{ forloop.counter }}">
                   <button data-toggle="collapse" data-target="#collapseOne-{{ forloop.counter }}" aria-controls="collapseOne-{{ forloop.counter }}" class="collapsed" aria-expanded="false">
-                      <h3>{{ post.title }}</h3>
+                      <h3>{{ post.title }} 
+                      {% if post.assignment.due_datetime %}
+                        
+                         {% if post.assignment.due_datetime > datetime.now %}
+                          <span class="badge badge-danger" style="background-color:red; color:white">Finalizada</span>
+                         {% else %}
+                           <span class="badge badge-success" style="background-color:green; color:white">Activa</span>
+                         {% endif %}
+                         {% for homework in homeworkUser.all|slice:":1" %}
+                            {% if homework.assignment_id == post.assignment.post_ptr_id %}
+                              <span class="badge badge-success" style="background-color:green; color:white">Entregada</span>
+                            {% endif %}
+                          {% endfor %}                          
+                        <span class="badge bg-warning text-white">Fecha de entrega : {{ post.assignment.due_datetime }}</span> 
+                        <span class="badge bg-danger text-white">TAREA</span> 
+                      {% endif %}
+                      </h3>
                   </button>
               </div>
               <div id="collapseOne-{{ forloop.counter }}" class="collapse" data-parent="#accordionExample">
@@ -40,6 +73,22 @@
                           <li>
                               archivo: <a target='_blank' href="{{ post.file.url }}" title="file">  <i class="material-icons">file_download</i>Descargar</a>
                           </li>
+                          {% if post.assignment.due_datetime %}
+                          <a href="{% url 'send_homework' post.course.id post.id  %}" class="btn btn-success
+                          {% for homework in homeworkUser.all|slice:':1' %}
+                            {% if homework.assignment_id == post.assignment.post_ptr_id %}
+                              disabled" style='color:black !important; font-weight:bold;'
+                            {% endif %}
+                          {% endfor %}                               
+                          "> 
+                            Entregar tarea
+                          </a>                                
+                            </li>
+                          {% endif %}
+
+
+  
+                          
                       </ul>
                   </div>
               </div>
