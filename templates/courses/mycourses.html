@@ -108,7 +108,7 @@
                 {% csrf_token %}
                     <label for="recipient-name" class="col-form-label">Enviar correo:</label>
                     <div class="form-group row">
-                        <input placeholder='ejemplo@ejemplo.com' type="text" id='input-email' name='to_email' required maxlength='400' class="col form-control" id="recipient-name">
+                        <input placeholder='ejemplo@ejemplo.com' type="email" id='input-email' name='to_email' required maxlength='400' class="col form-control" id="recipient-name">
                         <button id="send-form-email" type="submit" class="btn btn-primary col">
                             <em class="material-icons" style="padding-top: 10px;">mail</em>
                         </button>
@@ -184,6 +184,10 @@
                 data: form.serialize(),
                 success: function(data) {
                     alert(data);
+                    $("#send-form-email").attr('disabled', false);
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(xhr.responseText);
                     $("#send-form-email").attr('disabled', false);
                 }
             });

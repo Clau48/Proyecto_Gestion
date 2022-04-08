@@ -1,8 +1,7 @@
-from urllib.error import HTTPError
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden, HttpResponse, JsonResponse
+from django.http import HttpResponseForbidden, HttpResponse, JsonResponse, HttpResponseBadRequest
 from django.contrib import messages
 from django.contrib.auth.models import User
 from course.models import Course, Post, Course_User
@@ -176,6 +175,7 @@ def send_link_course(user, domain, course, to_email):
 		"codeInvitation": str(course.codeinvitation)
 	},)
 	from_email = user.email
+
 	plain_message = strip_tags(html_message)
 	return send_mail(subject, plain_message, from_email , [to_email], html_message=html_message)
 
@@ -183,6 +183,11 @@ def send_link_course(user, domain, course, to_email):
 def sendInscriptionLink(request, course_id):
 	if request.method == 'POST':
 		to_email = request.POST.get('to_email')
+
+		email_exists = User.objects.filter(email=to_email).all()
+		if not email_exists:
+			return HttpResponseBadRequest('Error al enviar correo: no pertenece a un usuario registrado')
+
 		if to_email:
 			user_owner =  request.user
 			domain = get_current_site(request).domain
@@ -192,7 +197,7 @@ def sendInscriptionLink(request, course_id):
 
 			return HttpResponse('Correo enviado a ' + to_email)
 		else:
-			return HTTPError('Email vacio')
+			return HttpResponseBadRequest('Email vacio')
 
 def usersInCourse(request, course_id):
 	users_query = Course_User.objects.filter(course=course_id).all()
