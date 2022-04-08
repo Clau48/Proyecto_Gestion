@@ -2,6 +2,7 @@ from django.test import TestCase
 # from .models import Profile
 from django.contrib.auth.models import User
 
+from django.http import HttpRequest
 from course.views import NewPost, show_posts
 from .models import Course, Post
 from django.contrib.auth import authenticate
@@ -13,6 +14,7 @@ from django.http.request import QueryDict
 from django.middleware.csrf import get_token
 # from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
+from .views import send_link_course, usersInCourse
 
 class CourseTestCase(TestCase):
     def setUp(self):
@@ -68,3 +70,16 @@ class CourseTestCase(TestCase):
             assert True
         except:
             assert False
+
+    def test_send_link_course(self):
+        user_owner =  self.user
+        course = self.course
+        to_email = 'fisiversity@gmail.com'
+        
+        result = send_link_course(user_owner, 'http://localhost:8000/', course, to_email)
+
+        self.assertEqual(result, 1)
+
+    def test_usersInCourse(self):
+        request = HttpRequest()
+        assert usersInCourse(request, self.course.id)
