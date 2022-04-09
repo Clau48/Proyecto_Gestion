@@ -210,9 +210,6 @@ def show_course_description(request, course_id):
 	course = get_object_or_404(Course, id=course_id)
 	is_registered = Course_User.objects.filter(course=course_id, user=user.id).all()
 	is_owner = (user == course.user)
-	
-	print(is_owner)
-
 	context = {
 		'course': course,
 		'user': user,
