@@ -107,10 +107,14 @@ function ocultar(n) {
                   </div>                
             </li>
             {% if course.picture is not null %}
-            <img style="width:50%; max-height:100%" src="{{course.picture.url}}" alt="blog-img-2" class="img-fluid">
-            {% else %}
+              {% if course.picture == '' %}
+                  <img src="https://wallpaperboat.com/wp-content/uploads/2020/09/14/54601/books-01.jpg" alt="blog-img-2" class="img-fluid">
+              {% else %}
+                  <img src="{{course.picture.url}}" alt="blog-img-2" class="img-fluid">
+              {% endif %}
+          {% else %}
             <img src="https://wallpaperboat.com/wp-content/uploads/2020/09/14/54601/books-01.jpg" alt="blog-img-2" class="img-fluid">
-            {% endif %}        
+          {% endif %}
             <li class="li-style-none">
               <a href="{% url 'show_posts' course.id  %}" class="btn alert alert-success mb-0" role="alert">
                   Ver curso

@@ -25,7 +25,16 @@
 <div class="col s12 m4">
   <div class="card" style="width: 12rem;">
     <div class="card-image waves-effect waves-block waves-light">
-      <img class="activator" src="{{ course.picture.url }}" alt="Imagen no cargada">
+
+      {% if course.picture is not null %}
+        {% if course.picture == '' %}
+            <img src="https://wallpaperboat.com/wp-content/uploads/2020/09/14/54601/books-01.jpg" alt="blog-img-2" >
+        {% else %}
+            <img src="{{course.picture.url}}" alt="blog-img-2">
+        {% endif %}
+    {% else %}
+    <img src="https://wallpaperboat.com/wp-content/uploads/2020/09/14/54601/books-01.jpg" alt="blog-img-2" >
+    {% endif %}
     </div>
     <div class="card-content">
       <span class="card-title activator grey-text text-darken-4">{{ course.title }}<em class="material-icons right">more_vert</em></span>
