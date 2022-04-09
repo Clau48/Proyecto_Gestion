@@ -135,7 +135,9 @@
                         Contenido de la tarea: <!--modificar esto-->{{ post.content}}
                     </li>
                     <li>
+                      {% if post.file %}
                         <!--modificar este href-->Archivo: <a target='_blank' href="{{ post.file.url }}" title="file">  <i class="material-icons">file_download</i>Descargar</a>
+                      {% endif %}
                     </li>
                     </ul>
                 </div>
