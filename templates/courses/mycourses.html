@@ -167,31 +167,29 @@
         $('#input-code').val(code);
 
         $('#form-email').attr('action', document.location.origin + '/course/' + $(this).data('courseid') + '/send_invitation')
+    });
 
-        $("#form-email").submit(function(e) {
-            $('#send-form-email').attr('disabled',true);
+    $("#form-email").submit(function(e) {
+        $('#send-form-email').attr('disabled',true);
 
-            e.preventDefault();
+        e.preventDefault();
 
-            var form = $(this);
-            var actionUrl = form.attr('action');
-            
-            $.ajax({
-                type: "POST",
-                url: actionUrl,
-                data: form.serialize(),
-                success: function(data) {
-                    alert(data);
-                    $("#send-form-email").attr('disabled', false);
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    alert(xhr.responseText);
-                    $("#send-form-email").attr('disabled', false);
-                }
-            });
-
-        });
+        var form = $(this);
+        var actionUrl = form.attr('action');
         
+        $.ajax({
+            type: "POST",
+            url: actionUrl,
+            data: form.serialize(),
+            success: function(data) {
+                alert(data);
+                $("#send-form-email").attr('disabled', false);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(xhr.responseText);
+                $("#send-form-email").attr('disabled', false);
+            }
+        });
 
     });
 
