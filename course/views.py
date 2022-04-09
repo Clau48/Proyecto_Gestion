@@ -282,7 +282,7 @@ def inscriptionLink(request, codeInvitation):
     
 @login_required
 def show_calification(request, course_id):
-    # try:    
+    try:    
         posts = Post.objects.filter(course_id=course_id)
         assignmentValidate = Assignment.objects.filter(post_ptr_id__in=posts)
         homework = Homework.objects.filter(assignment__in=assignmentValidate, student_id=request.user.id)
@@ -305,10 +305,10 @@ def show_calification(request, course_id):
         }       
         return render(request, 'courses/calification.html',context)
         
-    # except:
+    except:
         
-        # messages.error(request, 'Error, no se pudo cargar la pagina')
-        # return redirect('/course/%s/posts' % course_id)            
+        messages.error(request, 'Error, no se pudo cargar la pagina')
+        return redirect('/course/%s/posts' % course_id)            
 
     
         
