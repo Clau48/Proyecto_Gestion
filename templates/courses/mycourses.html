@@ -199,8 +199,6 @@
         let courseCode = $(this).data('courseid');
         let url = document.location.origin + '/course/' + courseCode + '/users/';
 
-        console.log('del curso: ' + courseCode)
-
         $.get(url,function(data, status){
             users = data.users;
 
