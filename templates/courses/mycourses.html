@@ -198,8 +198,7 @@
     });
 
     $('#btn-course-users').click(function(){
-
-        let courseCode = $(this).data('courseid');
+        let courseCode = $(this).data('courseid') + 1;
         let url = document.location.origin + '/course/' + courseCode + '/users/';
 
         $.get(url,function(data, status){
