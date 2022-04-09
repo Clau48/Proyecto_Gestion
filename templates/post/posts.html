@@ -4,6 +4,9 @@
 {% block css %}
     
     <link rel="stylesheet" type="text/css" href="{% static 'css/cha.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!-- nuevo, necesario-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/curso.css' %}">
+
 {% endblock %}
 
 {% block content %}
@@ -32,13 +35,74 @@
     <div class="course-details-tab-btn clearfix ul-li">
       <ul id="tabs" class="nav text-uppercase nav-tabs">
           <!--estas redirecciones ya lo hizo Luiggi en la interfaz course.html de la rama info_curso-->
-          <!--redirecciona a descripcion para todos--><li class="nav-item"><a href="#" data-target="#overview"  class="nav-link text-capitalize">Descripción </a></li>
+          <!--redirecciona a descripcion para todos--><li class="nav-item"><a href="#" data-target="#overview" data-toggle="tab" class="nav-link text-capitalize">Descripción </a></li>
           <!--redirecciona a interfaz "posts" si está matriculado en el curso--><li class="nav-item"><a href="{% url 'show_posts' course.id %d}" data-target="#contentd" data-toggle="tab" class="nav-link text-capitalize show active">Contenido  </a></li>
           <!--redirecciona a interfaz "tareas" si está matriculado en el curso--><li class="nav-item"><a href="{% url 'show_posts' course.id %}" data-target="#instructor"  data-toggle="tab" class="nav-link text-capitalize ">Tareas</a></li>
       </ul>
     </div>
     <div class="course-details-tab-content-wrap">
       <div id="tabsContent" class="tab-content">
+        <div id="overview" class="tab-pane fade"> 
+          <div class="row" style="margin-bottom: 0px;">
+
+            <div class="course-details-overview yl-headline pera-content">
+              <div class="row">
+                  <div class="col-lg-9">
+                      <div class="descripcion">
+                          <div class="descripcion-texto yl-headline pera-content">
+                              <h1>{{course.title}}</h1>
+                              <br>
+                              <h3>Descripción del curso</h3>
+                              <p>{{course.description}}</p>
+                              <h3 class="cuadro-titulo">Docente</h3>
+                              <div class="cuadro-item">
+                                  <div class="item-interior">
+                                      <div class="titulo-interior"><i class="material-icons">person</i> Nombre:</div>
+                                      <span>{{course.user.name}}</span>
+                                  </div>
+                                  <div class="item-interior">
+                                      <div class="titulo-interior"><i class="material-icons">email</i> Email:</div>
+                                      <span>{{course.user.email}}</span>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      
+                  </div>
+                  <div class="col-lg-3">
+                  <div class="yl-event-sidebar">
+                      <div class="cuadro ul-li yl-headline">
+                          <h3 class="cuadro-titulo">Detalles del curso</h3>
+                          <div class="cuadro-item">
+                              <div class="item-interior">
+                                  <div class="titulo-interior"><i class="material-icons">event_available</i> Fecha Inicio:</div>
+                                  <span>10 de Abril, 2022</span>
+                              </div>
+                              <div class="item-interior">
+                                  <div class="titulo-interior"><i class="material-icons">access_time</i> Horario:</div>
+                                  {% comment %} <span>08:00am - 12:00pm</span> {% endcomment %}
+                                  <span>{{course.time_start}} - {{course.time_end}}</span>
+                              </div>
+                              <div class="item-interior">
+                                  <div class="titulo-interior"><i class="material-icons">date_range</i> Dia:</div>
+                                  {% comment %} <span>Lunes y Miercoles</span> {% endcomment %}
+                                  <span>{{course.day}}</span>
+                              </div>
+                          </div>
+                          {% if is_owner or is_registered %}
+                          {% comment %} agregar boton para desuscribirse {% endcomment %}
+                          {% else %}
+                              <a class="ed-book-btn text-center" href="#">
+                              Inscríbete
+                              </a>
+                          {% endif %}
+                      </div>
+                  </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+        </div>
         <div id="contentd" class="tab-pane fade active show"> 
           <div class="row" style="margin-bottom: 0px;">
             <div class="col s9">
