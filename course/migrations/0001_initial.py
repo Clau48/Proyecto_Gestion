@@ -49,6 +49,7 @@ class Migration(migrations.Migration):
                 ('content', models.CharField(max_length=300, null=True)),
                 ('creation_timestamp', models.DateTimeField(auto_now=True)),
                 ('file', models.FileField(blank=True, null=True, upload_to=course.models.post_storage_path)),
+                ('is_asgmt', models.BooleanField(default=False)),
                 ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to='course.course')),
             ],
         ),

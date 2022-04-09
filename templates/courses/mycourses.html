@@ -57,7 +57,7 @@
                                             <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code="{{course.codeinvitation}}" data-courseid="{{course.id}}" style="background-color:#87CEEB"> INVITAR </button>
                                         </div>
                                         <div class="col-4 d-flex justify-content-start">
-                                            <button id="btn-course-users" class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-users" data-whatever="@mdo" data-courseid="{{course.id}}" style="background-color:#87CEEB"> ALUMNO </button>
+                                            <button class="btn btn-info btn-send-code btn-course-users" data-bs-toggle="modal" data-bs-target="#modal-users" data-whatever="@mdo" data-courseid="{{course.id}}" style="background-color:#87CEEB"> ALUMNO </button>
                                         </div>
                                         <div class="col-4 d-flex justify-content-end">
                                             <a href="/course/1/posts" class="btn btn-success" style="background-color:green;color:white"><i class="material-icons">note_add</i></a> 
@@ -163,8 +163,6 @@
     });
 
     $('.btn-send-code').click(function(){
-
-
         let code = $(this).data('code');
         $('#input-code').val(code);
 
@@ -197,9 +195,11 @@
 
     });
 
-    $('#btn-course-users').click(function(){
-        let courseCode = $(this).data('courseid') + 1;
+    $('.btn-course-users').click(function(){
+        let courseCode = $(this).data('courseid');
         let url = document.location.origin + '/course/' + courseCode + '/users/';
+
+        console.log('del curso: ' + courseCode)
 
         $.get(url,function(data, status){
             users = data.users;

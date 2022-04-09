@@ -8,6 +8,7 @@ urlpatterns = [
 	path('newcourse/', new_course, name='newcourse'),
 	path('mycourses/', show_mycourses, name='mycourses'),
 	path('<course_id>/', show_course_description, name='show_description'),
+	path('<course_id>/posts/notas', show_calification, name='show_calification'),
 	path('<course_id>/posts', show_posts, name='show_posts'),
 	path('<course_id>/posts/newpost', NewPost, name='new-post'),
 	path('<course_id>/<post_id>/entrega', send_homework, name='send_homework'), 
@@ -15,4 +16,6 @@ urlpatterns = [
 	path("<course_id>/users/", usersInCourse, name="users_in_course"),
 	path("<course_id>/send_invitation", sendInscriptionLink, name="send_inscription"),
 	path("inscription/<codeInvitation>/", inscriptionLink, name="url_inscription"),
+	path('<course_id>/posts/newassignment', new_assignment, name='new-assignment'),
+	path('<course_id>/posts/<assignment_id>/editassignment', edit_assignment, name='edit-assignment'),
 ]
