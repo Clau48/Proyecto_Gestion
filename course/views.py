@@ -1,11 +1,13 @@
 from django.shortcuts import *
+from multiprocessing import context
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import *
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
 from course.models import Assignment, Course, Homework, Post
-from course.forms import NewCourseForm, NewPostForm
+from course.forms import NewAssignmentForm, NewCourseForm, NewPostForm
 from django.contrib import messages
 import datetime
 
@@ -203,15 +205,21 @@ def show_calification(request, course_id):
         assignmentValidate = Assignment.objects.filter(post_ptr_id__in=posts)
         homework = Homework.objects.filter(assignment__in=assignmentValidate, student_id=request.user.id)
         data = assignmentValidate
+        data_prom = 0
+        quantity_prom = 0
         for d in data:
-            d.homework = homework.get(assignment_id=d.post_ptr_id, student_id=request.user.id)
-        
-        # return HttpResponse(data)
-        
+            d.homework = homework.filter(assignment_id=d.post_ptr_id, student_id=request.user.id).first()
+            d.post = posts.filter(id=d.post_ptr_id)
+            if d.homework and d.homework.grade != 0:
+                data_prom += d.homework.grade
+                quantity_prom += 1
+        quantity_prom = quantity_prom == 0 if 1 else quantity_prom
+        data_prom = data_prom / quantity_prom
+        data_aditional = {}
+        data_aditional['prom'] = data_prom
         context = {
-            'assignments': assignmentValidate,
-            'homework': homework,
             'data': data,
+            'data_aditional': data_aditional,
         }       
         return render(request, 'courses/calification.html',context)
         
@@ -222,3 +230,60 @@ def show_calification(request, course_id):
 
     
         
+def new_assignment(request, course_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+
+    if user != course.user:
+        return HttpResponseForbidden()
+    else:
+        if request.method == 'POST':
+            form = NewAssignmentForm(request.POST, request.FILES)
+            if form.is_valid():
+                title = form.cleaned_data.get('title')
+                content = form.cleaned_data.get('content')
+                due_datetime = form.cleaned_data.get('due_datetime')
+                file = form.cleaned_data.get('file')
+                is_asgmt = form.cleaned_data.get('is_asgmt')
+                
+                post_asgmt = Assignment.objects.create(title=title, content=content, file=file, course_id=course_id, due_datetime=due_datetime, is_asgmt=is_asgmt)
+                course.posts.add(post_asgmt)
+                course.save()
+                return redirect('show_posts',course_id=course_id)
+        else:
+            form = NewAssignmentForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'assignment/newassignment.html', context)
+
+
+def edit_assignment(request, course_id, assignment_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+
+    if user != course.user:
+        return HttpResponseForbidden()
+    else:
+        if request.method == 'POST':
+            form = NewAssignmentForm(request.POST, request.FILES, instance=assignment)
+            if form.is_valid():
+                assignment.title = form.cleaned_data.get('title')
+                assignment.content = form.cleaned_data.get('content')
+                assignment.due_datetime = form.cleaned_data.get('due_datetime')
+                assignment.file = form.cleaned_data.get('file')
+                assignment.save()
+                return redirect('show_posts', course_id=course_id)
+        else:
+            form = NewAssignmentForm(instance=assignment)
+            form.file = assignment.file
+
+    context = {
+        'form': form,
+        'course_id': course_id,
+        'assignment_id': assignment_id
+    }
+    return render(request, 'assignment/newassignment.html', context)

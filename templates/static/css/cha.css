@@ -102,13 +102,12 @@ a {
 }
 
 .course-details-tab-btn .nav-tabs .nav-link.active {
-    background-color: #f2f2f4;
-    color: #000000;
+    background-color: #ff5520;
+    color: #fff !important;
 }
 
-.course-details-tab-btn .nav-tabs .nav-link.active:hover {
-    background-color: #ff5520;
-    color: white;
+.nav-link:focus, .nav-link:hover{
+    color:black !important;
 }
 
 .form-control:focus, button:visited, button.active, button:hover, button:focus, input:visited, input.active, input:hover, input:focus, textarea:hover, textarea:focus, a:hover, a:focus, a:visited, a.active, select, select:hover, select:focus, select:visited {

@@ -12,4 +12,6 @@ urlpatterns = [
 	path('<course_id>/posts/newpost', NewPost, name='new-post'),
 	path('<course_id>/<post_id>/entrega', send_homework, name='send_homework'), 
  	path('<course_id>/<post_id>/entrega/process', send_homework_post, name='send_homework_post'), 
+	path('<course_id>/posts/newassignment', new_assignment, name='new-assignment'),
+	path('<course_id>/posts/<assignment_id>/editassignment', edit_assignment, name='edit-assignment'),
 ]

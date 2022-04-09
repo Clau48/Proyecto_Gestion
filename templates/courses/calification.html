@@ -17,7 +17,13 @@
         }
         
         tr:nth-child(even){background-color: #f2f2f2}
-
+        
+        .cut_text_long{
+          max-width:300px !important;
+          white-space:nowrap!important;
+          text-overflow: ellipsis!important;
+          overflow:hidden !important;
+        }
     </style>
 {% endblock %}
 
@@ -31,32 +37,52 @@
       <th>Fecha limite</th>
       <th>Fecha de entrega</th>
       <th>Tarea</th>
+      <th>Tu comentario</th>
+      <th>Tu descripcion</th>
       <th>Puntaje</th>
     </tr>
     {% for nota in data %}
     <tr>
       <td>{{ nota.due_datetime }}</td>
       <td>{{ nota.homework.turn_in_timestamp }}</td>
-      <td>Puntaje</td>
-      <td>{{ nota.homework.grade|yesno:"yes,no,maybe" }}</td>
-    </tr>
-    {% endfor %}
-
-    {% for assignment in assignments %}
-    <tr>
-      <td>{{ assignment.due_datetime }}</td>
-      <td>{{ assignment.homework.turn_in_timestamp }}</td>
-      <td>Puntaje</td>
-      <td>Puntaje</td>
+      <td> <div class="cut_text_long">{{ nota.post.title }}</div> </td>
+      {% comment %} <td> <div class="cut_text_long">
+        <a target='_blank' href="{{ nota.homework.file.url }}" title="file">  <i class="material-icons">file_download</i>Descargar</a>
+        </div> 
+      </td> {% endcomment %}
+      <td> <div class="cut_text_long text_comentary">{{ nota.homework.comentary }}</div> </td>
+      <td> <div class="cut_text_long">{{ nota.homework.description_short }}</div> </td>
+      <td>
+        {% if nota.homework.grade is not null %}
+          {% if nota.homework.grade == 0 %}
+          Sin calificación
+          {% elif nota.homework.grade >= 11 %}
+          <span class="alert alert-success badge badge-success">{{ nota.homework.grade }}</span>
+          {% else %}
+          <span class="alert alert-danger badge badge-danger">{{ nota.homework.grade }}</span>
+          {% endif %}
+        {% else %}
+        <span class="text-danger">No entregado</span>
+        {% endif %}
+      </td>
     </tr>
     {% endfor %}
     <tr>
       <th>Fecha Actual : <label id="current_date"></label> </th>
-      <th>Promedio:</th> 
-      <th>Nota Final</th> 
+      <th></th> 
+      <th></th> 
+      <th></th> 
+      <th></th> 
+      <th>Promedio : {{ data_aditional.prom }} </th> 
     </tr>
   </table>
-  <p>Usted esta APROBADO/DESAPROBADO</p>
+  <p>
+    {% if data_aditional.prom >= 11 %}
+    <span class="alert alert-success badge badge-success">Felicidades, has aprobado el curso</span>
+    {% else %}
+    <span class="alert alert-danger badge badge-danger">Losss, has reprobado el curso</span>
+    {% endif %}
+  </p>
 </div>
 <script>
   date = new Date();
