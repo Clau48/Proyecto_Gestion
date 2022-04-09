@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}    
+{% block css %}
+
+    <title>Mis Notas</title>
+    <style>
+        table {
+          border-collapse: collapse;
+          border-spacing: 0;
+          width: 100%;
+          border: 1px solid #ddd;
+        }
+        
+        th, td {
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(even){background-color: #f2f2f2}
+
+    </style>
+{% endblock %}
+
+{% block content %}
+<h2 class="container text-center">REGISTRO DE NOTAS</h2>
+<p class="container">Record de notas en el curso.</p>
+
+<div class="container" style="overflow-x:auto;">
+  <table>
+    <tr>
+      <th>Fecha limite</th>
+      <th>Fecha de entrega</th>
+      <th>Tarea</th>
+      <th>Puntaje</th>
+    </tr>
+    {% for nota in data %}
+    <tr>
+      <td>{{ nota.due_datetime }}</td>
+      <td>{{ nota.homework.turn_in_timestamp }}</td>
+      <td>Puntaje</td>
+      <td>{{ nota.homework.grade|yesno:"yes,no,maybe" }}</td>
+    </tr>
+    {% endfor %}
+
+    {% for assignment in assignments %}
+    <tr>
+      <td>{{ assignment.due_datetime }}</td>
+      <td>{{ assignment.homework.turn_in_timestamp }}</td>
+      <td>Puntaje</td>
+      <td>Puntaje</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <th>Fecha Actual : <label id="current_date"></label> </th>
+      <th>Promedio:</th> 
+      <th>Nota Final</th> 
+    </tr>
+  </table>
+  <p>Usted esta APROBADO/DESAPROBADO</p>
+</div>
+<script>
+  date = new Date();
+  year = date.getFullYear();
+  month = date.getMonth() + 1;
+  day = date.getDate();
+  document.getElementById("current_date").innerHTML = month + "/" + day + "/" + year;
+  </script>
+
+{% endblock %}

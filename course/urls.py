@@ -7,6 +7,7 @@ urlpatterns = [
 	path('', showCourse, name='show_courses'),
 	path('newcourse/', new_course, name='newcourse'),
 	path('mycourses/', show_mycourses, name='mycourses'),
+	path('<course_id>/posts/notas', show_calification, name='show_calification'),
 	path('<course_id>/posts', show_posts, name='show_posts'),
 	path('<course_id>/posts/newpost', NewPost, name='new-post'),
 	path('<course_id>/<post_id>/entrega', send_homework, name='send_homework'), 

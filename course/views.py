@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import *
 from django.contrib.auth.decorators import login_required
 from django.http import *
 from django.contrib import messages
@@ -43,6 +43,7 @@ def fill_array(u_courses, times):
                 u_courses[i].append(None)
             j += 1
  
+@login_required
 def new_course(request):
     user = request.user
     if request.method == 'POST':
@@ -87,6 +88,7 @@ def ValidateTime(request, time_start, time_end):
 
     return confirmation
 
+@login_required
 def show_mycourses(request):
     courses = Course.objects.filter(user=request.user)    
     context = {
@@ -101,6 +103,7 @@ def showCourse(request):
     return render(request,'courses/categories.html',context)
 
 
+@login_required
 def NewPost(request, course_id):
     user = request.user
     course = get_object_or_404(Course, id=course_id)
@@ -126,6 +129,7 @@ def NewPost(request, course_id):
     }
     return render(request, 'post/newpost.html', context)
 
+@login_required
 def show_posts(request, course_id):
     user = request.user
     course = get_object_or_404(Course, id=course_id)
@@ -190,4 +194,31 @@ def send_homework_post(request,course_id,post_id):
         
     else:
         return redirect('/courses/')
+    
+    
+@login_required
+def show_calification(request, course_id):
+    # try:    
+        posts = Post.objects.filter(course_id=course_id)
+        assignmentValidate = Assignment.objects.filter(post_ptr_id__in=posts)
+        homework = Homework.objects.filter(assignment__in=assignmentValidate, student_id=request.user.id)
+        data = assignmentValidate
+        for d in data:
+            d.homework = homework.get(assignment_id=d.post_ptr_id, student_id=request.user.id)
+        
+        # return HttpResponse(data)
+        
+        context = {
+            'assignments': assignmentValidate,
+            'homework': homework,
+            'data': data,
+        }       
+        return render(request, 'courses/calification.html',context)
+        
+    # except:
+        
+        # messages.error(request, 'Error, no se pudo cargar la pagina')
+        # return redirect('/course/%s/posts' % course_id)            
+
+    
         

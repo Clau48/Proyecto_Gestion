@@ -25,16 +25,20 @@
 
         {% endfor %}
     {% endif %}
-    <div class="col s9">
-      <div class="cd-curriculam-top clearfix">
-          <h3 class="c-overview-title float-left">Publicaciones </h3>
+    <div class="row">
+      <div class="cd-curriculam-top clearfix col-12">
+        <div class="d-flex justify-content-between align-items-center">
+          <h3 class="c-overview-title">Publicaciones </h3>
+          {% if teacher_mode == False %}                  
+            <a href="{% url 'show_calification' course.id  %}" class="btn btn-success">Ver Calificaciones </a>
+          {% endif %}
+        </div>
       </div>
     </div>
     <div class="col s3">
-      {{  teacher_mode  }}
       {% if teacher_mode == True %}
-    <a href="{% url 'new-post' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><em class="material-icons" style="padding-top: 15px;">add</em></a>
-    {% endif %}
+        <a href="{% url 'new-post' course.id %}" class="btn-floating btn-large waves-effect waves-light red right"><em class="material-icons" style="padding-top: 15px;">add</em></a>
+      {% endif %}
     </div></div>
       <div class="accordion" id="accordionExample">
         {% for post in course.posts.all %}
@@ -49,11 +53,14 @@
                          {% else %}
                            <span class="badge badge-success" style="background-color:green; color:white">Activa</span>
                          {% endif %}
+                         {% if teacher_mode == False %}                  
+
                          {% for homework in homeworkUser.all|slice:":1" %}
                             {% if homework.assignment_id == post.assignment.post_ptr_id %}
                               <span class="badge badge-success" style="background-color:green; color:white">Entregada</span>
                             {% endif %}
                           {% endfor %}                          
+                          {% endif %}
                         <span class="badge bg-warning text-white">Fecha de entrega : {{ post.assignment.due_datetime }}</span> 
                         <span class="badge bg-danger text-white">TAREA</span> 
                       {% endif %}
@@ -72,19 +79,20 @@
                           <li>
                               archivo: <a target='_blank' href="{{ post.file.url }}" title="file">  <i class="material-icons">file_download</i>Descargar</a>
                           </li>
-                          {% if post.assignment.due_datetime %}
-                          <a href="{% url 'send_homework' post.course.id post.id  %}" class="btn btn-success
-                          {% for homework in homeworkUser.all|slice:':1' %}
-                            {% if homework.assignment_id == post.assignment.post_ptr_id %}
-                              disabled" style='color:black !important; font-weight:bold;'
+                          {% if teacher_mode == False %}                  
+                            {% if post.assignment.due_datetime %}
+                            <a href="{% url 'send_homework' post.course.id post.id  %}" class="btn btn-success
+                            {% for homework in homeworkUser.all|slice:':1' %}
+                              {% if homework.assignment_id == post.assignment.post_ptr_id %}
+                                disabled" style='color:black !important; font-weight:bold;'
+                              {% endif %}
+                            {% endfor %}                               
+                            "> 
+                              Entregar tarea
+                            </a>                                
+                              </li>
                             {% endif %}
-                          {% endfor %}                               
-                          "> 
-                            Entregar tarea
-                          </a>                                
-                            </li>
                           {% endif %}
-
 
   
                           
