@@ -49,6 +49,7 @@ class Migration(migrations.Migration):
                 ('content', models.CharField(max_length=300, null=True)),
                 ('creation_timestamp', models.DateTimeField(auto_now=True)),
                 ('file', models.FileField(blank=True, null=True, upload_to=course.models.post_storage_path)),
+                ('is_asgmt', models.BooleanField(default=False)),
                 ('course', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='posts', to='course.course')),
             ],
         ),
@@ -67,6 +68,25 @@ class Migration(migrations.Migration):
                 ('choice_text', models.CharField(max_length=200)),
                 ('votes', models.IntegerField(default=0)),
                 ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='course.question')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Assignment',
+            fields=[
+                ('post_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='course.post')),
+                ('due_datetime', models.DateTimeField()),
+            ],
+            bases=('course.post',),
+        ),
+        migrations.CreateModel(
+            name='Homework',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('turn_in_timestamp', models.DateTimeField(auto_now=True)),
+                ('grade', models.IntegerField(default=0, validators=[django.core.validators.MaxValueValidator(20), django.core.validators.MinValueValidator(0)])),
+                ('file', models.FileField(blank=True, null=True, upload_to=course.models.homework_storage_path)),
+                ('assignment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='homeworks', to='course.assignment')),
+                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='homeworks', to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

@@ -1,6 +1,5 @@
-from enum import unique
-from pickle import NONE
 from django.db import models
+from django.core import validators
 from django.urls import reverse
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
@@ -76,6 +75,7 @@ class Post(models.Model):
     content = models.CharField(max_length=300, null=True)
     creation_timestamp = models.DateTimeField(auto_now=True)
     file = models.FileField(upload_to=post_storage_path, null=True, blank=True)
+    is_asgmt = models.BooleanField(default=False)
     def get_storage_path(self):
         return f'{self.course.get_storage_path()}/posts/{self.pk}'
 		
@@ -98,7 +98,6 @@ class Homework(models.Model):
         default = 0
     )
     file = models.FileField(upload_to=homework_storage_path, null=True, blank=True)
-    # weight
 
     def get_storage_path(self):
         return f'{self.assignment.get_storage_path()}/homeworks/{self.pk}'

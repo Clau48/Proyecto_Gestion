@@ -1,11 +1,12 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.db.models import Q
-from course.models import Course, Post
-from course.forms import NewCourseForm, NewPostForm
+from course.models import Assignment, Course, Post
+from course.forms import NewAssignmentForm, NewCourseForm, NewPostForm
 
 # Create your views here.
 
@@ -140,3 +141,60 @@ def show_posts(request, course_id):
 
     return render(request, 'post/posts.html', context)
 
+def new_assignment(request, course_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+
+    if user != course.user:
+        return HttpResponseForbidden()
+    else:
+        if request.method == 'POST':
+            form = NewAssignmentForm(request.POST, request.FILES)
+            if form.is_valid():
+                title = form.cleaned_data.get('title')
+                content = form.cleaned_data.get('content')
+                due_datetime = form.cleaned_data.get('due_datetime')
+                file = form.cleaned_data.get('file')
+                is_asgmt = form.cleaned_data.get('is_asgmt')
+                
+                post_asgmt = Assignment.objects.create(title=title, content=content, file=file, course_id=course_id, due_datetime=due_datetime, is_asgmt=is_asgmt)
+                course.posts.add(post_asgmt)
+                course.save()
+                return redirect('show_posts',course_id=course_id)
+        else:
+            form = NewAssignmentForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'assignment/newassignment.html', context)
+
+
+def edit_assignment(request, course_id, assignment_id):
+    user = request.user
+    course = get_object_or_404(Course, id=course_id)
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+
+    if user != course.user:
+        return HttpResponseForbidden()
+    else:
+        if request.method == 'POST':
+            form = NewAssignmentForm(request.POST, request.FILES, instance=assignment)
+            if form.is_valid():
+                assignment.title = form.cleaned_data.get('title')
+                assignment.content = form.cleaned_data.get('content')
+                assignment.due_datetime = form.cleaned_data.get('due_datetime')
+                assignment.file = form.cleaned_data.get('file')
+                assignment.save()
+                return redirect('show_posts', course_id=course_id)
+        else:
+            form = NewAssignmentForm(instance=assignment)
+            form.file = assignment.file
+
+    context = {
+        'form': form,
+        'course_id': course_id,
+        'assignment_id': assignment_id
+    }
+    return render(request, 'assignment/newassignment.html', context)
