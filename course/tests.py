@@ -1,15 +1,11 @@
 from django.test import TestCase
 # from .models import Profile
 from django.contrib.auth.models import User
-
 from django.http import HttpRequest
-from course.views import NewPost, show_posts
-from .models import Course, Post
-from django.contrib.auth import authenticate
-from django.contrib.sessions.middleware import SessionMiddleware
+from course.views import *
+from .models import Assignment, Course, Post
 from datetime import datetime
-from django.core.handlers.wsgi import WSGIRequest
-from io import BytesIO
+import pytz
 from django.http.request import QueryDict
 from django.middleware.csrf import get_token
 # from .views import (side_nav_info, register, edit_profile)
@@ -36,6 +32,14 @@ class CourseTestCase(TestCase):
                                         content='postcontent',
                                         file='None',
                                         course_id=self.course.id
+        )
+        self.assignment = Assignment.objects.create(title='test_asgmt',
+                                                    content='assignmentcontent',
+                                                    file='None',
+                                                    course_id=self.course.id,
+                                                    is_asgmt=True,
+                                                    due_datetime=datetime(2022, 4, 30, 17, 45, 0, 127325, tzinfo=pytz.UTC),
+
         )
     #def test_login(self):
     #    user = authenticate(username='luiggi', password='luiggi')
@@ -83,3 +87,45 @@ class CourseTestCase(TestCase):
     def test_usersInCourse(self):
         request = HttpRequest()
         assert usersInCourse(request, self.course.id)
+
+    def test_new_assignment(self):
+        course = Course.objects.get(title='test_course')
+        req = self.factory.post(f'{course.id}/posts/newassignment')
+        req.user = self.user
+
+        info = {'csrfmiddlewaretoken': get_token(req),
+                'title': 'test_post_title',
+                'content': 'test_post_content',
+                'file': None,
+                'course_id': course.id,
+                'is_asgmt': True,
+                'due_datetime': '2022-04-30 17:45:00.000000'
+                }
+
+        q = QueryDict('', mutable=True)
+        q.update(info)
+        req.POST = q
+
+        new_assignment(req,course.id)
+        assignment = Assignment.objects.get(title = info['title'])
+        assert assignment
+
+    def test_edit_assignment(self):
+        req = self.factory.post(f'{self.course.id}/posts/{self.assignment.id}/editassignment')
+        req.user = self.user
+
+        info = {'csrfmiddlewaretoken': get_token(req),
+                'title': 'new_asgmt_title',
+                'content': 'new_asgmt_content',
+                'file': None,
+                'due_datetime': datetime(2022, 4, 20, 20, 8, 7, 127325, tzinfo = pytz.UTC),
+                'is_asgmt': True,
+        }
+
+        q = QueryDict('', mutable=True)
+        q.update(info)
+        req.POST = q
+
+        edit_assignment(req, self.course.id, self.assignment.id)
+        asgmt = Assignment.objects.all().filter(title = info['title'])
+        assert asgmt
