@@ -310,7 +310,19 @@ def show_calification(request, course_id):
         # messages.error(request, 'Error, no se pudo cargar la pagina')
         # return redirect('/course/%s/posts' % course_id)            
 
-    
+def notification_new_asignement(user, domain, course, *to_email):
+    subject = f'Se ha agregado una nueva tarea en el curso {course.name}'
+    html_message = render_to_string("courses/notification_assignement.html", {
+        "domain": domain,
+        "user": user,
+        "course": course
+    },)
+    from_email = user.email
+
+    plain_message = strip_tags(html_message)
+    print([to_email])
+    return 1 # TODO: Descomentar esto
+    # return send_mail(subject, plain_message, from_email , [to_email], html_message=html_message)
         
 def new_assignment(request, course_id):
     user = request.user
@@ -330,6 +342,13 @@ def new_assignment(request, course_id):
                 
                 post_asgmt = Assignment.objects.create(title=title, content=content, file=file, course_id=course_id, due_datetime=due_datetime, is_asgmt=is_asgmt)
                 course.posts.add(post_asgmt)
+
+                if is_asgmt:
+                    #TODO: enviar correo de creacion de tareas aqui
+                    users_in_course = Course_User.objects.filter(course=course_id).all()
+                    notification_new_asignement(user, 'https://localhost/8000', course, users_in_course)
+                    pass
+
                 course.save()
                 return redirect('show_posts',course_id=course_id)
         else:
