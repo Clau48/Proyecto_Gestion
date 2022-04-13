@@ -10,7 +10,7 @@ from django.http.request import QueryDict
 from django.middleware.csrf import get_token
 # from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
-from .views import send_link_course, usersInCourse
+from .views import send_link_course, usersInCourse, send_notification_new_asignement
 
 class CourseTestCase(TestCase):
     def setUp(self):
@@ -129,3 +129,7 @@ class CourseTestCase(TestCase):
         edit_assignment(req, self.course.id, self.assignment.id)
         asgmt = Assignment.objects.all().filter(title = info['title'])
         assert asgmt
+
+    def test_send_notification_new_asignement(self):
+        send_mail = send_notification_new_asignement(self.user, 'http://localhost:8000', self.course, [self.user])
+        self.assertEqual(send_mail, 1)
