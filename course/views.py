@@ -85,6 +85,9 @@ def edit_course(request, course_id):
 	user = request.user
 	course = get_object_or_404(Course, id=course_id)
 
+	if user != course.user:
+		return HttpResponseForbidden()
+
 	if request.method == 'POST':
 		form = NewCourseForm(request.POST, request.FILES, instance=course)
 		if form.is_valid():
@@ -109,7 +112,7 @@ def edit_course(request, course_id):
 
 			course.save()
 
-			return redirect('../../courses/')
+			return redirect("mycourses")
 	else:
 		form = NewCourseForm(instance=course)
 
@@ -118,6 +121,21 @@ def edit_course(request, course_id):
 	}
 
 	return render(request, 'courses/newcourse.html', context)
+
+@login_required
+def delete_course(request, course_id):
+	user = request.user
+	course = get_object_or_404(Course, id=course_id)
+
+	if user != course.user:
+		return HttpResponseForbidden()
+
+	course.deleted = True
+	course.save()
+
+	messages.info(request,'Curso eliminado exitosamente')
+
+	return redirect("mycourses")
 
 def ValidateTime(request, time_start, time_end):
 	ts = str(time_start).split(":")

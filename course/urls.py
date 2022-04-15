@@ -8,6 +8,7 @@ urlpatterns = [
 	path('newcourse/', new_course, name='newcourse'),
 	path('<course_id>/editcourse', edit_course, name='edit_course'),
 	path('mycourses/', show_mycourses, name='mycourses'),
+	path('<course_id>/deletecourse', delete_course, name='deletecourse'),
 	path('<course_id>/', show_course_description, name='show_description'),
 	path('<course_id>/posts/notas', show_calification, name='show_calification'),
 	path('<course_id>/posts', show_posts, name='show_posts'),

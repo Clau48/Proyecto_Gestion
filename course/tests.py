@@ -1,3 +1,4 @@
+from operator import truediv
 from django.test import TestCase
 # from .models import Profile
 from django.contrib.auth.models import User
@@ -11,6 +12,7 @@ from django.middleware.csrf import get_token
 # from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
 from .views import send_link_course, usersInCourse
+from django.contrib.messages.storage.fallback import FallbackStorage
 
 class CourseTestCase(TestCase):
     def setUp(self):
@@ -74,6 +76,20 @@ class CourseTestCase(TestCase):
             assert True
         except:
             assert False
+
+    def test_delete_course(self):
+        req = self.factory.get(f'course/{self.course.id}/deletecourse')
+        req.user = self.user
+
+        setattr(req, 'session', 'session')
+        messages = FallbackStorage(req)
+        setattr(req, '_messages', messages)
+
+        self.course.deleted = True
+
+        delete_course(req, self.course.id)
+
+        self.assertEqual(self.course.deleted, True)
 
     def test_send_link_course(self):
         user_owner =  self.user
