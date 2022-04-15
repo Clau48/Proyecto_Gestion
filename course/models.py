@@ -55,6 +55,7 @@ class Course(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner')
     codeinvitation = models.UUIDField(unique=True , default=uuid.uuid4, editable=False)
     enrolled = models.ManyToManyField(User)
+    deleted = models.BooleanField(default=False)
     # modules = models.ManyToManyField(Module)
     # questions = models.ManyToManyField(Question)
 
