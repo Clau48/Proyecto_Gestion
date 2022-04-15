@@ -80,6 +80,39 @@ def new_course(request):
 
 	return render(request, 'courses/newcourse.html', context)
 
+@login_required
+def edit_course(request, course_id):
+	user = request.user
+	course = get_object_or_404(Course, id=course_id)
+	if request.method == 'POST':
+		form = NewCourseForm(request.POST, request.FILES, instance=course)
+		if form.is_valid():
+			time_start = form.cleaned_data.get('time_start')
+			time_end = form.cleaned_data.get('time_end')
+
+			if not ValidateTime(request, time_start, time_end):
+				context = {'form': form}
+				return render(request, 'courses/newcourse.html', context)
+
+			picture = form.cleaned_data.get('picture')
+			title = form.cleaned_data.get('title')
+			description = form.cleaned_data.get('description')
+			syllabus = form.cleaned_data.get('syllabus')
+
+			Course.objects.filter(id=course_id).update (picture=picture, 
+			title=title, description=description, time_start=time_start,
+			time_end=time_end, syllabus=syllabus, user=user)
+
+			return redirect('../../courses/')
+	else:
+		form = NewCourseForm(instance=course)
+
+	context = {
+		'form': form,
+	}
+
+	return render(request, 'courses/newcourse.html', context)
+
 def ValidateTime(request, time_start, time_end):
 	ts = str(time_start).split(":")
 	te = str(time_end).split(":")

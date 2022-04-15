@@ -6,6 +6,7 @@ urlpatterns = [
 	#Course - Classroom Views
 	path('', showCourse, name='show_courses'),
 	path('newcourse/', new_course, name='newcourse'),
+	path('<course_id>/editcourse', edit_course, name='edit_course'),
 	path('mycourses/', show_mycourses, name='mycourses'),
 	path('<course_id>/', show_course_description, name='show_description'),
 	path('<course_id>/posts/notas', show_calification, name='show_calification'),
