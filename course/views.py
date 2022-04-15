@@ -80,6 +80,19 @@ def new_course(request):
 
 	return render(request, 'courses/newcourse.html', context)
 
+@login_required
+def delete_course(request, course_id):
+	user = request.user
+	course = get_object_or_404(Course, id=course_id)
+
+	if user != course.user:
+		return HttpResponseForbidden()
+
+	# TODO: modificar campo es_borrado a true
+	# TODO: agregar mensaje de curso borrado
+
+	return redirect("mycourses")
+
 def ValidateTime(request, time_start, time_end):
 	ts = str(time_start).split(":")
 	te = str(time_end).split(":")
