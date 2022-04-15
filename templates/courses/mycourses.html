@@ -54,18 +54,26 @@
                                     <!-- <a href="#">0 comentarios</a> -->
                                     <div class="row d-flex">
                                         <div class="col-4 d-flex justify-content-start">
-                                            <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code="{{course.codeinvitation}}" data-courseid="{{course.id}}" style="background-color:#87CEEB"> INVITAR </button>
+                                            <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code="385fca96-bee5-4e61-879a-83c377fc4ab1" data-courseid="1" style="background-color:#87CEEB"> INVITAR </button>
                                         </div>
                                         <div class="col-4 d-flex justify-content-start">
-                                            <button class="btn btn-info btn-send-code btn-course-users" data-bs-toggle="modal" data-bs-target="#modal-users" data-whatever="@mdo" data-courseid="{{course.id}}" style="background-color:#87CEEB"> ALUMNO </button>
+                                            <button class="btn btn-info btn-send-code btn-course-users" data-bs-toggle="modal" data-bs-target="#modal-users" data-whatever="@mdo" data-courseid="1" style="background-color:#87CEEB"> ALUMNO </button>
                                         </div>
                                         <div class="col-4 d-flex justify-content-end">
-                                            <a href="/course/{{course.id}}/editcourse" class="btn btn-success" style="background-color:green;color:white"><i class="material-icons">edit</i></a> 
+                                            <a href="/course/{{course.id}}/posts" class="btn btn-success" style="background-color:green;color:white"><i class="material-icons">note_add</i></a> 
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex">
+                                        <div class="col-5 d-flex justify-content-end">
+                                            <a href="/course/{{course.id}}/editcourse" type="button" class="btn btn-info" style="color:white"><i class="material-icons">edit</i></a> 
+                                        </div>
+                                        <div class="col-5 d-flex justify-content-end">
+                                            <a href="/course/{{course.id}}/deletecourse" type="button" class="btn btn-danger" style="background-color:red;color:white"><i class="material-icons">delete</i></a> 
                                         </div>
                                     </div>
                                 </div>
                                 <div class="blog-title-text-2">
-                                    <h3><a href="/course/{{course.id}}/posts"> {{ course.title }} </a>
+                                    <h3><a href="#"> {{ course.title }} </a>
                                     </h3>
                                     <p>{{ course.description }}
                                     </p>
