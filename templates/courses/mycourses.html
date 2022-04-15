@@ -33,6 +33,7 @@
             <div class="blog-feed-content-wrap">
                 <div class="row justify-content-center">
                     {% for course in courses %}
+                    {% if course.deleted == 0 %}
                     <!-- COMIENZA CURSO -->
                     <div class="col-lg-4 col-md-6">
                         <div class="blog-img-text-2 headline pera-content">
@@ -82,6 +83,7 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                     {% endfor %}             
 
                  
