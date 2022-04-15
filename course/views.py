@@ -84,6 +84,7 @@ def new_course(request):
 def edit_course(request, course_id):
 	user = request.user
 	course = get_object_or_404(Course, id=course_id)
+
 	if request.method == 'POST':
 		form = NewCourseForm(request.POST, request.FILES, instance=course)
 		if form.is_valid():
@@ -99,9 +100,14 @@ def edit_course(request, course_id):
 			description = form.cleaned_data.get('description')
 			syllabus = form.cleaned_data.get('syllabus')
 
-			Course.objects.filter(id=course_id).update (picture=picture, 
-			title=title, description=description, time_start=time_start,
-			time_end=time_end, syllabus=syllabus, user=user)
+			course.title= title
+			course.description = description
+			course.syllabus = syllabus
+			course.picture = picture
+			course.time_start = time_start
+			course.time_end = time_end
+
+			course.save()
 
 			return redirect('../../courses/')
 	else:

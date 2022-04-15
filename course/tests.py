@@ -129,3 +129,29 @@ class CourseTestCase(TestCase):
         edit_assignment(req, self.course.id, self.assignment.id)
         asgmt = Assignment.objects.all().filter(title = info['title'])
         assert asgmt
+
+    def test_edit_course(self):
+        req = self.factory.post(f'{self.course.id}/editcourse')
+        req.user = self.user
+
+        info = {'csrfmiddlewaretoken': get_token(req),
+                'picture': 'picture',
+                'title':'test_course',
+                'description':'test',
+                'day':'LU',
+                'time_start':'10:00',
+                'time_end':'11:00',
+                'syllabus':'Syllabus',
+                'title': 'curso',
+                'picture': 'new_asgmt_content',
+                'file': None,
+                'user': self.user,
+        }
+
+        q = QueryDict('', mutable=True)
+        q.update(info)
+        req.POST = q
+
+        edit_course(req, self.course.id)
+
+        self.assertEqual(self.course.title, 'test_course')
