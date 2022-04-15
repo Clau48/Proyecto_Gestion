@@ -91,7 +91,7 @@ def delete_course(request, course_id):
 	course.deleted = True
 	course.save()
 
-	# TODO: agregar mensaje de curso borrado
+	messages.info(request,'Curso eliminado exitosamente')
 
 	return redirect("mycourses")
 

@@ -28,6 +28,16 @@
 
     </section>
 
+    <section>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="alert alert-danger">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+
     <section id="blog-feed" class="blog-feed-section">
         <div class="container">
             <div class="blog-feed-content-wrap">
@@ -86,7 +96,7 @@
                     {% endif %}
                     {% endfor %}             
 
-                 
+                     
                     <!-- TERMINA CURSO --> <!-- copiar y pegar desde 'comienza' hasta 'termina' para previsualizar, está responsive-->
                 </div>
             </div>
