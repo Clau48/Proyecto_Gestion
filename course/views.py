@@ -88,7 +88,9 @@ def delete_course(request, course_id):
 	if user != course.user:
 		return HttpResponseForbidden()
 
-	# TODO: modificar campo es_borrado a true
+	course.deleted = True
+	course.save()
+
 	# TODO: agregar mensaje de curso borrado
 
 	return redirect("mycourses")
