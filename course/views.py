@@ -369,3 +369,24 @@ def edit_assignment(request, course_id, assignment_id):
         'assignment_id': assignment_id
     }
     return render(request, 'assignment/newassignment.html', context)
+
+
+
+@login_required
+def teacher_calificate(request, course_id, assignment_id):
+    users_query = Course_User.objects.filter(course=course_id).all().prefetch_related('user')
+    # users_query = users_query.user
+    # users_query = users_query.user_set.all()
+    posts = Post.objects.filter(course_id=course_id)
+    assignmentValidate = Assignment.objects.filter(post_ptr_id__in=posts)
+    homework = Homework.objects.filter(assignment__in=assignmentValidate)
+    data = users_query
+    for d in data:
+        d.homework = homework.filter(assignment_id=assignment_id, student_id=d.user.id).first()
+  
+    context = {
+        'course_id': course_id,
+        'assignment_id': assignment_id,
+        'alumnos':data
+    }
+    return render(request, 'assignment/calificar_tarea.html', context)

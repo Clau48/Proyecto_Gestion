@@ -18,4 +18,5 @@ urlpatterns = [
 	path("inscription/<codeInvitation>/", inscriptionLink, name="url_inscription"),
 	path('<course_id>/posts/newassignment', new_assignment, name='new-assignment'),
 	path('<course_id>/posts/<assignment_id>/editassignment', edit_assignment, name='edit-assignment'),
+	path('<course_id>/posts/<assignment_id>/calificate', teacher_calificate, name='calification_assignment'), 
 ]

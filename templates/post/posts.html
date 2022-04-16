@@ -233,6 +233,9 @@
                     <li>
                       <a href="{% url 'edit-assignment' course.id post.id %}" class="btn-small left"><em class="material-icons">add</em>Editar Tarea</a>
                     </li>
+                    <li>
+                      <a href="{% url 'calification_assignment' course.id post.id %}" class="btn-small left"><em class="material-icons">arrow_forward</em>Calificar Tarea</a>
+                    </li>
                   {% endif %}
                   </ul>
                 </div>
