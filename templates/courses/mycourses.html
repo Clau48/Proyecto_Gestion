@@ -60,7 +60,7 @@
                                             <button class="btn btn-info btn-send-code btn-course-users" data-bs-toggle="modal" data-bs-target="#modal-users" data-whatever="@mdo" data-courseid="{{course.id}}" style="background-color:#87CEEB"> ALUMNO </button>
                                         </div>
                                         <div class="col-4 d-flex justify-content-end">
-                                            <a href="/course/1/posts" class="btn btn-success" style="background-color:green;color:white"><i class="material-icons">note_add</i></a> 
+                                            <a href="{% url 'show_posts' course.id %}" class="btn btn-success" style="background-color:green;color:white"><i class="material-icons">note_add</i></a> 
                                         </div>
                                     </div>
                                 </div>
