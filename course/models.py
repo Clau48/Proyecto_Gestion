@@ -96,10 +96,11 @@ class Homework(models.Model):
     grade = models.IntegerField(
         validators=[
             validators.MaxValueValidator(20),
-            validators.MinValueValidator(0)
+            validators.MinValueValidator(-1)
         ],
-        default = 0
+        default = -1
     )
+    now_calification = models.BooleanField(default=False)
     file = models.FileField(upload_to=homework_storage_path, null=True, blank=True)
 
     def get_storage_path(self):

@@ -164,15 +164,21 @@ body {
 
 		</style>
 
+		<style>
+			.div-hidden{
+				display:none !important;
+			}
+			.btn-modificar{
+				background-color: #1565c0 !important;
+			}
+		</style>
 		{% endblock %}
 
 {% block content %}
 <blockquote class="blockquote">
 	<p class="m-4 h1"><!-- nombre tarea -->TAREA 1</p>
 	<footer class="blockquote-footer">Califique el trabajo de los alumnos</footer>
-	<div class="alert alert-success" role="alert">
-		Cambios realizados con éxito
-	</div>
+	<div id="messageData" class="alert alert-personalize div-hidden" role="alert"></div>
 </blockquote>
 <div class="row">
 	{% comment %} <div class="col-1">
@@ -242,11 +248,13 @@ body {
 							</div>
 							{% if alumno.homework %}
 
-							<ul class="list-group list-group-flush">
+							{% if alumno.homework.file %}
+							{% comment %} <ul class="list-group list-group-flush">
 								<li class="list-group-item">
-									<a href="#" class="card-link"><i class="material-icons">file_download</i>{{ alumno.homework.file }}</a>
+									<a target='_blank' href="{{ '/media/courses/'|add:course_id|add:'/posts/1/Diagrama_en_blanco_4.png' }}" title="file" class="card-link"><i class="material-icons">file_download</i>{{ alumno.homework.file }}</a>
 								</li>
-							</ul>
+							</ul> {% endcomment %}
+							{% endif %}
 
 							<div class="card-body">
 								<p class="card-text"><strong>Comentario Privado:</strong> {% firstof alumno.homework.comentary 'SIN COMENTARIO' %}</p>
@@ -256,19 +264,57 @@ body {
 								<table class="table table-hover">
 									<thead>
 										<tr>
-											<th scope="col">Calificación</th>
-											<th scope="col">Acción</th>
+											<th style="width:10%;" scope="col">Calificación</th>
+											<th style="width:50%;" scope="col"></th>
+											<th style="width:40%;" scope="col">Acción</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr>
 											{% if alumno.homework %}
-												<td>{{ alumno.homework.grade }} /20</td>
+												<td  class="sendHomework">
+													<form method="POST" action="{% url 'addCalification' %}">
+														{% csrf_token %}
+														<div class="divHomework d-flex justify-content-center align-items-center">
+															{% if alumno.homework.grade < 0 %}
+															<input class="inputValueGrade" name="grade" value="0" min="0" max="20"  type="number" required> /20
+															{% else %}
+															<input class="inputValueGrade" name="grade" value="{{ alumno.homework.grade }}" min="0" max="20"  type="number" required> /20
+															{% endif %}
+															<input type="hidden" name="idUser" value="{{ alumno.user_id }}">
+															<input type="hidden" name="idCourse" value="{{ course_id }}">
+															<input type="hidden" name="idPost" value="{{ assignment_id }}">
+															<input type="hidden" name="idHomework" value="{{ alumno.homework.id }}">
+														</div>
+													</form>
+												</td>
+												<td></td>
 											{% else %}
-												<td>{{ alumno.homework.grade }} /20</td>
+												<td class="sendHomework">
+													<div class="divHomework d-flex justify-content-center align-items-center">
+														<form method="POST" action="{% url 'addCalification' %}">
+															{% csrf_token %}
+															<div class="divHomework d-flex justify-content-center align-items-center">
+																<input class="inputValueGrade" name="grade" value="0" min="0" max="20"  type="number" required> /20
+																<input type="hidden" name="idUser" value="{{ alumno.user_id }}">
+																<input type="hidden" name="idCourse" value="{{ course_id }}">
+																<input type="hidden" name="idPost" value="{{ assignment_id }}">
+																<input type="hidden" name="idHomework" value="{{ alumno.homework.id }}">
+															</div>
+														</form>														
+													</div>
+												</td>
+												<td></td>
 											{% endif %}
-											<td><a class="waves-effect waves-light btn-small">Calificar</a>
-											<a class="waves-effect waves-light btn-small editar" style="background-color: #1565c0;">Modificar</a></td>
+											{% if alumno.homework %}
+												{% if alumno.homework.now_calification == 0 %}
+													<td><a class="waves-effect waves-light btn-small btn-calificar">Calificar</a></td>
+												{% else %}
+													<td><a class="waves-effect waves-light btn-small btn-calificar btn-modificar">Modificar</a></td>
+												{% endif %}
+											{% else %}
+												<td><a class="waves-effect waves-light btn-small btn-calificar">Calificar</a></td>
+											{% endif %}
 										</tr>
 									</tbody>
 								</table>
@@ -281,18 +327,76 @@ body {
 		</div>
 	</div>
 	<!--</form>-->
-
 </div>
-<!--<div id="snackbar">Tarea entregada correctamente</div>-->
+{% endblock %}
 
 
-{% comment %} <script>
-	function myFunction() {
-	  var x = document.getElementById("snackbar");
-	  x.className = "show";
-	  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-	}
+{% block javascript %}
+	<script>
+	$('.btn-calificar').on('click',function(){
+		let form = $(this).closest('td').siblings('.sendHomework').find('form')
+		let grade = form.find('input[name="grade"]').val();
+		let idUser = form.find('input[name="idUser"]').val();
+		let idCourse = form.find('input[name="idCourse"]').val();
+		let idPost = form.find('input[name="idPost"]').val();
+		let idHomework = form.find('input[name="idHomework"]').val();
+		let token = form.find('input[name="csrfmiddlewaretoken"]').val();	
+		let button = $(this);
+		let htmlButton = $(this).html();
+		$.ajax({
+			url: '{% url 'addCalification' %}',
+			headers: {'X-CSRFToken': token },
+			type: 'POST',
+			data: {
+				'grade':grade,
+				'idUser':idUser,
+				'idCourse':idCourse,
+				'idPost':idPost,
+				'idHomework':idHomework
+				},
+			dataType: 'json',
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function(data){
+				dataD =JSON.stringify(data);
+				dataD = JSON.parse(dataD);
+				$('#messageData').html(dataD.data[0].msg);
+				$('#messageData').removeClass('div-hidden');
+				$('#messageData').addClass('alert-success');
+				$(button).addClass('btn-modificar');
+				$(button).html('MODIFICAR');
+			},
+			beforeSend: function(){
+				$('#messageData').addClass('div-hidden');
+				$('#messageData').removeClass('alert-danger');
+				$('#messageData').removeClass('alert-success');
+				$(button).html(`
+				<div class="spinner-border" role="status">
+					<span class="visually-hidden">Cargando...</span>
+				</div>
+				`);
+			},
+			error: function(data,status,error){
+				dataD = data.responseJSON;
+				if(data.status == 422){
+					$('#messageData').html(dataD.msg);
+				}else if(data.status == 404){
+					$('#messageData').html(dataD.msg);
+				}else if(data.status == 403){
+					$('#messageData').html('Error, necesitas autenticarte para realizar esta accion');
+				}else if(data.status == 500){
+					$('#messageData').html('Error de servidor');
+				}else{
+					$('#messageData').html('Error desconocido');
+				}
+				$('#messageData').removeClass('div-hidden');
+				$('#messageData').addClass('alert-danger');
+				$(button).html(htmlButton);
+			}
+
+		});
+	});	
 	</script>
-</html> {% endcomment %}
 
 {% endblock %}

@@ -175,13 +175,13 @@
                      {% if post.assignment.due_datetime > datetime.now %}
                       <span class="badge badge-danger" style="background-color:red; color:white">Finalizada</span>
                      {% else %}
-                       <span class="badge badge-success" style="background-color:green; color:white">Activa</span>
+                       {% comment %} <span class="badge badge-success" style="background-color:green; color:white">Activa</span> {% endcomment %}
                      {% endif %}
                      {% if teacher_mode == False %}                  
 
                      {% for homework in homeworkUser.all %}
                         {% if homework.assignment_id == post.assignment.post_ptr_id %}
-                          <span class="badge badge-success" style="background-color:green; color:white">Entregada</span>
+                          {% comment %} <span class="badge badge-success" style="background-color:green; color:white">Entregada</span> {% endcomment %}
                         {% endif %}
                       {% endfor %}                          
                       {% endif %}
@@ -214,9 +214,12 @@
                       {% if post.assignment.due_datetime %}
                       <a href="{% url 'send_homework' post.course.id post.id  %}" class="btn btn-success
                       {% for homework in homeworkUser.all %}
-                        {% if homework.assignment_id == post.assignment.post_ptr_id %}
+                        {% if post.assignment.due_datetime < time_now %}
+                          disabled" style='color:black !important; font-weight:bold;'
+                        {% elif homework.assignment_id == post.assignment.post_ptr_id %}
                           disabled" style='color:black !important; font-weight:bold;'
                         {% endif %}
+
                       {% endfor %}                               
                       "> 
                         Entregar tarea

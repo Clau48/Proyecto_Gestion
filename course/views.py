@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import *
 from multiprocessing import context
@@ -154,6 +155,7 @@ def show_posts(request, course_id):
         'course': course,
         'posts': posts,
         'homeworkUser': homeworkUser,
+        'time_now' : datetime.datetime.now(),        
     }
 
     return render(request, 'post/posts.html', context)
@@ -189,7 +191,7 @@ def send_homework_post(request,course_id,post_id):
             file = request.POST['file']
             comentary = request.POST['comentary']
             idAssigment = post_id   
-            grade = 0
+            grade = -1
             idUser = request.user.id
             date = datetime.datetime.now()
             assignment = Assignment.objects.get(post_ptr_id=idAssigment)
@@ -292,10 +294,10 @@ def show_calification(request, course_id):
         for d in data:
             d.homework = homework.filter(assignment_id=d.post_ptr_id, student_id=request.user.id).first()
             d.post = posts.filter(id=d.post_ptr_id)
-            if d.homework and d.homework.grade != 0:
+            if d.homework and d.homework.grade != 0 and d.homework.grade != -1:
                 data_prom += d.homework.grade
                 quantity_prom += 1
-        quantity_prom = quantity_prom == 0 if 1 else quantity_prom
+        quantity_prom = 1 if quantity_prom == 0 else quantity_prom
         data_prom = data_prom / quantity_prom
         data_aditional = {}
         data_aditional['prom'] = data_prom
@@ -390,3 +392,41 @@ def teacher_calificate(request, course_id, assignment_id):
         'alumnos':data
     }
     return render(request, 'assignment/calificar_tarea.html', context)
+
+@login_required
+def addCalification(request):
+    try:
+        # return JsonResponse({'msg': 'Error, dato requerido'}, status=422)        
+        grade = request.POST['grade']
+        # return JsonResponse({'msg': grade})
+        if grade == '' or grade == None or grade == NULL:
+            return JsonResponse({'msg': 'Error, dato requerido'}, status=422)        
+        grade = int(grade)
+        if grade > 20 or grade < 0:
+            return JsonResponse({'msg': 'Error, calificacion no valida. Debe estar entre 0 a 20'}, status=422)                
+        data = []
+        homework = Homework.objects.filter(assignment=request.POST['idPost'], student_id=request.POST['idUser'])
+        if homework:
+            homework.update(grade=request.POST['grade'], now_calification=True)
+            mensaje = "Calificacion agregada"
+            status = True
+        else:
+            mensaje = "no existe"
+            Homework.objects.create(assignment_id = request.POST['idPost'], student_id = request.POST['idUser'], grade = request.POST['grade'],
+                            now_calification=True, turn_in_timestamp=datetime.datetime.now(), description_short="NO SE ENVIO LA TAREA")
+            mensaje = "Calificacion agregada"
+            status = True
+        data = []
+        user_dict = {
+            "grade": request.POST['grade'],
+            "idUser" : request.POST['idUser'],
+            "idCourse" : request.POST['idCourse'],
+            "idPost" : request.POST['idPost'],
+            "idHomework" : request.POST['idHomework'],
+            "msg" : mensaje,
+            "status" : status
+        }
+        data.append(user_dict)
+        return JsonResponse({'data': data}, status=200)    
+    except:
+        return JsonResponse({'msg': 'Error, no pudo agregar la calificacion'}, status=404)    
