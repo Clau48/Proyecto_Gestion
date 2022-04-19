@@ -11,8 +11,8 @@ from django.http.request import QueryDict
 from django.middleware.csrf import get_token
 # from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
-from .views import send_link_course, usersInCourse
 from django.contrib.messages.storage.fallback import FallbackStorage
+from .views import send_link_course, usersInCourse, send_notification_new_asignement
 
 class CourseTestCase(TestCase):
     def setUp(self):
@@ -146,6 +146,7 @@ class CourseTestCase(TestCase):
         asgmt = Assignment.objects.all().filter(title = info['title'])
         assert asgmt
 
+<<<<<<< HEAD
     def test_edit_course(self):
         req = self.factory.post(f'{self.course.id}/editcourse')
         req.user = self.user
@@ -171,3 +172,8 @@ class CourseTestCase(TestCase):
         edit_course(req, self.course.id)
 
         self.assertEqual(self.course.title, 'test_course')
+=======
+    def test_send_notification_new_asignement(self):
+        send_mail = send_notification_new_asignement(self.user, 'http://localhost:8000', self.course, [self.user])
+        self.assertEqual(send_mail, 1)
+>>>>>>> notificar_tarea
