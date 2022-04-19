@@ -1,3 +1,4 @@
+from operator import truediv
 from django.test import TestCase
 # from .models import Profile
 from django.contrib.auth.models import User
@@ -10,7 +11,8 @@ from django.http.request import QueryDict
 from django.middleware.csrf import get_token
 # from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
-from .views import send_link_course, usersInCourse
+from django.contrib.messages.storage.fallback import FallbackStorage
+from .views import send_link_course, usersInCourse, send_notification_new_asignement
 
 class CourseTestCase(TestCase):
     def setUp(self):
@@ -75,6 +77,20 @@ class CourseTestCase(TestCase):
         except:
             assert False
 
+    def test_delete_course(self):
+        req = self.factory.get(f'course/{self.course.id}/deletecourse')
+        req.user = self.user
+
+        setattr(req, 'session', 'session')
+        messages = FallbackStorage(req)
+        setattr(req, '_messages', messages)
+
+        self.course.deleted = True
+
+        delete_course(req, self.course.id)
+
+        self.assertEqual(self.course.deleted, True)
+
     def test_send_link_course(self):
         user_owner =  self.user
         course = self.course
@@ -129,3 +145,35 @@ class CourseTestCase(TestCase):
         edit_assignment(req, self.course.id, self.assignment.id)
         asgmt = Assignment.objects.all().filter(title = info['title'])
         assert asgmt
+
+<<<<<<< HEAD
+    def test_edit_course(self):
+        req = self.factory.post(f'{self.course.id}/editcourse')
+        req.user = self.user
+
+        info = {'csrfmiddlewaretoken': get_token(req),
+                'picture': 'picture',
+                'title':'test_course',
+                'description':'test',
+                'day':'LU',
+                'time_start':'10:00',
+                'time_end':'11:00',
+                'syllabus':'Syllabus',
+                'title': 'curso',
+                'picture': 'new_asgmt_content',
+                'file': None,
+                'user': self.user,
+        }
+
+        q = QueryDict('', mutable=True)
+        q.update(info)
+        req.POST = q
+
+        edit_course(req, self.course.id)
+
+        self.assertEqual(self.course.title, 'test_course')
+=======
+    def test_send_notification_new_asignement(self):
+        send_mail = send_notification_new_asignement(self.user, 'http://localhost:8000', self.course, [self.user])
+        self.assertEqual(send_mail, 1)
+>>>>>>> notificar_tarea
