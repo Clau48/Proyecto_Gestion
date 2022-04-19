@@ -32,7 +32,11 @@
                         <div class="blog-img-text-2 headline pera-content">
                             <div class="blog-img-2 position-relative">
                                 <div class="blog-img-warap-2 position-relative">
+                                    {% if course.picture.url is not None %}
                                     <img src="{{ course.picture.url }}" alt="">
+                                    {% else %}
+                                    <img src="https://wallpaperboat.com/wp-content/uploads/2020/09/14/54601/books-01.jpg" alt="blog-img-2" class="img-fluid">
+                                    {% endif %}
                                 </div>
                                 <!--<div class="blog-date-2 text-center">
                                     <a href="#">(dia)<span>(mes/año)</span></a>
