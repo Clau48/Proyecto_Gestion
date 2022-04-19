@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import *
 from django.shortcuts import render, redirect, get_object_or_404
@@ -478,7 +477,7 @@ def addCalification(request):
         # return JsonResponse({'msg': 'Error, dato requerido'}, status=422)        
         grade = request.POST['grade']
         # return JsonResponse({'msg': grade})
-        if grade == '' or grade == None or grade == NULL:
+        if grade == '' or grade == None:
             return JsonResponse({'msg': 'Error, dato requerido'}, status=422)        
         grade = int(grade)
         if grade > 20 or grade < 0:
