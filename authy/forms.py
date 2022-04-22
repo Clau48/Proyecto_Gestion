@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from authy.models import Profile
 from django.contrib.auth.forms import (UserCreationForm, AuthenticationForm)
+import re
 
 def forbidden_users(value):
     forbidden_users = ['admin', 'css', 'js', 'authenticate', 'login', 'logout', 'administrator', 'root',
@@ -23,28 +24,41 @@ def unique_user(value):
         raise ValidationError('User with this username already exists.')
 
 class EditProfileForm(forms.ModelForm):
-    first_name = forms.CharField(widget=forms.TextInput(), max_length=50, required=False)
-    last_name = forms.CharField(widget=forms.TextInput(), max_length=50, required=False)
+    first_name = forms.CharField(widget=forms.TextInput(), max_length=50, required=True)
+    last_name = forms.CharField(widget=forms.TextInput(), max_length=50, required=True)
     picture = forms.ImageField(required=False)
-    banner = forms.ImageField(required=False)
-    location = forms.CharField(widget=forms.TextInput(), max_length=25, required=False)
-    url = forms.URLField(widget=forms.TextInput(), max_length=60, required=False)
     profile_info = forms.CharField(widget=forms.TextInput(), max_length=260, required=False)
 
     class Meta:
         model = Profile
-        fields = ('picture', 'banner', 'first_name', 'last_name', 'location', 'url', 'profile_info')
+        fields = ('picture', 'first_name', 'last_name', 'profile_info')
+
+    def clean_first_name(self):
+        fname_passed = self.cleaned_data.get("first_name")
+        is_valid = re.search("[^a-z A-Z]", fname_passed)
+        if is_valid is not None:
+            raise forms.ValidationError("Los nombres solo puede contener letras y espacios")
+        return fname_passed
+    
+    def clean_last_name(self):
+        lname_passed = self.cleaned_data.get("last_name")
+        is_valid = re.search("[^a-z A-Z]", lname_passed)
+        if is_valid is not None:
+            raise forms.ValidationError("Los apellidos solo puede contener letras y espacios")
+        return lname_passed
 
 # Registro con autentificacion de usuarios
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Username'}), max_length=30, required=True,)
     email = forms.CharField(widget=forms.EmailInput(attrs={'placeholder':'Email'}) , max_length=100, required=True,)
-    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Password'}),max_length=100)
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirm password'}), required=True, label="Confirm your password.")
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Nombres'}) , max_length=50, required=True)
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder':'Apellidos'}) , max_length=50, required=True)
+    password1 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Contraseña'}),max_length=100)
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder':'Confirmar contraseña'}), required=True, label="Confirm your password.")
 
     class Meta:
         model = User
-        fields =  ['username', 'email', 'password1', 'password2']
+        fields =  ['username', 'email', 'first_name', 'last_name', 'password1', 'password2']
 
     def clean_email(self):
         email_passed = self.cleaned_data.get("email")

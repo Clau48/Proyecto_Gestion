@@ -146,7 +146,6 @@ class CourseTestCase(TestCase):
         asgmt = Assignment.objects.all().filter(title = info['title'])
         assert asgmt
 
-<<<<<<< HEAD
     def test_edit_course(self):
         req = self.factory.post(f'{self.course.id}/editcourse')
         req.user = self.user
@@ -172,8 +171,6 @@ class CourseTestCase(TestCase):
         edit_course(req, self.course.id)
 
         self.assertEqual(self.course.title, 'test_course')
-=======
     def test_send_notification_new_asignement(self):
         send_mail = send_notification_new_asignement(self.user, 'http://localhost:8000', self.course, [self.user])
         self.assertEqual(send_mail, 1)
->>>>>>> notificar_tarea
