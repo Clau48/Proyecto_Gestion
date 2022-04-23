@@ -11,6 +11,8 @@ from django.middleware.csrf import get_token
 from .views import (side_nav_info, register, edit_profile)
 from django.test.client import RequestFactory
 from .utils import send_email_confirmation
+from django.contrib.messages.storage.fallback import FallbackStorage
+
 
 from course.models import Course
 
@@ -23,7 +25,7 @@ class ProfileTestCase(TestCase):
 		self.user = User.objects.create_user(username='luiggi',
 											 email='luiggi.pasache.lopera@gmail.com',
 											 password='luiggi',
-											 )
+											)
 
 	def test_register(self):
 		req = self.factory.post('user/signup')
@@ -54,14 +56,20 @@ class ProfileTestCase(TestCase):
 		req = self.factory.post('user/profile/edit')
 		req.user = self.user
 
+		setattr(req, 'session', 'session')
+		messages = FallbackStorage(req)
+		setattr(req, '_messages', messages)
+
 		info = {'csrfmiddlewaretoken': get_token(req),
 				'first_name': 'test',
 				'last_name': 'user',
-				'location': 'test location',
-				'url': 'testurl.com',
 				'profile_info': 'test profile info',
 				'action': '',
 				}
+
+		middleware = SessionMiddleware(get_response='')
+		middleware.process_request(req)
+		req.session.save()
 
 		q = QueryDict('', mutable=True)
 		q.update(info)
@@ -69,7 +77,7 @@ class ProfileTestCase(TestCase):
 
 		edit_profile(req)
 		profile = Profile.objects.get(user=self.user)
-		assert profile.location
+		assert profile.profile_info
 
 	def test_side(self):
 		req = self.factory.post('login')
