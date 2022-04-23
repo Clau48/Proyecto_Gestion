@@ -75,6 +75,24 @@ class CourseTestCase(TestCase):
         except:
             assert False
 
+    def test_edit_post(self):
+        req = self.factory.post(f'{self.course.id}/posts/{self.post.id}/editpost')
+        req.user = self.user
+
+        info = {'csrfmiddlewaretoken': get_token(req),
+                'title': 'new_title_post',
+                'content': 'new_post_content',
+                }
+
+        q = QueryDict('', mutable=True)
+        q.update(info)
+        req.POST = q
+
+        edit_post(req,self.course.id,self.post.id)
+
+        post = Post.objects.get(title = info['title'])
+        assert post
+
     def test_send_link_course(self):
         user_owner =  self.user
         course = self.course
