@@ -46,7 +46,9 @@
   <div class="course-details-tab-wrapper">
     <div class="d-flex justify-content-end">
       <a href="{% url 'showTeams' course.id %}" class="btn btn-info-custom2 mb-4">Ver grupos</a>
-      <a href="{% url 'formTeams' course.id %}" class="btn btn-info-custom mb-4">Formar grupos</a>
+      {% if teacher_mode == True %}
+        <a href="{% url 'formTeams' course.id %}" class="btn btn-info-custom mb-4">Formar grupos</a>
+      {% endif %}      
     </div>
     <div class="course-details-tab-btn clearfix ul-li">
       <ul id="tabs" class="nav text-uppercase nav-tabs">

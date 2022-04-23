@@ -568,16 +568,16 @@ def formTeamsProcess(request,course_id):
             messages.error(request, '* El numero del equipo ya existe')
             return redirect('formTeams', course_id=course_id)
         
-        if nameTeam == '' or nameTeam == None or nameTeam == NULL:
+        if nameTeam == '' or nameTeam == None:
             messages.error(request, '* El nombre del equipo no puede estar vacio')
             return redirect('formTeams', course_id=course_id)
-        if numberTeam == '' or numberTeam == None or numberTeam == NULL:
+        if numberTeam == '' or numberTeam == None:
             messages.error(request, '* El numero del equipo no puede estar vacio')
             return redirect('formTeams', course_id=course_id)
         if int(numberTeam) <=0:
             messages.error(request, '* El numero del equipo debe ser mayor a 0')
             return redirect('formTeams', course_id=course_id)         
-        if valuesAlumnos == '' or valuesAlumnos == None or valuesAlumnos == NULL:
+        if valuesAlumnos == '' or valuesAlumnos == None:
             messages.error(request, '* Selecionar los alumnos que formaran el grupo')
             return redirect('formTeams', course_id=course_id)
         if len(valuesAlumnos) < 2:
@@ -601,9 +601,11 @@ def formTeamsProcess(request,course_id):
 @login_required
 def showTeams(request, course_id):
     userFromCourse = Team.objects.filter(course=course_id).all().prefetch_related('student')
-    idTeams = userFromCourse.values('grupe_number','grupe_name','student').order_by().distinct()
+    idTeams = userFromCourse.values('grupe_number').distinct()
     for index in range(0,len(idTeams)):
+        idTeams[index]['grupe_name'] = userFromCourse.filter(grupe_number=idTeams[index]['grupe_number']).first().grupe_name
         idTeams[index]['student'] = userFromCourse.filter(grupe_number=idTeams[index]['grupe_number'])
+    # return HttpResponse(idTeams)
     context = {
         'course_id': course_id,
         'teams':idTeams,
