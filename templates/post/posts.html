@@ -6,7 +6,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/cha.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!-- nuevo, necesario-->
     <link rel="stylesheet" type="text/css" href="{% static 'css/curso.css' %}">
+    <style>
+      .btn-info-custom{
+        background-color: #00bcd4 !important;
+        color: white !important;
+        margin-right: 10px !important;
+      }
 
+      .btn-info-custom2{
+        background-color: rgb(213,104,23) !important;
+        color: white !important;
+        margin-right: 10px !important;
+      }
+
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -29,9 +42,12 @@
 
 
 
-
 <div class="course-details-tab-area">
   <div class="course-details-tab-wrapper">
+    <div class="d-flex justify-content-end">
+      <a href="{% url 'showTeams' course.id %}" class="btn btn-info-custom2 mb-4">Ver grupos</a>
+      <a href="{% url 'formTeams' course.id %}" class="btn btn-info-custom mb-4">Formar grupos</a>
+    </div>
     <div class="course-details-tab-btn clearfix ul-li">
       <ul id="tabs" class="nav text-uppercase nav-tabs">
           <!--estas redirecciones ya lo hizo Luiggi en la interfaz course.html de la rama info_curso-->

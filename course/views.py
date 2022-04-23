@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import *
 from django.contrib.auth.models import User
 from django.db.models import Q
-from course.models import Assignment, Course, Homework, Post
+from course.models import Assignment, Course, Homework, Post, Team
 from course.forms import NewAssignmentForm, NewCourseForm, NewPostForm
 import datetime
 from django.http import HttpResponseForbidden, HttpResponse, JsonResponse, HttpResponseBadRequest
@@ -541,3 +541,71 @@ def addCalification(request):
         return JsonResponse({'data': data}, status=200)    
     except:
         return JsonResponse({'msg': 'Error, no pudo agregar la calificacion'}, status=404)    
+    
+@login_required
+def formTeams(request, course_id):
+    alumnos = Course_User.objects.filter(course=course_id).all().prefetch_related('user')
+    userFromCourse = Team.objects.filter(course=course_id).all().prefetch_related('student')
+    alumnos = alumnos.exclude(user__in=userFromCourse.values('student'))        
+    course_information = Course.objects.filter(id=course_id).first()
+    context = {
+        'course_id': course_id,
+        'alumnos':alumnos,
+        'course_information':course_information
+    }
+    return render(request, 'team/Formacion_de_Grupos.html', context)
+
+
+@login_required
+def formTeamsProcess(request,course_id):
+    try:
+        userFromCourse = Team.objects.filter(course=course_id).all().prefetch_related('user')        
+        valuesAlumnos = request.POST.getlist('alumnos[]') if request.POST.getlist('alumnos[]') else None
+        nameTeam = request.POST.get('nameTeam') if request.POST.get('nameTeam') else None
+        numberTeam = request.POST.get('numberTeam') if request.POST.get('numberTeam') else None
+
+        if userFromCourse.filter(grupe_number=numberTeam).exists():
+            messages.error(request, '* El numero del equipo ya existe')
+            return redirect('formTeams', course_id=course_id)
+        
+        if nameTeam == '' or nameTeam == None or nameTeam == NULL:
+            messages.error(request, '* El nombre del equipo no puede estar vacio')
+            return redirect('formTeams', course_id=course_id)
+        if numberTeam == '' or numberTeam == None or numberTeam == NULL:
+            messages.error(request, '* El numero del equipo no puede estar vacio')
+            return redirect('formTeams', course_id=course_id)
+        if int(numberTeam) <=0:
+            messages.error(request, '* El numero del equipo debe ser mayor a 0')
+            return redirect('formTeams', course_id=course_id)         
+        if valuesAlumnos == '' or valuesAlumnos == None or valuesAlumnos == NULL:
+            messages.error(request, '* Selecionar los alumnos que formaran el grupo')
+            return redirect('formTeams', course_id=course_id)
+        if len(valuesAlumnos) < 2:
+            messages.error(request, '* Selecionar al menos 2 alumnos para formar el grupo')
+            return redirect('formTeams', course_id=course_id)
+        
+            
+        if userFromCourse.filter(student__in=valuesAlumnos).count() > 0:
+            messages.error(request, '* Alguno de los alumnos seleccionados ya tiene grupo, actualize la pagina')
+            return redirect('formTeams', course_id=course_id)
+        for index in range(0,len(valuesAlumnos)):
+            Team.objects.create(course_id=course_id, grupe_name=nameTeam, grupe_number=numberTeam, student_id=valuesAlumnos[index])
+            
+        messages.success(request, '* Grupo formado correctamente')
+        return redirect('formTeams', course_id=course_id)
+        
+    except:
+        messages.error(request, '* Error, no pudo formar el equipo')
+        return redirect('formTeams', course_id=course_id)
+        
+@login_required
+def showTeams(request, course_id):
+    userFromCourse = Team.objects.filter(course=course_id).all().prefetch_related('student')
+    idTeams = userFromCourse.values('grupe_number','grupe_name','student').order_by().distinct()
+    for index in range(0,len(idTeams)):
+        idTeams[index]['student'] = userFromCourse.filter(grupe_number=idTeams[index]['grupe_number'])
+    context = {
+        'course_id': course_id,
+        'teams':idTeams,
+    }
+    return render(request, 'team/Vista_de_Grupos.html', context)
