@@ -138,6 +138,13 @@
                         <!--modificar este href-->Archivo: <a target='_blank' href="{{ post.file.url }}" title="file">  <i class="material-icons">file_download</i>Descargar</a>
                     </li>
                     </ul>
+                    <ul>
+                      {% if teacher_mode == True %}
+                        <li>
+                          <a href="{% url 'edit-post' course.id post.id %}" class="btn-small left"><em class="material-icons">add</em>Editar Tarea</a>
+                        </li>
+                      {% endif %}
+                      </ul>
                 </div>
               </div>
             </div>

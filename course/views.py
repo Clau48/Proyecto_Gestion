@@ -194,26 +194,55 @@ def NewPost(request, course_id):
     }
     return render(request, 'post/newpost.html', context)
 
-@login_required
-def show_posts(request, course_id):
+def edit_post(request, course_id, post_id):
     user = request.user
     course = get_object_or_404(Course, id=course_id)
-    posts = Post.objects.filter(course_id=course_id)
-    assignmentValidate = Assignment.objects.filter(post_ptr_id__in=posts)
-    homeworkUser = Homework.objects.filter(assignment__in=assignmentValidate,student_id=request.user.id)
-    teacher_mode = False
-    if user == course.user:
-        teacher_mode = True
-        
-    context = {
-        'teacher_mode': teacher_mode,
-        'course': course,
-        'posts': posts,
-        'homeworkUser': homeworkUser,
-        'time_now' : datetime.datetime.now(),        
-    }
+    post = get_object_or_404(Post, id=post_id)
 
-    return render(request, 'post/posts.html', context)
+    if user != course.user:
+        return HttpResponseForbidden()
+    else:
+        if request.method == 'POST':
+            form = NewPostForm(request.POST, request.FILES, instance=post)
+            if form.is_valid():
+                post.title = form.cleaned_data.get('title')
+                post.content = form.cleaned_data.get('content')
+                post.file = form.cleaned_data.get('file')
+                post.save()
+                return redirect('show_posts', course_id=course_id)
+        else:
+            form = NewPostForm(instance=post)
+            form.file = post.file
+
+    context = {
+        'form': form,
+        'course_id': course_id,
+        'post_id': post_id
+    }
+    return render(request, 'post/newpost.html', context)
+
+
+@login_required
+def show_posts(request, course_id):
+	user = request.user
+	course = get_object_or_404(Course, id=course_id)
+	posts = Post.objects.filter(course_id=course_id)
+	assignmentValidate = Assignment.objects.filter(post_ptr_id__in=posts)
+	homeworkUser = Homework.objects.filter(assignment__in=assignmentValidate,student_id=request.user.id)
+	teacher_mode = False
+
+	if user == course.user:
+		teacher_mode = True
+        
+	context = {
+		'teacher_mode': teacher_mode,
+		'course': course,
+		'posts': posts,
+		'homeworkUser': homeworkUser,
+        'time_now' : datetime.datetime.now()
+	}
+
+	return render(request, 'post/posts.html', context)
 
 @login_required
 def send_homework(request, course_id,post_id):
