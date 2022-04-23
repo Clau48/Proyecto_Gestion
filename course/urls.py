@@ -20,4 +20,7 @@ urlpatterns = [
 	path('<course_id>/posts/<assignment_id>/editassignment', edit_assignment, name='edit-assignment'),
 	path('<course_id>/posts/<assignment_id>/calificate', teacher_calificate, name='calification_assignment'), 
 	path('homework/calificate', addCalification, name='addCalification'), 
+	path('<course_id>/team/form', formTeams, name='formTeams'), 
+	path('<course_id>/team/form/process', formTeamsProcess, name='formTeamsProcess'), 
+	path('<course_id>/team/show', showTeams, name='showTeams'), 
 ]

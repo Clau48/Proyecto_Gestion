@@ -105,3 +105,9 @@ class Homework(models.Model):
 
     def get_storage_path(self):
         return f'{self.assignment.get_storage_path()}/homeworks/{self.pk}'
+
+class Team(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='team')
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='team')
+    grupe_name = models.CharField(max_length=200)
+    grupe_number = models.IntegerField(default=0)
