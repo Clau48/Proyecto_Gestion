@@ -29,7 +29,7 @@
           <li><a href="{% url 'newcourse' %} " data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">book</em>CREAR</a></li>
           <li><a href="{% url 'mycourses' %}" data-target="slide-out" class="sidenav-trigger show-on-large"><em class="material-icons left" style="padding-top: 20px;">book</em>Mis cursos</a></li>
           <li>
-            <a class="dropdown-trigger" href="{% url 'inscription' %}" data-target="dropdown1">
+            <a class="dropdown-trigger" href="{% url 'show-profile' %}" data-target="dropdown1">
               <em class="material-icons left" style="padding-top: 20px;">account_circle</em>
               <span class="hide-on-small-only">{{ user }}</span>
             </a>
@@ -59,14 +59,14 @@
         {% if nav_profile.banner %}
           <img src="{{ nav_profile.banner.url }}" alt="Imagen no cargada">
         {% else %}
-          <img src="{% static 'img/nobanner.jpg' %}" alt="Imagen no cargada">
+          {% comment %} <img src="{% static 'img/nobanner.jpg' %}" alt="Imagen no cargada"> {% endcomment %}
         {% endif %}
       </div>
       <a href="#user">
       {% if nav_profile.picture %}
         <img src="{{ nav_profile.picture.url }}" class="circle responsive-img" alt="Imagen no cargada">
       {% else %}
-        <img src="{% static 'img/no_avatar.jpg' %}" class="circle responsive-img" alt="Imagen no cargada">
+        {% comment %} <img src="{% static 'img/no_avatar.jpg' %}" class="circle responsive-img" alt="Imagen no cargada"> {% endcomment %}
       {% endif %} 
       </a>
       <a href="#name"><span class="white-text name">{{ nav_profile.user.first_name }} {{ nav_profile.user.last_name }}</span></a>

@@ -1,0 +1,41 @@
+
+{% extends 'base.html' %}
+
+{% load static %}    
+
+{% block css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/categories.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+  
+<div id="cabecera">
+    <h4 class='p-4 mt-0' style='color:white;'>Perfil de usuario</h4>  
+</div>
+<div id="principal">
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li{% if message.tags %} class="alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+  <div class="container-profile">
+      <div class="card-profile">
+          <div class="info"> <span>Perfil de Usuario</span> <a href="{% url 'edit-profile' %}">Editar</a> </div>
+          <div class="forms">
+            <div class="inputs" id="pic-profile"> <span>Foto de perfil</span> <img src="{% if profile.picture %} {{ profile.picture.url }} {% else %} {% load static %} {% static 'img/noprofile.jpg' %} {% endif %}"><hr></div>
+            <div class="inputs"> <span>UserName</span> <div class="data-profile">{{ user.username }} </div><hr></div>
+            <div class="inputs"> <span>Nombres</span> <div class="data-profile">{{ user.first_name }} </div> <hr></div>
+            <div class="inputs"> <span>Apellidos</span> <div class="data-profile">{{ user.last_name }} </div> <hr></div>
+            <div class="inputs"> <span>Email</span> <div class="data-profile">{{ user.email }} </div> <hr></div>
+            <div class="inputs"> <span>Descripción</span> <div class="data-profile">{{ profile.profile_info }} </div> <hr></div>
+            <div class="inputs"> <span>Cursos Inscritos</span> <div class="data-profile"><a href="{% url 'inscription' %}" class="btn alert alert-success mb-0" role="alert">Ver cursos inscritos</a></div></div>
+          </div>
+      </div>
+  </div>
+
+</div>
+
+{% endblock %}

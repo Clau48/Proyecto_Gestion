@@ -44,24 +44,34 @@ def user_profile(request, username):
 	return HttpResponse(template.render(context, request))
 
 @login_required
+def show_profile(request):
+
+	user = User.objects.get(id=request.user.id)
+	profile = Profile.objects.get(user=user)
+
+	context = {
+		'profile': profile,
+		'user': user,
+	}
+	return render(request,'registration/show_profile.html', context)
+
+@login_required
 def edit_profile(request):
 	user = request.user.id
 	profile = Profile.objects.get(user__id=user)
-	user_basic_info = User.objects.get(id=user)
+	user_basic_info = User.objects.get(id = user)
 
 	if request.method == 'POST':
 		form = EditProfileForm(request.POST, request.FILES, instance=profile)
 		if form.is_valid():
 			profile.picture = form.cleaned_data.get('picture')
-			profile.banner = form.cleaned_data.get('banner')
 			user_basic_info.first_name = form.cleaned_data.get('first_name')
 			user_basic_info.last_name = form.cleaned_data.get('last_name')
-			profile.location = form.cleaned_data.get('location')
-			profile.url = form.cleaned_data.get('url')
 			profile.profile_info = form.cleaned_data.get('profile_info')
 			profile.save()
 			user_basic_info.save()
-			return redirect('login')
+			messages.success(request, 'Perfil actualizado.')
+			return redirect('show-profile')
 	else:
 		form = EditProfileForm(instance=profile)
 

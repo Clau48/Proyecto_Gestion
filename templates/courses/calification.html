@@ -54,7 +54,7 @@
       <td> <div class="cut_text_long">{{ nota.homework.description_short }}</div> </td>
       <td>
         {% if nota.homework.grade is not null %}
-          {% if nota.homework.grade == 0 %}
+          {% if nota.homework.grade == -1 %}
           Sin calificación
           {% elif nota.homework.grade >= 11 %}
           <span class="alert alert-success badge badge-success">{{ nota.homework.grade }}</span>

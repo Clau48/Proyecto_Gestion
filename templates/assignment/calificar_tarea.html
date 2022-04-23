@@ -1,0 +1,402 @@
+
+{% extends 'base.html' %}
+{% load static %}    
+
+{% block css %}
+
+<style>
+		* {
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 455px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+body {
+  font-family: Calibri;
+}
+
+.coupon {
+  border: 0px dotted #bbb;
+  width: 100%;
+  border-radius: 15px;
+  margin: 0 auto;
+  max-width: 300px;
+}
+
+
+.promo {
+  background: #ccc;
+  padding: 2px;
+}
+
+.expire {
+  color: red;
+}
+
+#snackbar {
+  visibility: hidden;
+  min-width: 250px;
+  margin-left: -125px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 2px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  font-size: 17px;
+}
+
+#snackbar.show {
+  visibility: visible;
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.0s;
+  animation: fadein 0.5s, fadeout 0.5s 2.0s;
+}
+
+@-webkit-keyframes fadein {
+  from {bottom: 0; opacity: 0;} 
+  to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {bottom: 0; opacity: 0;}
+  to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {bottom: 30px; opacity: 1;} 
+  to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {bottom: 30px; opacity: 1;}
+  to {bottom: 0; opacity: 0;}
+}
+
+		
+		input[type=text], select, textarea {
+		  width: 100%;
+		  padding: 12px;
+		  border: 1px solid rgb(3, 11, 83);
+		  border-radius: 4px;
+		  resize: vertical;
+		}
+		
+		label {
+		  padding: 12px 12px 12px 0;
+		  display: inline-block;
+		}
+		
+		input[type=submit] {
+		  background-color: #07570a;
+		  color: rgb(255, 255, 255);
+		  padding: 12px 20px;
+		  border: none;
+		  border-radius: 4px;
+		  cursor: pointer;
+		  float: right;
+		}
+		
+		input[type=submit]:hover {
+		  background-color: #d6745e;
+		}
+				
+		.col-25 {
+		  float: left;
+		  width: 25%;
+		  margin-top: 6px;
+		}
+		
+		.col-75 {
+		  float: left;
+		  width: 75%;
+		  margin-top: 6px;
+		}
+		
+		/* Clear floats after the columns */
+		
+		/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+		@media screen and (max-width: 600px) {
+		  .col-25, .col-75, input[type=submit] {
+			width: 100%;
+			margin-top: 0;
+		  }
+		}
+
+		.card .card-title{
+		font-size: 1.25rem !important;
+		margin-top: 0 !important;
+		margin-bottom: 0.5rem !important;
+		font-weight: 500 !important;
+		line-height: 1.2 !important;
+		}
+
+		img{
+			border-radius: 100%;
+			overflow: hidden;
+			width: 50%;
+			border: 1px solid rgba(255,255,255,.5);
+			box-shadow: 0 1px 0 rgb(0 0 0 / 10%), 0 1px 2px rgb(0 0 0 / 10%);
+			margin: auto;
+			height: 150px;
+			width: 150px;
+		}
+		
+		a.waves-effect.waves-light.btn-small.editar:hover{
+			background-color: #2973c6 !important;
+			color:white;
+		}
+
+		</style>
+
+		<style>
+			.div-hidden{
+				display:none !important;
+			}
+			.btn-modificar{
+				background-color: #1565c0 !important;
+			}
+		</style>
+		{% endblock %}
+
+{% block content %}
+<blockquote class="blockquote">
+	<p class="m-4 h1"><!-- nombre tarea -->TAREA 1</p>
+	<footer class="blockquote-footer">Califique el trabajo de los alumnos</footer>
+	<div id="messageData" class="alert alert-personalize div-hidden" role="alert"></div>
+</blockquote>
+<div class="row">
+	{% comment %} <div class="col-1">
+	</div> {% endcomment %}
+	{% comment %} <div class="col-lg-3 col-sm-12 shadow-lg p-3 mb-5 bg-white rounded m-2" > 
+		<h3 class="h3 text-center" style="font-family:Arial; ">Calificación</h3>
+		<div class="table-responsive">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">Nombre</th>
+						<th scope="col">Apellido</th>
+						<th scope="col">Calificación</th>
+						<th scope="col">Acción</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for alumno in alumnos %}
+					<tr>
+						{% if alumno.user.first_name %}
+							<td>{{ alumno.user.first_name }}</td>
+							<td>{{ alumno.user.last_name }}</td>
+						{% else %}
+							<td colspan="2">{{ alumno.user.email }}</td>
+						{% endif %}
+						{% if alumno.homework %}
+							<td>{{ alumno.homework.grade }} /20</td>
+						{% else %}
+							<td>{{ alumno.homework.grade }} /20</td>
+						{% endif %}
+						<td><a class="waves-effect waves-light btn-small">Calificar</a>
+						<a class="waves-effect waves-light btn-small editar" style="background-color: #1565c0;">Modificar</a></td>
+					</tr>
+
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div> {% endcomment %}
+
+	<div class="m-auto col-lg-11 col-sm-12 shadow-lg p-3 mb-5 rounded m-2" style="background-color:rgba(13, 202, 240,0.1);">
+		<!--<form action="" method="POST">-->
+			<!--{% csrf_token %}-->
+		
+		<div class="container" style="width: 100%;">
+			<div class="row row-cols-1 row-cols-md-3 g-4">
+				{% for alumno in alumnos %}
+				<div class="col">
+					<div class="card h-100">
+						
+							<img src="https://www.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png" alt="">
+						
+							<div class="card-body">
+								{% if alumno.user.first_name %}
+									<h5 class="card-title">{{ alumno.user.first_name }}&nbsp{{ alumno.user.last_name }}</h5>
+								{% else %}
+									<h5 class="card-title">{{ alumno.user.email }}</h5>
+								{% endif %}			
+
+								{% if alumno.homework %}
+									<p class="card-text">{% firstof alumno.homework.description_short 'SIN DESCRIPCION' %}</p>
+								{% else %}
+									<div class="d-flex justify-content-center align-items-center">
+										<h2 class="badge bg-danger" style="font-size:1.25em">SIN ENTREGAR</h2>
+									</div>
+								{% endif %}													
+							</div>
+							{% if alumno.homework %}
+
+							{% if alumno.homework.file %}
+							{% comment %} <ul class="list-group list-group-flush">
+								<li class="list-group-item">
+									<a target='_blank' href="{{ '/media/courses/'|add:course_id|add:'/posts/1/Diagrama_en_blanco_4.png' }}" title="file" class="card-link"><i class="material-icons">file_download</i>{{ alumno.homework.file }}</a>
+								</li>
+							</ul> {% endcomment %}
+							{% endif %}
+
+							<div class="card-body">
+								<p class="card-text"><strong>Comentario Privado:</strong> {% firstof alumno.homework.comentary 'SIN COMENTARIO' %}</p>
+							</div>
+							{% endif %}
+							<div class="table-responsive">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th style="width:10%;" scope="col">Calificación</th>
+											<th style="width:50%;" scope="col"></th>
+											<th style="width:40%;" scope="col">Acción</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											{% if alumno.homework %}
+												<td  class="sendHomework">
+													<form method="POST" action="{% url 'addCalification' %}">
+														{% csrf_token %}
+														<div class="divHomework d-flex justify-content-center align-items-center">
+															{% if alumno.homework.grade < 0 %}
+															<input class="inputValueGrade" name="grade" value="0" min="0" max="20"  type="number" required> /20
+															{% else %}
+															<input class="inputValueGrade" name="grade" value="{{ alumno.homework.grade }}" min="0" max="20"  type="number" required> /20
+															{% endif %}
+															<input type="hidden" name="idUser" value="{{ alumno.user_id }}">
+															<input type="hidden" name="idCourse" value="{{ course_id }}">
+															<input type="hidden" name="idPost" value="{{ assignment_id }}">
+															<input type="hidden" name="idHomework" value="{{ alumno.homework.id }}">
+														</div>
+													</form>
+												</td>
+												<td></td>
+											{% else %}
+												<td class="sendHomework">
+													<div class="divHomework d-flex justify-content-center align-items-center">
+														<form method="POST" action="{% url 'addCalification' %}">
+															{% csrf_token %}
+															<div class="divHomework d-flex justify-content-center align-items-center">
+																<input class="inputValueGrade" name="grade" value="0" min="0" max="20"  type="number" required> /20
+																<input type="hidden" name="idUser" value="{{ alumno.user_id }}">
+																<input type="hidden" name="idCourse" value="{{ course_id }}">
+																<input type="hidden" name="idPost" value="{{ assignment_id }}">
+																<input type="hidden" name="idHomework" value="{{ alumno.homework.id }}">
+															</div>
+														</form>														
+													</div>
+												</td>
+												<td></td>
+											{% endif %}
+											{% if alumno.homework %}
+												{% if alumno.homework.now_calification == 0 %}
+													<td><a class="waves-effect waves-light btn-small btn-calificar">Calificar</a></td>
+												{% else %}
+													<td><a class="waves-effect waves-light btn-small btn-calificar btn-modificar">Modificar</a></td>
+												{% endif %}
+											{% else %}
+												<td><a class="waves-effect waves-light btn-small btn-calificar">Calificar</a></td>
+											{% endif %}
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							
+					</div>
+				</div>				
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	<!--</form>-->
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+	<script>
+	$('.btn-calificar').on('click',function(){
+		let form = $(this).closest('td').siblings('.sendHomework').find('form')
+		let grade = form.find('input[name="grade"]').val();
+		let idUser = form.find('input[name="idUser"]').val();
+		let idCourse = form.find('input[name="idCourse"]').val();
+		let idPost = form.find('input[name="idPost"]').val();
+		let idHomework = form.find('input[name="idHomework"]').val();
+		let token = form.find('input[name="csrfmiddlewaretoken"]').val();	
+		let button = $(this);
+		let htmlButton = $(this).html();
+		$.ajax({
+			url: '{% url 'addCalification' %}',
+			headers: {'X-CSRFToken': token },
+			type: 'POST',
+			data: {
+				'grade':grade,
+				'idUser':idUser,
+				'idCourse':idCourse,
+				'idPost':idPost,
+				'idHomework':idHomework
+				},
+			dataType: 'json',
+			xhrFields: {
+				withCredentials: true
+			},
+			success: function(data){
+				dataD =JSON.stringify(data);
+				dataD = JSON.parse(dataD);
+				$('#messageData').html(dataD.data[0].msg);
+				$('#messageData').removeClass('div-hidden');
+				$('#messageData').addClass('alert-success');
+				$(button).addClass('btn-modificar');
+				$(button).html('MODIFICAR');
+			},
+			beforeSend: function(){
+				$('#messageData').addClass('div-hidden');
+				$('#messageData').removeClass('alert-danger');
+				$('#messageData').removeClass('alert-success');
+				$(button).html(`
+				<div class="spinner-border" role="status">
+					<span class="visually-hidden">Cargando...</span>
+				</div>
+				`);
+			},
+			error: function(data,status,error){
+				dataD = data.responseJSON;
+				if(data.status == 422){
+					$('#messageData').html(dataD.msg);
+				}else if(data.status == 404){
+					$('#messageData').html(dataD.msg);
+				}else if(data.status == 403){
+					$('#messageData').html('Error, necesitas autenticarte para realizar esta accion');
+				}else if(data.status == 500){
+					$('#messageData').html('Error de servidor');
+				}else{
+					$('#messageData').html('Error desconocido');
+				}
+				$('#messageData').removeClass('div-hidden');
+				$('#messageData').addClass('alert-danger');
+				$(button).html(htmlButton);
+			}
+
+		});
+	});	
+	</script>
+
+{% endblock %}

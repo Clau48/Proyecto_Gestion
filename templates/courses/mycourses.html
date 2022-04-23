@@ -28,11 +28,22 @@
 
     </section>
 
+    <section>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="alert alert-danger">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </section>
+
     <section id="blog-feed" class="blog-feed-section">
         <div class="container">
             <div class="blog-feed-content-wrap">
                 <div class="row justify-content-center">
                     {% for course in courses %}
+                    {% if course.deleted == 0 %}
                     <!-- COMIENZA CURSO -->
                     <div class="col-lg-4 col-md-6">
                         <div class="blog-img-text-2 headline pera-content">
@@ -61,10 +72,21 @@
                                             <button class="btn btn-info btn-send-code" data-bs-toggle="modal" data-bs-target="#modal-inscription" data-whatever="@mdo" data-code="{{course.codeinvitation}}" data-courseid="{{course.id}}" style="background-color:#87CEEB"> INVITAR </button>
                                         </div>
                                         <div class="col-4 d-flex justify-content-start">
-                                            <button class="btn btn-info btn-send-code btn-course-users" data-bs-toggle="modal" data-bs-target="#modal-users" data-whatever="@mdo" data-courseid="{{course.id}}" style="background-color:#87CEEB"> ALUMNO </button>
+                                            <button class="btn btn-info btn-send-code btn-course-users" data-bs-toggle="modal" data-bs-target="#modal-users" data-whatever="@mdo" data-courseid="{{course.id}}" style="background-color:#87CEEB"> ALUMNOS </button>
                                         </div>
                                         <div class="col-4 d-flex justify-content-end">
-                                            <a href="{% url 'show_posts' course.id %}" class="btn btn-success" style="background-color:green;color:white"><i class="material-icons">note_add</i></a> 
+                                            <a href="{% url 'show_posts' course.id %}" class="btn btn-success" style="background-color:green;color:white;"><i class="material-icons">note_add</i></a> 
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex">
+                                        <div class="col-5 d-flex justify-content-end">
+                                            <a href="/course/{{course.id}}/editcourse" type="button" class="btn btn-info" style="color:white;"><i class="material-icons">edit</i></a> 
+                                        </div>
+                                        <div class="col-5 d-flex justify-content-end">
+                                            {% comment %} <a href="/course/{{course.id}}/deletecourse" type="button" class="btn btn-danger" style="background-color:red;color:white;"><i class="material-icons">delete</i></a>  {% endcomment %}
+                                            <button type="button" class="btn btn-modal-delete btn-danger" style="background-color:red;color:white;" data-bs-toggle="modal" data-courseid="{{course.id}}" data-bs-target="#deleteCourseModal">
+                                                <i class="material-icons">delete</i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -78,9 +100,10 @@
                             </div>
                         </div>
                     </div>
+                    {% endif %}
                     {% endfor %}             
 
-                 
+                     
                     <!-- TERMINA CURSO --> <!-- copiar y pegar desde 'comienza' hasta 'termina' para previsualizar, está responsive-->
                 </div>
             </div>
@@ -153,6 +176,30 @@
     </div>
   </div>
 
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteCourseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"><i class="material-icons">delete</i> Eliminar Curso</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          ¿Está seguro de eliminar el curso? esta acción no se puede deshacer.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <div></div>
+        <a id="btn-delete" href="">
+            <button type="button" class="btn btn-primary btn-danger" style="background-color:red;">Eliminar</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block javascript %}
@@ -171,6 +218,13 @@
         $('#input-code').val(code);
 
         $('#form-email').attr('action', document.location.origin + '/course/' + $(this).data('courseid') + '/send_invitation')
+    });
+
+    $('.btn-modal-delete').click(function(){
+        let code = $(this).data('courseid');
+        console.log(code);
+        let action = $('#btn-delete');
+        action.attr("href", "/course/"+ code +"/deletecourse");
     });
 
     $("#form-email").submit(function(e) {
@@ -206,11 +260,15 @@
 
             let inner = '';
 
-            for(let index in users){
-                inner += "<input placeholder='"+ users[index].name +"' type='text' disabled name='code_inscription' required maxlength='400' class='form-control input-copy-code' id='recipient-name'>"
+            if(users.length <= 0){
+                inner += "<h6 style='text-muted'>Aún no hay alumnos matriculados</h6>";
             }
 
-            $('#input-user').html(inner)
+            for(let index in users){
+                inner += "<input placeholder='"+ users[index].name +"' type='text' disabled name='code_inscription' required maxlength='400' class='form-control input-copy-code' id='recipient-name'>";
+            }
+
+            $('#input-user').html(inner);
         });
     
     });

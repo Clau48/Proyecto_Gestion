@@ -6,7 +6,20 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/cha.css' %}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!-- nuevo, necesario-->
     <link rel="stylesheet" type="text/css" href="{% static 'css/curso.css' %}">
+    <style>
+      .btn-info-custom{
+        background-color: #00bcd4 !important;
+        color: white !important;
+        margin-right: 10px !important;
+      }
 
+      .btn-info-custom2{
+        background-color: rgb(213,104,23) !important;
+        color: white !important;
+        margin-right: 10px !important;
+      }
+
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -29,9 +42,14 @@
 
 
 
-
 <div class="course-details-tab-area">
   <div class="course-details-tab-wrapper">
+    <div class="d-flex justify-content-end">
+      <a href="{% url 'showTeams' course.id %}" class="btn btn-info-custom2 mb-4">Ver grupos</a>
+      {% if teacher_mode == True %}
+        <a href="{% url 'formTeams' course.id %}" class="btn btn-info-custom mb-4">Formar grupos</a>
+      {% endif %}      
+    </div>
     <div class="course-details-tab-btn clearfix ul-li">
       <ul id="tabs" class="nav text-uppercase nav-tabs">
           <!--estas redirecciones ya lo hizo Luiggi en la interfaz course.html de la rama info_curso-->
@@ -140,6 +158,13 @@
                       {% endif %}
                     </li>
                     </ul>
+                    <ul>
+                      {% if teacher_mode == True %}
+                        <li>
+                          <a href="{% url 'edit-post' course.id post.id %}" class="btn-small left"><em class="material-icons">add</em>Editar Tarea</a>
+                        </li>
+                      {% endif %}
+                      </ul>
                 </div>
               </div>
             </div>
@@ -177,13 +202,13 @@
                      {% if post.assignment.due_datetime > datetime.now %}
                       <span class="badge badge-danger" style="background-color:red; color:white">Finalizada</span>
                      {% else %}
-                       <span class="badge badge-success" style="background-color:green; color:white">Activa</span>
+                       {% comment %} <span class="badge badge-success" style="background-color:green; color:white">Activa</span> {% endcomment %}
                      {% endif %}
                      {% if teacher_mode == False %}                  
 
                      {% for homework in homeworkUser.all %}
                         {% if homework.assignment_id == post.assignment.post_ptr_id %}
-                          <span class="badge badge-success" style="background-color:green; color:white">Entregada</span>
+                          {% comment %} <span class="badge badge-success" style="background-color:green; color:white">Entregada</span> {% endcomment %}
                         {% endif %}
                       {% endfor %}                          
                       {% endif %}
@@ -216,9 +241,12 @@
                       {% if post.assignment.due_datetime %}
                       <a href="{% url 'send_homework' post.course.id post.id  %}" class="btn btn-success
                       {% for homework in homeworkUser.all %}
-                        {% if homework.assignment_id == post.assignment.post_ptr_id %}
+                        {% if post.assignment.due_datetime < time_now %}
+                          disabled" style='color:black !important; font-weight:bold;'
+                        {% elif homework.assignment_id == post.assignment.post_ptr_id %}
                           disabled" style='color:black !important; font-weight:bold;'
                         {% endif %}
+
                       {% endfor %}                               
                       "> 
                         Entregar tarea
@@ -234,6 +262,9 @@
                   {% if teacher_mode == True %}
                     <li>
                       <a href="{% url 'edit-assignment' course.id post.id %}" class="btn-small left"><em class="material-icons">add</em>Editar Tarea</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'calification_assignment' course.id post.id %}" class="btn-small left"><em class="material-icons">arrow_forward</em>Calificar Tarea</a>
                     </li>
                   {% endif %}
                   </ul>

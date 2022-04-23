@@ -118,7 +118,8 @@ function ocultar(n) {
             <li class="li-style-none">
               <a href="{% url 'show_posts' course.id  %}" class="btn alert alert-success mb-0" role="alert">
                   Ver curso
-              </a>                
+              </a>
+              <button class="btn btn-info btn-send-code btn-course-users" data-bs-toggle="modal" data-bs-target="#modal-users" data-whatever="@mdo" data-courseid="{{course.id}}" style="background-color:#87CEEB"> ALUMNOS </button>
             </li>
 
         </div>
@@ -159,4 +160,57 @@ function ocultar(n) {
 
     </div>
   </div>
+
+
+
+<div class="modal fade" id="modal-users" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Alumnos matriculados</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div id="input-user">
+                {% comment %} usuarios aqui {% endcomment %}
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" style="background-color:green" class="btn btn-success" data-bs-dismiss="modal">De acuerdo</button>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+
+<script>
+    $('.btn-course-users').click(function(){
+        let courseCode = $(this).data('courseid');
+        let url = document.location.origin + '/course/' + courseCode + '/users/';
+
+        $.get(url,function(data, status){
+            users = data.users;
+
+            let inner = '';
+
+            if(users.length <= 0){
+                inner += "<h6 style='text-muted'>Aún no hay alumnos matriculados</h6>";
+            }
+
+            for(let index in users){
+                inner += "<div style='overflow: auto'><img src='"+ users[index].picture + "'"+
+                        "style='border-radius:50%; width :40px; height: 40px'>"+
+                        "<input placeholder='"+ users[index].first_name +" "+ users[index].last_name +"' type='text' disabled name='code_inscription' required maxlength='400' class='form-control input-copy-code' id='recipient-name' style='float:right; width:85%'></div>";
+            }
+
+            $('#input-user').html(inner);
+        });
+    
+    });
+</script>
+ 
 {% endblock %}

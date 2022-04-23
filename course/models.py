@@ -55,6 +55,7 @@ class Course(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='course_owner')
     codeinvitation = models.UUIDField(unique=True , default=uuid.uuid4, editable=False)
     enrolled = models.ManyToManyField(User)
+    deleted = models.BooleanField(default=False)
     # modules = models.ManyToManyField(Module)
     # questions = models.ManyToManyField(Question)
 
@@ -96,11 +97,18 @@ class Homework(models.Model):
     grade = models.IntegerField(
         validators=[
             validators.MaxValueValidator(20),
-            validators.MinValueValidator(0)
+            validators.MinValueValidator(-1)
         ],
-        default = 0
+        default = -1
     )
+    now_calification = models.BooleanField(default=False)
     file = models.FileField(upload_to=homework_storage_path, null=True, blank=True)
 
     def get_storage_path(self):
         return f'{self.assignment.get_storage_path()}/homeworks/{self.pk}'
+
+class Team(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='team')
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='team')
+    grupe_name = models.CharField(max_length=200)
+    grupe_number = models.IntegerField(default=0)
