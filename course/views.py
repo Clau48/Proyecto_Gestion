@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import *
 from django.shortcuts import render, redirect, get_object_or_404
@@ -15,6 +16,7 @@ from course.forms import NewCourseForm, NewPostForm
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
+from django.templatetags.static import static
 
 # Create your views here.
 @login_required
@@ -315,8 +317,10 @@ def usersInCourse(request, course_id):
     for user in users_query:
         user_dict = {
             "name": str(user.user),
+            "first_name": str(user.user.first_name),
+            "last_name": str(user.user.last_name),
             "email": str(user.user.email),
-            "picture": str(user.user.profile.picture)
+            "picture": '/media/'+str(user.user.profile.picture) if user.user.profile.picture else str(static('img/noprofile.jpg'))
         }
         data.append(user_dict)
     return JsonResponse({'users': data})

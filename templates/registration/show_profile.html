@@ -25,7 +25,7 @@
       <div class="card-profile">
           <div class="info"> <span>Perfil de Usuario</span> <a href="{% url 'edit-profile' %}">Editar</a> </div>
           <div class="forms">
-            <div class="inputs" id="pic-profile"> <span>Foto de perfil</span> <img src="{{ profile.picture.url }}" alt="No profile photo"><hr></div>
+            <div class="inputs" id="pic-profile"> <span>Foto de perfil</span> <img src="{% if profile.picture %} {{ profile.picture.url }} {% else %} {% load static %} {% static 'img/noprofile.jpg' %} {% endif %}"><hr></div>
             <div class="inputs"> <span>UserName</span> <div class="data-profile">{{ user.username }} </div><hr></div>
             <div class="inputs"> <span>Nombres</span> <div class="data-profile">{{ user.first_name }} </div> <hr></div>
             <div class="inputs"> <span>Apellidos</span> <div class="data-profile">{{ user.last_name }} </div> <hr></div>
